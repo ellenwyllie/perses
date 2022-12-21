@@ -75,5 +75,5 @@ export function formatNumber(num: number, modifier?: (n: number) => number): str
     ? fn(num / 1e6) + 'M'
     : num >= 1e3
     ? fn(num / 1e3) + 'K'
-    : num.toString();
+    : fn(num).toString();
 }
