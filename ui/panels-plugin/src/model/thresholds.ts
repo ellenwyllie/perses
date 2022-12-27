@@ -12,7 +12,7 @@
 // limitations under the License.
 
 import { UnitOptions } from '@perses-dev/components';
-import { zip } from 'lodash-es';
+import zip from 'lodash/zip';
 
 // TODO (sjcobb): pull threshold colors from perses charts theme
 export const ThresholdColors = {
