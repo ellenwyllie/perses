@@ -27,6 +27,7 @@ export interface ViewDashboardProps extends Omit<BoxProps, 'children'> {
   dashboardResource: DashboardResource;
   datasourceApi: DatasourceStoreProviderProps['datasourceApi'];
   dashboardTitleComponent?: JSX.Element;
+  enabledURLParams?: boolean;
   onSave?: (entity: DashboardResource) => Promise<DashboardResource>;
   initialVariableIsSticky?: boolean;
   isReadonly: boolean;
@@ -42,19 +43,24 @@ export function ViewDashboard(props: ViewDashboardProps) {
     dashboardTitleComponent,
     onSave,
     initialVariableIsSticky,
+    enabledURLParams,
     isReadonly,
     sx,
     ...others
   } = props;
   const { spec } = dashboardResource;
   const dashboardDuration = spec.duration ?? '1h';
+  // const enabledURLParams = props.enabledURLParams ?? true;
   const initialTimeRange = useInitialTimeRange(dashboardDuration);
 
   return (
     <DatasourceStoreProvider dashboardResource={dashboardResource} datasourceApi={datasourceApi}>
       <DashboardProvider initialState={{ dashboardResource }}>
-        <TimeRangeProvider initialTimeRange={initialTimeRange} enabledURLParams={true}>
-          <TemplateVariableProvider initialVariableDefinitions={spec.variables}>
+        <TimeRangeProvider initialTimeRange={initialTimeRange} enabledURLParams={enabledURLParams ?? true}>
+          <TemplateVariableProvider
+            initialVariableDefinitions={spec.variables}
+            enabledURLParams={enabledURLParams ?? true}
+          >
             <Box
               sx={combineSx(
                 {

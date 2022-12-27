@@ -78,6 +78,7 @@ function ViewDashboard() {
                   dashboardProject={data.metadata.project}
                 />
               }
+              enabledURLParams={false}
               onSave={dashboardUpdatePromise}
               initialVariableIsSticky={true}
               isReadonly={isReadonly}

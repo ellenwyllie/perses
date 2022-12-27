@@ -194,11 +194,14 @@ function createTemplateVariableSrvStore({ initialVariableDefinitions = [], query
 export function TemplateVariableProvider({
   children,
   initialVariableDefinitions = [],
+  enabledURLParams = true,
 }: {
   children: React.ReactNode;
   initialVariableDefinitions?: VariableDefinition[];
+  enabledURLParams?: boolean;
 }) {
-  const queryParams = useVariableQueryParams(initialVariableDefinitions);
+  const variableQueryParams = useVariableQueryParams(initialVariableDefinitions);
+  const queryParams = enabledURLParams ? variableQueryParams : undefined;
   const [store] = useState(createTemplateVariableSrvStore({ initialVariableDefinitions, queryParams }));
 
   return (
