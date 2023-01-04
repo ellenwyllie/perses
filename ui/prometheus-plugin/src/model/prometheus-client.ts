@@ -88,6 +88,8 @@ function fetchWithPost<T extends RequestParams<T>, TResponse>(apiURI: string, pa
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      'm3-limit-max-returned-datapoints': '400000', // TODO: need to pass limit http headers from datasource JSON config
+      'm3-limit-max-returned-series': '4000',
     },
     body: createSearchParams(params),
   };
