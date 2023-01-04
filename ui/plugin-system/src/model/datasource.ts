@@ -19,6 +19,8 @@ import { Plugin } from './plugin-base';
  */
 export interface DatasourcePlugin<Spec = UnknownSpec, Client = unknown> extends Plugin<Spec> {
   createClient: (spec: Spec, options: DatasourceClientOptions) => Client;
+  // TODO: add onCreate hook to inject headers at runtime
+  // - use case: auth tokens (see urql client example)
 }
 
 export interface DatasourceClientOptions {
