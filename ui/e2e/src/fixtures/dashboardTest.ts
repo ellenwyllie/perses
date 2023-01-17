@@ -31,6 +31,7 @@ export const test = testBase.extend<DashboardTestOptions & DashboardTestFixtures
   dashboardName: '',
   dashboardPage: async ({ page, projectName, dashboardName }, use) => {
     const persesApp = new AppHomePage(page);
+
     await persesApp.navigateToDashboard(projectName, dashboardName);
 
     const dashboardPage = new DashboardPage(page);
