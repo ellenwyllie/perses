@@ -15,6 +15,7 @@ import { test, expect } from '../fixtures/dashboardTest';
 
 test.use({
   dashboardName: 'LineChart',
+  mockNow: new Date('March 14 2020 10:00:00'),
 });
 
 test.describe('Dashboard: Line Chart', () => {

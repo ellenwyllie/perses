@@ -22,6 +22,8 @@ type DashboardTestOptions = {
 type DashboardTestFixtures = {
   dashboardName: string;
 
+  mockNow?: Date;
+
   /**
    * Set to true if the test set will modify the dashboard. When true, the
    * dashboard will be reset at the end of each test. Do not use in read-only
@@ -86,6 +88,29 @@ function generateDuplicateDashboardName(dashboardName: string, testTitle: string
   return dashboardName + '__' + testTitle.replace(/[^a-zA-Z0-9_.:-]+/g, '_');
 }
 
+// TODO: validate this and make sure it works with a time zone
+function getMockDateScript(mockNow: Date) {
+  // Update the Date accordingly in your test pages
+  // From https://github.com/microsoft/playwright/issues/6347#issuecomment-1085850728
+  const fakeNow = mockNow.valueOf();
+  return `{
+    // Extend Date constructor to default to fakeNow
+    Date = class extends Date {
+      constructor(...args) {
+        if (args.length === 0) {
+          super(${fakeNow});
+        } else {
+          super(...args);
+        }
+      }
+    }
+    // Override Date.now() to start from fakeNow
+    const __DateNowOffset = ${fakeNow} - Date.now();
+    const __DateNow = Date.now;
+    Date.now = () => __DateNow() + __DateNowOffset;
+  }`;
+}
+
 /**
  * Fixture for testing specific end-to-end testing dashboards.
  */
@@ -93,12 +118,17 @@ export const test = testBase.extend<DashboardTestOptions & DashboardTestFixtures
   projectName: 'testing',
   dashboardName: '',
   modifiesDashboard: false,
-  dashboardPage: async ({ page, projectName, dashboardName, modifiesDashboard }, use, testInfo) => {
+  mockNow: undefined,
+  dashboardPage: async ({ page, projectName, dashboardName, modifiesDashboard, mockNow }, use, testInfo) => {
     let testDashboardName: string = dashboardName;
 
     if (modifiesDashboard) {
       testDashboardName = generateDuplicateDashboardName(dashboardName, testInfo.title);
       await duplicateDashboard(projectName, dashboardName, testDashboardName);
+    }
+
+    if (mockNow) {
+      await page.addInitScript(getMockDateScript(mockNow));
     }
 
     const persesApp = new AppHomePage(page);
