@@ -11,36 +11,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package timeserie
+import { Locator } from '@playwright/test';
 
-import (
-	"github.com/perses/perses/schemas/common"
-)
-
-#legend: {
-	position: "Bottom" | "Right"
+/**
+ * Wait for all animations to complete on the specified element. Useful for
+ * things like waiting for a panel to finish animating in, so that everything is
+ * visible and clicks target the right location on the page.
+ */
+export async function waitForAnimations(container: Locator) {
+  // Wait for all animations to complete.
+  await container.evaluate((element) => Promise.all(element.getAnimations().map((animation) => animation.finished)));
 }
-
-#visual: {
-	line_width?:   number & >=0.25 & <=3
-	point_radius?: number & >=0 & <=6
-}
-
-#y_axis: {
-	show?:  bool
-	label?: string
-	unit?:  common.#unit
-	min?:   number
-	max?:   number
-}
-
-kind: "TimeSeriesChart"
-spec: close({
-	queries: [...#ts_query]
-	legend?:     #legend
-	y_axis?:     #y_axis
-	thresholds?: common.#thresholds
-	visual?:     #visual
-})
-
-#ts_query: _
