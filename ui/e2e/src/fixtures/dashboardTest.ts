@@ -20,9 +20,10 @@ type DashboardTestOptions = {
 };
 
 type DashboardTestFixtures = {
+  /**
+   * Name of the dashboard to load for the tests.
+   */
   dashboardName: string;
-
-  mockNow?: Date;
 
   /**
    * Set to true if the test set will modify the dashboard. When true, the
@@ -30,6 +31,13 @@ type DashboardTestFixtures = {
    * tests because it will unnecessarily slow them down.
    */
   modifiesDashboard: boolean;
+
+  /**
+   * Time in unix milliseconds to be returned when `Date.now` is called on the
+   * page. Useful for stabilizing tests that depend on the current time.
+   */
+  mockNow: number;
+
   dashboardPage: DashboardPage;
 };
 
@@ -89,23 +97,22 @@ function generateDuplicateDashboardName(dashboardName: string, testTitle: string
 }
 
 // TODO: validate this and make sure it works with a time zone
-function getMockDateScript(mockNow: Date) {
+function getMockDateScript(mockNow: number) {
   // Update the Date accordingly in your test pages
   // From https://github.com/microsoft/playwright/issues/6347#issuecomment-1085850728
-  const fakeNow = mockNow.valueOf();
   return `{
     // Extend Date constructor to default to fakeNow
     Date = class extends Date {
       constructor(...args) {
         if (args.length === 0) {
-          super(${fakeNow});
+          super(${mockNow});
         } else {
           super(...args);
         }
       }
     }
     // Override Date.now() to start from fakeNow
-    const __DateNowOffset = ${fakeNow} - Date.now();
+    const __DateNowOffset = ${mockNow} - Date.now();
     const __DateNow = Date.now;
     Date.now = () => __DateNow() + __DateNowOffset;
   }`;
@@ -118,7 +125,7 @@ export const test = testBase.extend<DashboardTestOptions & DashboardTestFixtures
   projectName: 'testing',
   dashboardName: '',
   modifiesDashboard: false,
-  mockNow: undefined,
+  mockNow: 0,
   dashboardPage: async ({ page, projectName, dashboardName, modifiesDashboard, mockNow }, use, testInfo) => {
     let testDashboardName: string = dashboardName;
 
@@ -128,6 +135,7 @@ export const test = testBase.extend<DashboardTestOptions & DashboardTestFixtures
     }
 
     if (mockNow) {
+      // Injects date mock into the page.
       await page.addInitScript(getMockDateScript(mockNow));
     }
 

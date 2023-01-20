@@ -29,6 +29,9 @@ export class Panel {
 
   readonly resizeHandle: Locator;
 
+  readonly chart: Locator;
+  readonly tooltip: Locator;
+
   constructor(container: Locator) {
     this.container = container;
 
@@ -43,6 +46,11 @@ export class Panel {
     // The classname selector here is not ideal, but it's all that is available
     // because this lives deeper in another library.
     this.resizeHandle = this.container.locator('..').locator('.react-resizable-handle');
+
+    this.chart = this.container.getByRole('figure');
+
+    // Need to look up to the page because portals are used for tooltips.
+    this.tooltip = this.container.page().getByRole('tooltip');
   }
 
   async startEditing() {

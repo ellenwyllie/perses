@@ -82,6 +82,7 @@ export const TimeSeriesTooltip = React.memo(function TimeSeriesTooltip({
         style={{
           transform: cursorTransform,
         }}
+        role="tooltip"
       >
         <TooltipContent focusedSeries={focusedSeries} wrapLabels={wrapLabels} />
       </Box>
