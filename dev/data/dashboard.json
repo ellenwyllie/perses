@@ -1733,6 +1733,32 @@
               }
             }
           }
+        },
+        "aggregateLine": {
+          "kind": "Panel",
+          "spec": {
+            "display": {
+              "name": "aggregateLine"
+            },
+            "plugin": {
+              "kind": "TimeSeriesChart",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "TimeSeriesQuery",
+                    "spec": {
+                      "plugin": {
+                        "kind": "PrometheusTimeSeriesQuery",
+                        "spec": {
+                          "query": "count(prometheus_http_requests_total) by (code)"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
         }
       },
       "layouts": [
@@ -1753,6 +1779,15 @@
                 "height": 6,
                 "content": {
                   "$ref": "#/spec/panels/simpleLine"
+                }
+              },
+              {
+                "x": 12,
+                "y": 0,
+                "width": 12,
+                "height": 6,
+                "content": {
+                  "$ref": "#/spec/panels/aggregateLine"
                 }
               }
             ]
