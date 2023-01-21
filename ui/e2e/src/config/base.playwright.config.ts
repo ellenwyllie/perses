@@ -46,6 +46,11 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
+    /**
+     * Disabled per playwright documentation, so we can reliably mock network
+     * requests.
+     * https://playwright.dev/docs/network#missing-network-events-and-service-workers
+     */
     serviceWorkers: 'block',
   },
 

@@ -42,11 +42,17 @@ function generateMockData(mockNow: number) {
 }
 
 test.describe('Dashboard: Line Chart', () => {
+  test.afterEach(async ({ page }) => {
+    // Make sure all routes get cleaned up after tests run.
+    await page.unroute('**/api/v1/query_range');
+  });
+
   test('has chart', async ({ dashboardPage, page, mockNow }) => {
-    const chartQueryPromise = page.waitForResponse('**/api/v1/query_range*');
-    await page.route(
-      '**/api/v1/query_range*',
-      (route) => {
+    await page.route('**/api/v1/query_range', (route) => {
+      const request = route.request();
+      const requestPostData = request.postDataJSON();
+
+      if (typeof requestPostData === 'object' && requestPostData['query'] === 'up') {
         const data = generateMockData(mockNow);
 
         route.fulfill({
@@ -56,25 +62,33 @@ test.describe('Dashboard: Line Chart', () => {
             data: data,
           }),
         });
-      },
-      {
-        times: 1,
+      } else {
+        route.continue();
       }
-    );
-    await chartQueryPromise;
-
-    const panel = dashboardPage.getPanel('simpleLine');
-    const panelBounds = await panel.getBounds();
-
-    // Mouse over the center of the panel to trigger the tooltip
-    await panel.container.hover({
-      position: {
-        x: panelBounds.width / 2,
-        y: panelBounds.height / 2,
-      },
     });
 
-    await expect(panel.tooltip).toBeVisible();
+    const panel = dashboardPage.getPanel('simpleLine');
+
+    const panelBounds = await panel.getBounds();
+    await panel.isLoaded();
+
+    // Configuring to try again because there's a brief period where the canvas
+    // exists, but isn't set up yet,and we cannot easily assert anything about
+    // the content of the canvas.
+    await expect(async () => {
+      // Mouse over the center of the panel to trigger the tooltip
+      await panel.container.hover({
+        position: {
+          x: panelBounds.width / 2,
+          y: panelBounds.height / 2,
+        },
+      });
+
+      await expect(panel.tooltip).toBeVisible({
+        // Fail fast because it will check again if it's not ready yet
+        timeout: 10,
+      });
+    }).toPass();
 
     // Do not check the time because trying to get the tooltip to consistently
     // hover over the exact same point every time is tricky and could lead to

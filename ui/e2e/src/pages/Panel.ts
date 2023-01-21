@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Locator } from '@playwright/test';
+import { Locator, expect } from '@playwright/test';
 
 type resizePanelOptions = {
   width: number;
@@ -30,6 +30,7 @@ export class Panel {
   readonly resizeHandle: Locator;
 
   readonly chart: Locator;
+  readonly loader: Locator;
   readonly tooltip: Locator;
 
   constructor(container: Locator) {
@@ -49,6 +50,8 @@ export class Panel {
 
     this.chart = this.container.getByRole('figure');
 
+    this.loader = this.container.getByLabel('Loading');
+
     // Need to look up to the page because portals are used for tooltips.
     this.tooltip = this.container.page().getByRole('tooltip');
   }
@@ -59,6 +62,11 @@ export class Panel {
 
   async delete() {
     await this.deleteButton.click();
+  }
+
+  async isLoaded() {
+    await this.chart.isVisible();
+    await expect(this.loader).toHaveCount(0);
   }
 
   /**
