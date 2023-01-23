@@ -18,11 +18,11 @@ test.use({
   mockNow: new Date('January 15, 2023 10:00:00').valueOf(),
 });
 
-function generateMockData(mockNow: number) {
+function generateMockSimpleData(mockNow: number) {
   const endTimeS = Math.floor(mockNow / 1000);
   const durationS = 6 * 60 * 60;
   const startTimeS = endTimeS - durationS;
-  const steps = 10000;
+  const steps = 1000;
   const stepSize = durationS / steps;
   return {
     result: [
@@ -47,13 +47,14 @@ test.describe('Dashboard: Line Chart', () => {
     await page.unroute('**/api/v1/query_range');
   });
 
-  test('has chart', async ({ dashboardPage, page, mockNow }) => {
+  test('has tooltip on hover', async ({ dashboardPage, page, mockNow }) => {
+    // Mock data response, so we can make assertions on consistent response data.
     await page.route('**/api/v1/query_range', (route) => {
       const request = route.request();
       const requestPostData = request.postDataJSON();
 
       if (typeof requestPostData === 'object' && requestPostData['query'] === 'up') {
-        const data = generateMockData(mockNow);
+        const data = generateMockSimpleData(mockNow);
 
         route.fulfill({
           status: 200,
