@@ -26,6 +26,7 @@ export * from './OptionsEditorLayout';
 export * from './StatChart';
 export * from './TimeSeriesTooltip';
 export * from './UnitSelector';
+export * from './TimeSeriesViz/VizApp';
 export * from './YAxisLabel';
 export * from './context/ChartsThemeProvider';
 export * from './context/TimeZoneProvider';

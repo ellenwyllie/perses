@@ -3,17 +3,19 @@ import { MutableDataFrame, FieldType } from '@grafana/data';
 import moment from 'moment';
 
 import { DataQueryRequest, DataQueryResponse } from '@grafana/data';
-import { MonitorsPlugin } from './monitors-plugin';
+// import { MonitorsPlugin } from './monitors-plugin';
+
+import { TimeSeriesGraph } from './TimeSeriesGraph';
+import { TimeRangeSelector } from './TimeRangeSelector';
+import { VizPanel } from './VizPanel';
 import {
   ObservabilityAppProvider,
   // Time
   useTimeRange,
   DatasourceQueryProvider,
   Datasource,
-  useTemplateVariableSrv,
+  // useTemplateVariableSrv,
 } from './';
-
-import { Panel, TimeSeriesGraph, TimeRangeSelector } from '@/framework/components';
 
 import { PrometheusDatasource as PromDatasource } from '@/framework/datasources';
 
@@ -63,7 +65,7 @@ function CurrentTimeRange() {
   );
 }
 
-export default function App() {
+export function VizApp() {
   return (
     <ObservabilityAppProvider
       datasources={datasources}
@@ -120,9 +122,9 @@ export default function App() {
             query: `sum by(job, mode) (rate(node_cpu_seconds_total{mode=~"$mode"}[1m])) / on(job) group_left sum by(job)(rate(node_cpu_seconds_total[1m]))`,
           }}
         >
-          <Panel title="CPU Usage for $mode">
+          <VizPanel title="CPU Usage for $mode">
             <TimeSeriesGraph />
-          </Panel>
+          </VizPanel>
         </DatasourceQueryProvider>
 
         <DatasourceQueryProvider
@@ -131,9 +133,9 @@ export default function App() {
             query: `up{instance=~"$instance"}`,
           }}
         >
-          <Panel title="UP for $instance">
+          <VizPanel title="UP for $instance">
             <TimeSeriesGraph />
-          </Panel>
+          </VizPanel>
         </DatasourceQueryProvider>
 
         <DatasourceQueryProvider

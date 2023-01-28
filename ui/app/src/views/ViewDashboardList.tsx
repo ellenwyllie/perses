@@ -22,7 +22,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DashboardResource } from '@perses-dev/core';
-import { ErrorAlert, ErrorBoundary } from '@perses-dev/components';
+import { ErrorAlert, ErrorBoundary, VizApp } from '@perses-dev/components';
 import ChevronDown from 'mdi-material-ui/ChevronDown';
 import FolderPound from 'mdi-material-ui/FolderPound';
 import { useDashboardList } from '../model/dashboard-client';
@@ -72,6 +72,7 @@ function RenderDashboardList() {
 function ViewDashboardList() {
   return (
     <Container maxWidth="md" sx={{ marginY: 2 }}>
+      <VizApp />
       <Typography variant="h2" mb={2}>
         Dashboards
       </Typography>

@@ -1,7 +1,26 @@
+import moment from 'relative-time-parser';
 import { useMemo, useEffect, useCallback, useState } from 'react';
 import constate from 'constate';
 import { TimeRange } from './types';
-import { convertDateTimeFormatToUnixMS, convertDurationToMilliseconds } from '@/framework/utils';
+import { DurationString, DateTimeFormat } from './types';
+// import { convertDateTimeFormatToUnixMS, convertDurationToMilliseconds } from './';
+
+// 1m = 60000
+// 5s = 1000 * 5
+export function convertDurationToMilliseconds(duration: DurationString) {
+  const start = moment()
+    .relativeTime('-' + duration)
+    .valueOf();
+  const end = Date.now().valueOf();
+  return end - start;
+}
+
+export function convertDateTimeFormatToUnixMS(val: DateTimeFormat) {
+  if (typeof val === 'string' && moment().isRelativeTimeFormat(val)) {
+    return moment().relativeTime(val).valueOf();
+  }
+  return moment(val).valueOf();
+}
 
 function useTimeRangeStore({ initialStartTime = '-1h', initialEndTime = 'now', initialRefreshInterval = 'off' }) {
   const [refreshId, setRefreshId] = useState(0);

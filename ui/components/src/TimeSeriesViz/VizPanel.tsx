@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { useDatasourceQueryContext, useTemplateVariableSrv } from './';
 
 // export function Panel({ title = 'Test', children: React.ReactNode }) {
-export function Panel({ title = 'Test', children }) {
+export function VizPanel({ title = 'Test', children }) {
   const r = useDatasourceQueryContext();
   const t = useTemplateVariableSrv();
 

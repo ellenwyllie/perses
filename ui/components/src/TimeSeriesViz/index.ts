@@ -14,6 +14,7 @@
 export * from './TimeSeriesViz';
 export * from './annotations';
 export * from './datasources';
+export * from './provider';
 export * from './templates';
 export * from './time';
 export * from './types';

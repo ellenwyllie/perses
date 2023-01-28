@@ -11,10 +11,10 @@ See example below.
 ```tsx
 import { TimeSeriesViz } from '@perses-dev/components';
 <DataQueryProvider type="PrometheusTimeSeriesQuery" query={{ query }}>
-  <Panel title="My Panel">
+  <VizPanel title="My VizPanel">
     <TimeSeriesViz legend={{ position: 'Right' }} />
     <Table />
-  </Panel>
+  </VizPanel>
 </DataQueryProvider>;
 ```
 
