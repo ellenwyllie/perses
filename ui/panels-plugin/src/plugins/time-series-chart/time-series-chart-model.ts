@@ -43,6 +43,7 @@ export type VisualOptions = {
   point_radius?: number;
   line_width?: number;
   area_shading?: boolean;
+  stacking?: 'Normal' | 'Percent';
 };
 
 export const DEFAULT_UNIT: UnitOptions = {
@@ -56,12 +57,13 @@ export const DEFAULT_LINE_WIDTH = 1.5;
 export const DEFAULT_POINT_RADIUS = 4;
 
 export const DEFAULT_AREA_SHADING = false;
-export const DEFAULT_AREA_OPACITY = 0.4;
+export const DEFAULT_AREA_OPACITY = 1;
 
 export const DEFAULT_VISUAL: VisualOptions = {
   line_width: DEFAULT_LINE_WIDTH,
   point_radius: DEFAULT_POINT_RADIUS,
   area_shading: DEFAULT_AREA_SHADING,
+  stacking: 'Normal',
 };
 
 export const VISUAL_CONFIG = {
@@ -81,6 +83,9 @@ export const VISUAL_CONFIG = {
   },
   area_shading: {
     label: 'Area Shading',
+  },
+  stacking: {
+    label: 'Stacking',
   },
 };
 

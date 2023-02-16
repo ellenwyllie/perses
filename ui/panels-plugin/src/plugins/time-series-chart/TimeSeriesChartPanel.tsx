@@ -26,6 +26,8 @@ import {
   YAxisLabel,
   ZoomEventData,
   useChartsTheme,
+  PercentUnitKind,
+  UnitOptions,
 } from '@perses-dev/components';
 import { useSuggestedStepMs } from '../../model/time';
 import { StepOptions, ThresholdColors, ThresholdColorsPalette } from '../../model/thresholds';
@@ -68,12 +70,16 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
       ? merge({}, DEFAULT_LEGEND, props.spec.legend)
       : undefined;
 
-  // TODO: add support for y_axis_alt.unit
-  const unit = props.spec.y_axis?.unit ?? DEFAULT_UNIT;
-
   // ensures there are fallbacks for unset properties since most
   // users should not need to customize visual display
   const visual = merge({}, DEFAULT_VISUAL, props.spec.visual);
+
+  // TODO: add support for y_axis_alt.unit
+  let unit = props.spec.y_axis?.unit ?? DEFAULT_UNIT;
+  if (visual.stacking === 'Percent') {
+    unit = { kind: 'Percent' };
+    console.log('UNIT (after) -> ', unit);
+  }
 
   // convert Perses dashboard format to be ECharts compatible
   const yAxis = {

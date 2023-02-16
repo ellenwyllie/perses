@@ -25,6 +25,7 @@ import (
 	line_width?:   number & >=0.25 & <=3
 	point_radius?: number & >=0 & <=6
 	area_shading?: bool
+	stacking?: "Normal" | "Percent"
 }
 
 #y_axis: {

@@ -149,6 +149,7 @@ export function getLineSeries(
     type: 'line',
     name: formattedName,
     data: data,
+    stack: visual.stacking === 'Normal' ? 'All' : undefined,
     color: getRandomColor(name), // use full series name as generated color seed (must match param in legendItems)
     sampling: 'lttb',
     progressiveThreshold: OPTIMIZED_MODE_SERIES_LIMIT, // https://echarts.apache.org/en/option.html#series-lines.progressiveThreshold
