@@ -31,20 +31,41 @@ const createClient: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient>
     throw new Error('No URL specified for Prometheus client. You can use direct_url in the spec to configure it.');
   }
 
+  console.log('createClient called... ');
+  const { headers } = onCreate();
+
   // Could think about this becoming a class, although it definitely doesn't have to be
-  return {
+  const client = {
     options: {
       datasourceUrl,
+      headers,
     },
-    instantQuery: (params) => instantQuery(params, { datasourceUrl }),
-    rangeQuery: (params) => rangeQuery(params, { datasourceUrl }),
-    labelNames: (params) => labelNames(params, { datasourceUrl }),
-    labelValues: (params) => labelValues(params, { datasourceUrl }),
+    instantQuery: (params) => instantQuery(params, { datasourceUrl, headers }),
+    rangeQuery: (params) => rangeQuery(params, { datasourceUrl, headers }),
+    labelNames: (params) => labelNames(params, { datasourceUrl, headers }),
+    labelValues: (params) => labelValues(params, { datasourceUrl, headers }),
   };
+  console.log('createClient -> client: ', client);
+  return client;
+};
+
+/**
+ * On create hook to customize HTTP headers
+ */
+const onCreate: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient>['onCreate'] = () => {
+  console.log('datasource -> onCreate called... ');
+  const options = {
+    headers: {
+      'm3-limit-max-returned-datapoints': '400000', // TODO: need to pass limit http headers from datasource JSON config
+      'm3-limit-max-returned-series': '4000',
+    },
+  };
+  return options;
 };
 
 export const PrometheusDatasource: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient> = {
   createClient,
+  onCreate,
   OptionsEditorComponent: () => null,
   createInitialOptions: () => ({ direct_url: '' }),
 };

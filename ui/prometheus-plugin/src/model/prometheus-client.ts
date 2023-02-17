@@ -37,6 +37,7 @@ export interface PrometheusClient {
 
 export interface QueryOptions {
   datasourceUrl: string;
+  headers: Record<string, string>;
 }
 
 /**
@@ -81,15 +82,19 @@ function fetchWithGet<T extends RequestParams<T>, TResponse>(apiURI: string, par
 }
 
 function fetchWithPost<T extends RequestParams<T>, TResponse>(apiURI: string, params: T, queryOptions: QueryOptions) {
-  const { datasourceUrl } = queryOptions;
+  console.log('fetchWithPost -> queryOptions: ', queryOptions);
+  const { datasourceUrl, headers } = queryOptions;
+  console.log('fetchWithPost -> datasourceUrl: ', datasourceUrl);
+  console.log('fetchWithPost -> headers: ', headers);
 
   const url = `${datasourceUrl}${apiURI}`;
   const init = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'm3-limit-max-returned-datapoints': '400000', // TODO: need to pass limit http headers from datasource JSON config
-      'm3-limit-max-returned-series': '4000',
+      ...headers,
+      // 'm3-limit-max-returned-datapoints': '400000', // TODO: need to pass limit http headers from datasource JSON config
+      // 'm3-limit-max-returned-series': '4000',
     },
     body: createSearchParams(params),
   };
