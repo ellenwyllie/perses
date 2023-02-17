@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -91,7 +91,11 @@ describe('Panel', () => {
   });
 
   it('does not show description in edit mode', () => {
-    renderPanel(undefined, { onEditPanelClick: jest.fn(), onDeletePanelClick: jest.fn() });
+    renderPanel(undefined, {
+      onEditPanelClick: jest.fn(),
+      onDeletePanelClick: jest.fn(),
+      onDuplicatePanelClick: jest.fn(),
+    });
 
     const panel = getPanel();
     userEvent.hover(panel);
@@ -102,7 +106,8 @@ describe('Panel', () => {
   it('can trigger panel actions in edit mode', () => {
     const onEditPanelClick = jest.fn();
     const onDeletePanelClick = jest.fn();
-    renderPanel(undefined, { onEditPanelClick, onDeletePanelClick });
+    const onDuplicatePanelClick = jest.fn();
+    renderPanel(undefined, { onEditPanelClick, onDeletePanelClick, onDuplicatePanelClick });
 
     const panel = getPanel();
     userEvent.hover(panel);
@@ -113,7 +118,11 @@ describe('Panel', () => {
     const deleteButton = screen.getByRole('button', { name: /delete/i });
     userEvent.click(deleteButton);
 
+    const duplicateButton = screen.getByRole('button', { name: /duplicate/i });
+    userEvent.click(duplicateButton);
+
     expect(onEditPanelClick).toHaveBeenCalledTimes(1);
     expect(onDeletePanelClick).toHaveBeenCalledTimes(1);
+    expect(onDuplicatePanelClick).toHaveBeenCalledTimes(1);
   });
 });

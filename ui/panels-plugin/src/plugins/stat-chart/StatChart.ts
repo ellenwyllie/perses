@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,7 +13,8 @@
 
 import { PanelPlugin } from '@perses-dev/plugin-system';
 import { createInitialStatChartOptions, StatChartOptions } from './stat-chart-model';
-import { StatChartOptionsEditor } from './StatChartOptionsEditor';
+import { StatChartQueryEditor } from './StatChartQueryEditor';
+import { StatChartOptionsEditorSettings } from './StatChartOptionsEditorSettings';
 import { StatChartPanel } from './StatChartPanel';
 
 /**
@@ -21,6 +22,12 @@ import { StatChartPanel } from './StatChartPanel';
  */
 export const StatChart: PanelPlugin<StatChartOptions> = {
   PanelComponent: StatChartPanel,
-  OptionsEditorComponent: StatChartOptionsEditor,
+  PanelQueryEditorComponent: StatChartQueryEditor,
+  panelOptionsEditorComponents: [
+    {
+      label: 'Settings',
+      content: StatChartOptionsEditorSettings,
+    },
+  ],
   createInitialOptions: createInitialStatChartOptions,
 };

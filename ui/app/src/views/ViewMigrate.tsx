@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -30,7 +30,7 @@ import { ChangeEvent, useState } from 'react';
 import { JSONEditor } from '@perses-dev/components';
 import { useNavigate } from 'react-router-dom';
 import { useMigrate } from '../model/migrate-client';
-import { useCreateDashboard } from '../model/dashboard-client';
+import { useCreateDashboardMutation } from '../model/dashboard-client';
 
 interface GrafanaLightDashboard {
   // The only part that is interesting us is the list of the input that can exists in the Grafana dashboard definition.
@@ -48,7 +48,7 @@ function ViewMigrate() {
   const isLaptopSize = useMediaQuery(useTheme().breakpoints.up('sm'));
   const navigate = useNavigate();
   const migrateMutation = useMigrate();
-  const dashboardMutation = useCreateDashboard((data) => {
+  const dashboardMutation = useCreateDashboardMutation((data) => {
     navigate(`/projects/${data.metadata.project}/dashboards/${data.metadata.name}`);
   });
   const fileUploadOnChange = async (event: ChangeEvent<HTMLInputElement>) => {

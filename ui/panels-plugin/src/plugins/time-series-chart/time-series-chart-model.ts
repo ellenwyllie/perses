@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,6 +13,7 @@
 
 import { UnitOptions, LegendOptions } from '@perses-dev/components';
 import { TimeSeriesQueryDefinition } from '@perses-dev/core';
+import { OptionsEditorProps } from '@perses-dev/plugin-system';
 import { ThresholdOptions } from '../../model/thresholds';
 
 /**
@@ -26,6 +27,8 @@ export interface TimeSeriesChartOptions {
   thresholds?: ThresholdOptions;
   visual?: VisualOptions;
 }
+
+export type TimeSeriesChartOptionsEditorProps = OptionsEditorProps<TimeSeriesChartOptions>;
 
 export interface YAxisOptions {
   show?: boolean;

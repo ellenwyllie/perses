@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,6 +12,7 @@
 // limitations under the License.
 
 export * from './DateTimeRangePicker';
+export * from './Dialog';
 export * from './Drawer';
 export * from './EChart';
 export * from './ErrorAlert';
@@ -24,6 +25,7 @@ export * from './LegendOptionsEditor';
 export * from './LineChart';
 export * from './OptionsEditorLayout';
 export * from './StatChart';
+export * from './TimeSeriesTooltip';
 export * from './UnitSelector';
 export * from './YAxisLabel';
 export * from './context/ChartsThemeProvider';

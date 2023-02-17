@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,8 +24,13 @@ import {
   OptionsEditorColumn,
   OptionsEditorControl,
 } from '@perses-dev/components';
-import { GaugeChartOptionsEditorProps } from './GaugeChartOptionsEditor';
-import { GaugeChartOptions, DEFAULT_UNIT, DEFAULT_MAX_PERCENT, DEFAULT_MAX_PERCENT_DECIMAL } from './gauge-chart-model';
+import {
+  GaugeChartOptions,
+  DEFAULT_UNIT,
+  DEFAULT_MAX_PERCENT,
+  DEFAULT_MAX_PERCENT_DECIMAL,
+  GaugeChartOptionsEditorProps,
+} from './gauge-chart-model';
 
 export function GaugeChartOptionsEditorSettings(props: GaugeChartOptionsEditorProps) {
   const { onChange, value } = props;

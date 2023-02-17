@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ interface LegendProps {
 }
 
 export function Legend({ width, height, options, data }: LegendProps) {
-  if (options.position === 'right') {
+  if (options.position === 'Right') {
     return (
       <Box
         sx={{
@@ -42,5 +42,16 @@ export function Legend({ width, height, options, data }: LegendProps) {
     );
   }
 
-  return <CompactLegend items={data} height={height} />;
+  return (
+    <Box
+      sx={{
+        width: width,
+        height: height,
+        position: 'absolute',
+        bottom: 0,
+      }}
+    >
+      <CompactLegend items={data} height={height} />;
+    </Box>
+  );
 }

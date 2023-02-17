@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,6 +13,7 @@
 
 export const HTTPMethodPOST = 'POST';
 export const HTTPMethodPUT = 'PUT';
+export const HTTPMethodDELETE = 'DELETE';
 export const HTTPHeader: Record<string, string> = {
   'Content-Type': 'application/json',
   Accept: 'application/json',

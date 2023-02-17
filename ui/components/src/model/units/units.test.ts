@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -30,6 +30,36 @@ describe('formatValue', () => {
       value: 155900,
       unit: { kind: 'Decimal', decimal_places: 4 },
       expected: '155,900.0000',
+    },
+    {
+      value: 1000,
+      unit: { kind: 'Decimal', decimal_places: 2, abbreviate: true },
+      expected: '1K',
+    },
+    {
+      value: 1590.878787,
+      unit: { kind: 'Decimal', decimal_places: 3, abbreviate: true },
+      expected: '1.591K',
+    },
+    {
+      value: 0.123456789,
+      unit: { kind: 'Decimal', decimal_places: 2, abbreviate: true },
+      expected: '0.12',
+    },
+    {
+      value: 0.123456789,
+      unit: { kind: 'Decimal', decimal_places: 4, abbreviate: false },
+      expected: '0.1235',
+    },
+    {
+      value: -0.123456789,
+      unit: { kind: 'Decimal', decimal_places: 3, abbreviate: true },
+      expected: '-0.123',
+    },
+    {
+      value: 0,
+      unit: { kind: 'Decimal', decimal_places: 2, abbreviate: true },
+      expected: '0',
     },
     {
       value: 10,

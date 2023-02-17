@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -19,10 +19,9 @@ import {
   getDurationStringSeconds,
   getPrometheusTimeRange,
   getRangeStep,
-  replaceTemplateVariables,
   DEFAULT_PROM,
-  formatSeriesName,
 } from '../../model';
+import { getUniqueKeyForPrometheusResult, replaceTemplateVariables, formatSeriesName } from '../../utils';
 import { PrometheusTimeSeriesQuerySpec } from './time-series-query-model';
 
 export const getTimeSeriesData: TimeSeriesQueryPlugin<PrometheusTimeSeriesQuerySpec>['getTimeSeriesData'] = async (
@@ -76,12 +75,11 @@ export const getTimeSeriesData: TimeSeriesQueryPlugin<PrometheusTimeSeriesQueryS
     series: result.map((value) => {
       const { metric, values } = value;
 
-      // Name the series after the metric labels or if no metric, just use the
-      // overall query
-      let name = Object.entries(metric)
-        .map(([labelName, labelValue]) => `${labelName}="${labelValue}"`)
-        .join(', ');
-      if (name === '') name = query;
+      // Name the series after the metric labels or if no metric, use the query
+      let name = getUniqueKeyForPrometheusResult(metric);
+      if (name === '') {
+        name = query;
+      }
 
       // query editor allows you to define an optional series_name_format
       // property to customize legend and tooltip display

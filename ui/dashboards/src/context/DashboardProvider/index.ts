@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -18,6 +18,7 @@ export type {
   PanelGroupDefinition,
   PanelGroupItemId,
   PanelGroupItemLayoutId as PanelGroupLayoutId,
+  PanelGroupItemLayout,
 } from './panel-group-slice';
 export type { PanelGroupEditor, PanelGroupEditorValues } from './panel-group-editor-slice';
 export type { DeletePanelDialogState } from './delete-panel-slice';

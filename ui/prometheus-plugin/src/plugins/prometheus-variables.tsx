@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,15 +12,8 @@
 // limitations under the License.
 import { VariablePlugin, VariableOption, OptionsEditorProps } from '@perses-dev/plugin-system';
 import { Stack, TextField } from '@mui/material';
-import {
-  replaceTemplateVariables,
-  parseTemplateVariables,
-  PrometheusClient,
-  DEFAULT_PROM,
-  getPrometheusTimeRange,
-  MatrixData,
-  VectorData,
-} from '../model';
+import { PrometheusClient, DEFAULT_PROM, getPrometheusTimeRange, MatrixData, VectorData } from '../model';
+import { replaceTemplateVariables, parseTemplateVariables } from '../utils';
 import {
   PrometheusLabelNamesVariableOptions,
   PrometheusLabelValuesVariableOptions,

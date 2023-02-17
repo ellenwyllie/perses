@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -29,7 +29,9 @@ function Router() {
       <Suspense>
         <Routes>
           <Route path="/migrate" element={<ViewMigrate />} />
+          <Route path="/projects" element={<ViewDashboardList />} />
           <Route path="/projects/:projectName/dashboards/:dashboardName" element={<ViewDashboard />} />
+          <Route path="/projects/:projectName/dashboards/:dashboardName/:action" element={<ViewDashboard />} />
           <Route path="/projects/:projectName" element={<ViewProject />} />
           <Route path="/" element={<ViewDashboardList />} />
         </Routes>

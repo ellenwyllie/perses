@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,7 +12,7 @@
 // limitations under the License.
 
 import { TimeSeriesQueryPlugin } from '@perses-dev/plugin-system';
-import { parseTemplateVariables } from '../../model';
+import { parseTemplateVariables } from '../../utils';
 import { getTimeSeriesData } from './get-time-series-data';
 import { PrometheusTimeSeriesQueryEditor } from './PrometheusTimeSeriesQueryEditor';
 import { PrometheusTimeSeriesQuerySpec } from './time-series-query-model';

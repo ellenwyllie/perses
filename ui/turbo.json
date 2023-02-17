@@ -22,6 +22,16 @@
     "test": {
       "dependsOn": [],
       "outputs": []
+    },
+    "e2e:local": {
+      "dependsOn": [],
+      "outputs": [],
+      "cache": false
+    },
+    "e2e:ci": {
+      "dependsOn": [],
+      "outputs": [],
+      "cache": false
     }
   }
 }

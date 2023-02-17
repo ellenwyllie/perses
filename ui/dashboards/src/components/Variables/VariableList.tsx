@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,15 +11,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useState } from 'react';
-import { Button, Stack, Box, AppBar, useScrollTrigger, IconButton, SxProps, Theme } from '@mui/material';
-import PencilIcon from 'mdi-material-ui/Pencil';
+import { useState } from 'react';
+import { AppBar, Box, IconButton, SxProps, Theme, useScrollTrigger } from '@mui/material';
 import PinOutline from 'mdi-material-ui/PinOutline';
 import PinOffOutline from 'mdi-material-ui/PinOffOutline';
-import { Drawer } from '@perses-dev/components';
-import { useTemplateVariableDefinitions, useEditMode, useTemplateVariableActions } from '../../context';
+import { VariableDefinition } from '@perses-dev/core';
+import { useTemplateVariableDefinitions } from '../../context';
 import { TemplateVariable } from './Variable';
-import { VariableEditor } from './VariableEditor';
+
+const VARIABLE_INPUT_MIN_WIDTH = '120px';
+const VARIABLE_INPUT_MAX_WIDTH = '240px';
 
 interface TemplateVariableListProps {
   initialVariableIsSticky?: boolean;
@@ -27,52 +28,36 @@ interface TemplateVariableListProps {
 }
 
 export function TemplateVariableList(props: TemplateVariableListProps) {
-  const [isEditing, setIsEditing] = useState(false);
   const [isPin, setIsPin] = useState(props.initialVariableIsSticky);
-  const variableDefinitions = useTemplateVariableDefinitions();
-  const { isEditMode } = useEditMode();
-  const { setVariableDefinitions } = useTemplateVariableActions();
+  const variableDefinitions: VariableDefinition[] = useTemplateVariableDefinitions();
+
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true });
   const isSticky = scrollTrigger && props.initialVariableIsSticky && isPin;
 
-  const onClose = () => {
-    setIsEditing(false);
-  };
-
   return (
-    <Box>
-      <Drawer isOpen={isEditing} onClose={onClose} PaperProps={{ sx: { width: '50%' } }}>
-        <VariableEditor
-          variableDefinitions={variableDefinitions}
-          onCancel={onClose}
-          onChange={(v) => {
-            setVariableDefinitions(v);
-            setIsEditing(false);
-          }}
-        />
-      </Drawer>
-      {isEditMode && (
-        <Box pb={2}>
-          <Button onClick={() => setIsEditing(true)} startIcon={<PencilIcon />}>
-            Edit Variables
-          </Button>
-        </Box>
-      )}
-
+    // marginBottom={-1} counteracts the marginBottom={1} on every variable input.
+    // The margin on the inputs is for spacing between inputs, but is not meant to add space to bottom of the container.
+    <Box marginBottom={-1} data-testid="variable-list">
       <AppBar
-        color={'inherit'}
+        color="inherit"
         position={isSticky ? 'fixed' : 'static'}
         elevation={isSticky ? 4 : 0}
-        sx={{ ...props.sx }}
+        sx={{ backgroundColor: 'inherit', ...props.sx }}
       >
-        <Box display={'flex'} justifyContent="space-between" my={isSticky ? 2 : 0} ml={isSticky ? 2 : 0}>
-          <Stack direction="row" spacing={1}>
-            {variableDefinitions.map((v) => (
-              <Box key={v.spec.name} display={v.spec.display?.hidden ? 'none' : undefined}>
-                <TemplateVariable key={v.spec.name} name={v.spec.name} />
-              </Box>
-            ))}
-          </Stack>
+        <Box display="flex" flexWrap="wrap" alignItems="start" my={isSticky ? 2 : 0} ml={isSticky ? 2 : 0}>
+          {variableDefinitions.map((v) => (
+            <Box
+              key={v.spec.name}
+              display={v.spec.display?.hidden ? 'none' : undefined}
+              minWidth={VARIABLE_INPUT_MIN_WIDTH}
+              maxWidth={VARIABLE_INPUT_MAX_WIDTH}
+              marginBottom={1}
+              marginRight={1}
+              data-testid="template-variable"
+            >
+              <TemplateVariable key={v.spec.name} name={v.spec.name} />
+            </Box>
+          ))}
           {props.initialVariableIsSticky && (
             <IconButton onClick={() => setIsPin(!isPin)}>{isPin ? <PinOutline /> : <PinOffOutline />}</IconButton>
           )}

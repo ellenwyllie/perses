@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -34,7 +34,6 @@ use([
   CanvasRenderer,
 ]);
 
-const PANEL_PADDING = 32;
 const MIN_VALUE_SIZE = 12;
 const MAX_VALUE_SIZE = 36;
 
@@ -113,30 +112,32 @@ export function StatChart(props: StatChartProps) {
   const charactersAdjust = formattedValue.length;
   const valueSize = isLargePanel === true ? MAX_VALUE_SIZE : Math.min(width, height) / charactersAdjust;
 
+  const containerPadding = `${chartsTheme.container.padding.default}px`;
+
   return (
-    <Box>
+    <Box sx={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}>
       <Typography
         variant="h3"
         sx={(theme) => ({
           color: theme.palette.text.primary,
           fontSize: `clamp(${MIN_VALUE_SIZE}px, ${valueSize}px, ${MAX_VALUE_SIZE}px)`,
+          padding: `${containerPadding} ${containerPadding} 0 ${containerPadding}`,
         })}
       >
         {formattedValue}
       </Typography>
       {sparkline !== undefined && (
-        <EChart
-          sx={{
-            width: width + PANEL_PADDING, // allows sparkline to extend to edge of panel
-            height: height,
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-          }}
-          option={option}
-          theme={chartsTheme.echartsTheme}
-          renderer="svg"
-        />
+        <Box sx={{ flex: 1 }}>
+          <EChart
+            sx={{
+              width: '100%',
+              height: '100%',
+            }}
+            option={option}
+            theme={chartsTheme.echartsTheme}
+            renderer="svg"
+          />
+        </Box>
       )}
     </Box>
   );

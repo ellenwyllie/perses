@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -173,7 +173,11 @@ export default function Header(): JSX.Element {
             </IconButton>
           </Tooltip>
           <Tooltip title="Theme">
-            <Switch checked={isDarkModeEnabled} onChange={handleDarkModeChange} />
+            <Switch
+              checked={isDarkModeEnabled}
+              onChange={handleDarkModeChange}
+              inputProps={{ 'aria-label': 'Theme' }}
+            />
           </Tooltip>
         </Stack>
       </Toolbar>

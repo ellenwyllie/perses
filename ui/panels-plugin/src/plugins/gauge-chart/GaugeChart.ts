@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,7 +13,8 @@
 
 import { PanelPlugin } from '@perses-dev/plugin-system';
 import { createInitialGaugeChartOptions, GaugeChartOptions } from './gauge-chart-model';
-import { GaugeChartOptionsEditor } from './GaugeChartOptionsEditor';
+import { GaugeChartQueryEditor } from './GaugeChartQueryEditor';
+import { GaugeChartOptionsEditorSettings } from './GaugeChartOptionsEditorSettings';
 import { GaugeChartPanel } from './GaugeChartPanel';
 
 /**
@@ -21,6 +22,12 @@ import { GaugeChartPanel } from './GaugeChartPanel';
  */
 export const GaugeChart: PanelPlugin<GaugeChartOptions> = {
   PanelComponent: GaugeChartPanel,
-  OptionsEditorComponent: GaugeChartOptionsEditor,
+  PanelQueryEditorComponent: GaugeChartQueryEditor,
+  panelOptionsEditorComponents: [
+    {
+      label: 'Settings',
+      content: GaugeChartOptionsEditorSettings,
+    },
+  ],
   createInitialOptions: createInitialGaugeChartOptions,
 };

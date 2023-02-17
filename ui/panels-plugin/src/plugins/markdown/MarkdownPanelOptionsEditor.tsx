@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -18,7 +18,7 @@ import { MarkdownPanelOptions } from './markdown-panel-model';
 
 export type MarkdownPanelOptionsEditorProps = OptionsEditorProps<MarkdownPanelOptions>;
 
-const MARKDOWN_GUIDE_URL = 'https://www.markdownguide.org/cheat-sheet';
+const MARKDOWN_GUIDE_URL = 'https://commonmark.org/help/';
 const TEXT_INPUT_NUM_ROWS = 20;
 
 export function MarkdownPanelOptionsEditor(props: MarkdownPanelOptionsEditorProps) {

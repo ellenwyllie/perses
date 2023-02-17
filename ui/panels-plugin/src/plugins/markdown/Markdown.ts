@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -21,6 +21,11 @@ import { MarkdownPanelOptionsEditor } from './MarkdownPanelOptionsEditor';
  */
 export const Markdown: PanelPlugin<MarkdownPanelOptions> = {
   PanelComponent: MarkdownPanel,
-  OptionsEditorComponent: MarkdownPanelOptionsEditor,
+  panelOptionsEditorComponents: [
+    {
+      label: 'Markdown',
+      content: MarkdownPanelOptionsEditor,
+    },
+  ],
   createInitialOptions: createInitialMarkdownPanelOptions,
 };

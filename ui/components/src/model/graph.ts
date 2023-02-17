@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,8 +11,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { MouseEventHandler } from 'react';
 import { LineSeriesOption } from 'echarts/charts';
+import { LegendItem } from './legend';
 
 // adjust display when there are many time series to help with performance
 export const OPTIMIZED_MODE_SERIES_LIMIT = 1000;
@@ -39,25 +39,4 @@ export type EChartsDataFormat = {
   legendItems?: LegendItem[];
   xAxisMax?: number | string;
   rangeMs?: number;
-};
-
-/**
- * Supported legend options
- */
-export interface LegendOptions {
-  position: 'bottom' | 'right';
-}
-
-export interface LegendItem {
-  id: string;
-  label: string;
-  isSelected: boolean;
-  color: string;
-  onClick: MouseEventHandler<HTMLLIElement>;
-}
-
-export const DEFAULT_LEGEND_POSITION = 'bottom';
-
-export const DEFAULT_LEGEND: LegendOptions = {
-  position: DEFAULT_LEGEND_POSITION,
 };

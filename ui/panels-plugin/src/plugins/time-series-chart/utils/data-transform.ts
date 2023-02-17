@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -33,6 +33,8 @@ export const EMPTY_GRAPH_DATA = {
   xAxis: [],
   legendItems: [],
 };
+
+export const MIN_STEP_INTERVAL_MS = 10;
 
 /**
  * Given a list of running queries, calculates a common time scale for use on
@@ -72,7 +74,8 @@ export function getCommonTimeScale(queryResults: RunningQueriesState): TimeScale
   if (steps.length === 1) {
     stepMs = steps[0] as number;
   } else {
-    stepMs = gcd(...steps);
+    const calculatedStepMs = gcd(...steps);
+    stepMs = calculatedStepMs < MIN_STEP_INTERVAL_MS ? MIN_STEP_INTERVAL_MS : calculatedStepMs;
   }
 
   const startMs = timeRange.start.valueOf();

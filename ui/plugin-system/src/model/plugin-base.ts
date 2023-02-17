@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -20,7 +20,7 @@ export interface Plugin<Spec> {
   /**
    * React component for editing the plugin's options in the UI.
    */
-  OptionsEditorComponent: React.ComponentType<OptionsEditorProps<Spec>>;
+  OptionsEditorComponent?: React.ComponentType<OptionsEditorProps<Spec>>;
 
   /**
    * Callback for creating the initial options for the plugin.

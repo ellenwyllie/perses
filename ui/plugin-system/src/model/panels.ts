@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,13 +12,26 @@
 // limitations under the License.
 
 import { UnknownSpec } from '@perses-dev/core';
-import { Plugin } from './plugin-base';
+import React from 'react';
+import { OptionsEditorTab } from '../components';
+import { OptionsEditorProps, Plugin } from './plugin-base';
 
+export type PanelOptionsEditorComponent<T> = Pick<OptionsEditorTab, 'label'> & {
+  content: React.ComponentType<OptionsEditorProps<T>>;
+};
 /**
  * Plugin the provides custom visualizations inside of a Panel.
  */
 export interface PanelPlugin<Spec = UnknownSpec> extends Plugin<Spec> {
   PanelComponent: React.ComponentType<PanelProps<Spec>>;
+  /**
+   * React component for the content of "Query" tab
+   */
+  PanelQueryEditorComponent?: React.ComponentType<OptionsEditorProps<Spec>>;
+  /**
+   * React components for custom tabs
+   */
+  panelOptionsEditorComponents?: Array<PanelOptionsEditorComponent<Spec>>;
 }
 
 /**

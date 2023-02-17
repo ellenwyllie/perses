@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -17,6 +17,8 @@ import InformationOutlineIcon from 'mdi-material-ui/InformationOutline';
 import PencilIcon from 'mdi-material-ui/PencilOutline';
 import DeleteIcon from 'mdi-material-ui/DeleteOutline';
 import DragIcon from 'mdi-material-ui/DragVertical';
+import ContentCopy from 'mdi-material-ui/ContentCopy';
+import { ARIA_LABEL_TEXT, TOOLTIP_TEXT } from '../../constants';
 
 type OmittedProps = 'children' | 'action' | 'title' | 'disableTypography';
 
@@ -26,6 +28,7 @@ export interface PanelHeaderProps extends Omit<CardHeaderProps, OmittedProps> {
   description?: string;
   editHandlers?: {
     onEditPanelClick: () => void;
+    onDuplicatePanelClick: () => void;
     onDeletePanelClick: () => void;
   };
   isHovered: boolean;
@@ -40,18 +43,42 @@ export function PanelHeader({ id, title, description, editHandlers, isHovered, s
     // If there are edit handlers, always just show the edit buttons
     actions = (
       <>
-        <InfoTooltip description="Edit">
-          <HeaderIconButton aria-label={`edit panel ${title}`} size="small" onClick={editHandlers.onEditPanelClick}>
+        <InfoTooltip description={TOOLTIP_TEXT.editPanel}>
+          <HeaderIconButton
+            aria-label={ARIA_LABEL_TEXT.editPanel(title)}
+            size="small"
+            onClick={editHandlers.onEditPanelClick}
+          >
             <PencilIcon fontSize="inherit" />
           </HeaderIconButton>
         </InfoTooltip>
-        <InfoTooltip description="Delete">
-          <HeaderIconButton aria-label={`delete panel ${title}`} size="small" onClick={editHandlers.onDeletePanelClick}>
+        <InfoTooltip description={TOOLTIP_TEXT.duplicatePanel}>
+          <HeaderIconButton
+            aria-label={ARIA_LABEL_TEXT.duplicatePanel(title)}
+            size="small"
+            onClick={editHandlers.onDuplicatePanelClick}
+          >
+            <ContentCopy
+              fontSize="inherit"
+              sx={{
+                // Shrink this icon a little bit to look more consistent
+                // with the other icons in the header.
+                transform: 'scale(0.925)',
+              }}
+            />
+          </HeaderIconButton>
+        </InfoTooltip>
+        <InfoTooltip description={TOOLTIP_TEXT.deletePanel}>
+          <HeaderIconButton
+            aria-label={ARIA_LABEL_TEXT.deletePanel(title)}
+            size="small"
+            onClick={editHandlers.onDeletePanelClick}
+          >
             <DeleteIcon fontSize="inherit" />
           </HeaderIconButton>
         </InfoTooltip>
-        <InfoTooltip description="Drag and drop panel to reorganize">
-          <HeaderIconButton aria-label={`move panel ${title}`} size="small">
+        <InfoTooltip description={TOOLTIP_TEXT.movePanel}>
+          <HeaderIconButton aria-label={ARIA_LABEL_TEXT.movePanel(title)} size="small">
             <DragIcon className="drag-handle" sx={{ cursor: 'grab' }} fontSize="inherit" />
           </HeaderIconButton>
         </InfoTooltip>
@@ -61,7 +88,7 @@ export function PanelHeader({ id, title, description, editHandlers, isHovered, s
     // If there aren't edit handlers and we have a description, show a button with a tooltip for the panel description
     actions = (
       <InfoTooltip id={descriptionTooltipId} description={description} enterDelay={100}>
-        <HeaderIconButton aria-label="Panel Description" size="small">
+        <HeaderIconButton aria-label="panel description" size="small">
           <InformationOutlineIcon
             aria-describedby="info-tooltip"
             aria-hidden={false}

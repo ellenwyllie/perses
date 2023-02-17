@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import {
   Alert,
   styled,
 } from '@mui/material';
+import AddIcon from 'mdi-material-ui/Plus';
 import { VariableDefinition } from '@perses-dev/core';
 import { useImmer } from 'use-immer';
 import PencilIcon from 'mdi-material-ui/Pencil';
@@ -195,13 +196,13 @@ export function VariableEditor(props: {
                   </Alert>
                 ))}
               <TableContainer>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 650 }} aria-label="table of variables">
                   <TableHead>
                     <TableRow>
                       <TableCell>Visibility</TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Type</TableCell>
-                      <TableCell align="right">Action</TableCell>
+                      <TableCell align="right" />
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -243,8 +244,8 @@ export function VariableEditor(props: {
                 </Table>
               </TableContainer>
               <Box display="flex">
-                <Button onClick={addVariable} variant="contained">
-                  Add New
+                <Button variant="contained" startIcon={<AddIcon />} sx={{ marginLeft: 'auto' }} onClick={addVariable}>
+                  Add Variable
                 </Button>
               </Box>
             </Stack>

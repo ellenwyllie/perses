@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 
 import { TimeSeriesQueryDefinition } from '@perses-dev/core';
 import { UnitOptions } from '@perses-dev/components';
-import { CalculationType } from '@perses-dev/plugin-system';
+import { CalculationType, OptionsEditorProps } from '@perses-dev/plugin-system';
 import { ThresholdOptions } from '../../model/thresholds';
 
 export const DEFAULT_UNIT: UnitOptions = { kind: 'PercentDecimal', decimal_places: 1 };
@@ -21,6 +21,8 @@ export const DEFAULT_UNIT: UnitOptions = { kind: 'PercentDecimal', decimal_place
 export const DEFAULT_MAX_PERCENT = 100;
 
 export const DEFAULT_MAX_PERCENT_DECIMAL = 1;
+
+export type GaugeChartOptionsEditorProps = OptionsEditorProps<GaugeChartOptions>;
 
 /**
  * The Options object type supported by the GaugeChart panel plugin.

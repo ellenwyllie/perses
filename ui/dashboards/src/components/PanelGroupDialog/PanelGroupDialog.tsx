@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -61,14 +61,16 @@ export function PanelGroupDialog() {
           >
             <CloseIcon />
           </IconButton>
-          <DialogContent sx={{ width: '500px' }}>
+          <DialogContent dividers sx={{ width: '500px' }}>
             <PanelGroupEditorForm initialValues={panelGroupEditor.initialValues} onSubmit={handleSubmit} />
           </DialogContent>
           <DialogActions>
             <Button variant="contained" type="submit" form={panelGroupEditorFormId}>
               {panelGroupEditor.mode === 'Edit' ? 'Apply' : 'Add'}
             </Button>
-            <Button onClick={panelGroupEditor.close}>Cancel</Button>
+            <Button variant="outlined" color="secondary" onClick={panelGroupEditor.close}>
+              Cancel
+            </Button>
           </DialogActions>
         </>
       )}

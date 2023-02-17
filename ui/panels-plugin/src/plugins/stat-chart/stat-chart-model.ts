@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,13 +13,15 @@
 
 import { TimeSeriesQueryDefinition } from '@perses-dev/core';
 import { UnitOptions } from '@perses-dev/components';
-import { CalculationType } from '@perses-dev/plugin-system';
+import { CalculationType, OptionsEditorProps } from '@perses-dev/plugin-system';
 import { ThresholdOptions } from '../../model/thresholds';
 
 export interface SparklineOptions {
   color?: string;
   width?: number;
 }
+
+export type StatChartOptionsEditorProps = OptionsEditorProps<StatChartOptions>;
 
 export interface StatChartOptions {
   name: string;

@@ -1,4 +1,4 @@
-// Copyright 2022 The Perses Authors
+// Copyright 2023 The Perses Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -21,16 +21,20 @@ export function useDashboard() {
     panelGroups,
     panelGroupOrder,
     defaultTimeRange,
-    metadata,
     setDashboard: setDashboardResource,
-  } = useDashboardStore(({ panels, panelGroups, panelGroupOrder, defaultTimeRange, setDashboard, metadata }) => ({
-    panels,
-    panelGroups,
-    panelGroupOrder,
-    defaultTimeRange,
-    setDashboard,
     metadata,
-  }));
+    display,
+  } = useDashboardStore(
+    ({ panels, panelGroups, panelGroupOrder, defaultTimeRange, setDashboard, metadata, display }) => ({
+      panels,
+      panelGroups,
+      panelGroupOrder,
+      defaultTimeRange,
+      setDashboard,
+      metadata,
+      display,
+    })
+  );
   const { setVariableDefinitions } = useTemplateVariableActions();
   const variables = useTemplateVariableDefinitions();
   const layouts = convertPanelGroupsToLayouts(panelGroups, panelGroupOrder);
@@ -39,6 +43,7 @@ export function useDashboard() {
     kind: 'Dashboard',
     metadata,
     spec: {
+      display,
       panels,
       layouts,
       variables,
