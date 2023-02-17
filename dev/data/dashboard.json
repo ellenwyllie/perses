@@ -1911,6 +1911,53 @@
               }
             }
           }
+        },
+        "LineVisualOptions": {
+          "kind": "Panel",
+          "spec": {
+            "display": {
+              "name": "Line Visual Options",
+              "description": "Time series chart with custom visual options"
+            },
+            "plugin": {
+              "kind": "TimeSeriesChart",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "TimeSeriesQuery",
+                    "spec": {
+                      "plugin": {
+                        "kind": "PrometheusTimeSeriesQuery",
+                        "spec": {
+                          "datasource": {
+                            "kind": "PrometheusDatasource",
+                            "name": "PrometheusDemo"
+                          },
+                          "query": "node_load15{instance=\"demo.do.prometheus.io:9100\",job=\"node\"}"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "visual": {
+                  "area_opacity": 0.3,
+                  "point_radius": 2,
+                  "line_width": 3
+                },
+                "y_axis": {
+                  "show": true,
+                  "label": "CPU Load",
+                  "unit": {
+                    "kind": "Decimal",
+                    "decimal_places": 1,
+                    "abbreviate": false
+                  },
+                  "min": 0,
+                  "max": 4
+                }
+              }
+            }
+          }
         }
       },
       "layouts": [
@@ -1931,6 +1978,15 @@
                 "height": 7,
                 "content": {
                   "$ref": "#/spec/panels/SingleLine"
+                }
+              },
+              {
+                "x": 9,
+                "y": 0,
+                "width": 9,
+                "height": 7,
+                "content": {
+                  "$ref": "#/spec/panels/LineVisualOptions"
                 }
               }
             ]
