@@ -22,6 +22,7 @@ export interface PrometheusDatasourceSpec {
  * Creates a PrometheusClient for a specific datasource spec.
  */
 const createClient: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient>['createClient'] = (spec, options) => {
+  // const { direct_url, onCreate } = spec;
   const { direct_url } = spec;
   const { proxyUrl } = options;
 
@@ -31,20 +32,43 @@ const createClient: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient>
     throw new Error('No URL specified for Prometheus client. You can use direct_url in the spec to configure it.');
   }
 
+  // TODO: fix passing onCreate from datasource plugin.spec
+  // const customOptions = onCreate();
+  // const headers = customOptions.headers ?? { 'not-working': 'fake-value' };
+  if (onCreateExample === undefined) {
+    throw new Error('No onCreate function passed for request customization');
+  }
+  const { headers } = onCreateExample();
+
   // Could think about this becoming a class, although it definitely doesn't have to be
-  return {
+  const client: PrometheusClient = {
     options: {
       datasourceUrl,
+      headers,
     },
-    instantQuery: (params) => instantQuery(params, { datasourceUrl }),
-    rangeQuery: (params) => rangeQuery(params, { datasourceUrl }),
-    labelNames: (params) => labelNames(params, { datasourceUrl }),
-    labelValues: (params) => labelValues(params, { datasourceUrl }),
+    instantQuery: (params) => instantQuery(params, { datasourceUrl, headers }),
+    rangeQuery: (params) => rangeQuery(params, { datasourceUrl, headers }),
+    labelNames: (params) => labelNames(params, { datasourceUrl, headers }),
+    labelValues: (params) => labelValues(params, { datasourceUrl, headers }),
+  };
+  return client;
+};
+
+/**
+ * Function to customize request options such as adding HTTP headers
+ */
+export const onCreateExample: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient>['onCreate'] = () => {
+  return {
+    headers: {
+      'm3-limit-max-returned-datapoints': '400000',
+      'm3-limit-max-returned-series': '4000',
+    },
   };
 };
 
 export const PrometheusDatasource: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient> = {
   createClient,
+  onCreate: onCreateExample,
   OptionsEditorComponent: () => null,
   createInitialOptions: () => ({ direct_url: '' }),
 };

@@ -25,6 +25,7 @@ import {
 
 interface PrometheusClientOptions {
   datasourceUrl: string;
+  headers?: Record<string, string>;
 }
 
 export interface PrometheusClient {
@@ -37,6 +38,7 @@ export interface PrometheusClient {
 
 export interface QueryOptions {
   datasourceUrl: string;
+  headers?: Record<string, string>;
 }
 
 /**
@@ -81,13 +83,13 @@ function fetchWithGet<T extends RequestParams<T>, TResponse>(apiURI: string, par
 }
 
 function fetchWithPost<T extends RequestParams<T>, TResponse>(apiURI: string, params: T, queryOptions: QueryOptions) {
-  const { datasourceUrl } = queryOptions;
-
+  const { datasourceUrl, headers } = queryOptions;
   const url = `${datasourceUrl}${apiURI}`;
   const init = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      ...headers,
     },
     body: createSearchParams(params),
   };
