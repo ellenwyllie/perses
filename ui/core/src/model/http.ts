@@ -11,12 +11,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { RequestHeaders } from '@perses-dev/core';
-
-export const HTTPMethodPOST = 'POST';
-export const HTTPMethodPUT = 'PUT';
-export const HTTPMethodDELETE = 'DELETE';
-export const HTTPHeader: RequestHeaders = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-};
+export type RequestHeaders = Record<string, string>;

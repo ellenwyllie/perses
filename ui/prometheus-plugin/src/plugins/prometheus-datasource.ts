@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { RequestHeaders } from '@perses-dev/core';
 import { DatasourcePlugin } from '@perses-dev/plugin-system';
 import { instantQuery, rangeQuery, labelNames, labelValues, PrometheusClient } from '../model';
 
 export interface PrometheusDatasourceSpec {
   direct_url?: string;
-  headers?: Record<string, string>;
+  headers?: RequestHeaders;
 }
 
 /**

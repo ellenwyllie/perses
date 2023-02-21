@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { fetchJson } from '@perses-dev/core';
+import { fetchJson, RequestHeaders } from '@perses-dev/core';
 import {
   InstantQueryRequestParameters,
   InstantQueryResponse,
@@ -25,7 +25,7 @@ import {
 
 interface PrometheusClientOptions {
   datasourceUrl: string;
-  headers?: Record<string, string>;
+  headers?: RequestHeaders;
 }
 
 export interface PrometheusClient {
@@ -38,7 +38,7 @@ export interface PrometheusClient {
 
 export interface QueryOptions {
   datasourceUrl: string;
-  headers?: Record<string, string>;
+  headers?: RequestHeaders;
 }
 
 /**

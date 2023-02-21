@@ -23,5 +23,4 @@ export interface DatasourcePlugin<Spec = UnknownSpec, Client = unknown> extends 
 
 export interface DatasourceClientOptions {
   proxyUrl?: string;
-  headers?: Record<string, string>;
 }
