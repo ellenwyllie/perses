@@ -19,7 +19,6 @@ import { Plugin } from './plugin-base';
  */
 export interface DatasourcePlugin<Spec = UnknownSpec, Client = unknown> extends Plugin<Spec> {
   createClient: (spec: Spec, options: DatasourceClientOptions) => Client;
-  onCreate?: () => DatasourceClientOptions;
 }
 
 export interface DatasourceClientOptions {
