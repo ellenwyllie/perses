@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   DashboardResource,
   DashboardSpec,
@@ -19,6 +19,7 @@ import {
   DatasourceSelector,
   DatasourceSpec,
   GlobalDatasource,
+  RequestHeaders,
   useEvent,
 } from '@perses-dev/core';
 import {
@@ -26,6 +27,7 @@ import {
   DatasourceStore,
   usePluginRegistry,
   DatasourceMetadata,
+  ActiveDatasourceClient,
 } from '@perses-dev/plugin-system';
 
 export interface DatasourceStoreProviderProps {
@@ -48,6 +50,8 @@ export interface DatasourceApi {
   listDatasources: (project: string, pluginKind?: string) => Promise<Datasource[]>;
 
   listGlobalDatasources: (pluginKind?: string) => Promise<GlobalDatasource[]>;
+
+  // setDatasourceHeaders: (value: RequestHeaders) => void;
 }
 
 /**
@@ -56,6 +60,11 @@ export interface DatasourceApi {
 export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
   const { dashboardResource, datasourceApi, children } = props;
   const { project } = dashboardResource.metadata;
+
+  const [activeDatasourceClient, setActiveDatasourceClient] = useState<ActiveDatasourceClient>();
+  // const [activeDatasourceClient, setActiveDatasourceClient] = useState<ActiveDatasourceClient>();
+  // const [currentHeaders, setCurrentHeaders] = useState<RequestHeaders>();
+  console.log('DatasourceStoreProvider -> activeDatasourceClient: ', activeDatasourceClient);
 
   const { getPlugin, listPluginMetadata } = usePluginRegistry();
 
@@ -96,10 +105,35 @@ export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
     async function getClient<Client>(selector: DatasourceSelector): Promise<Client> {
       const { kind } = selector;
       const [{ spec, proxyUrl }, plugin] = await Promise.all([findDatasource(selector), getPlugin('Datasource', kind)]);
-      return plugin.createClient(spec.plugin.spec, { proxyUrl }) as Client;
+      const client = plugin.createClient(spec.plugin.spec, { proxyUrl }) as Client;
+      setActiveDatasourceClient({ selector, client });
+      return client;
     },
     [findDatasource, getPlugin]
   );
+
+  // Override default HTTP Headers
+  const setDatasourceHeaders = useCallback((value: RequestHeaders) => {
+    console.log('(DatasourceStoreProvider) setDatasourceHeaders -> value: ', value);
+    // setHeaders({ start: value.pastDuration, end: undefined });
+  }, []);
+  // const setDatasourceHeaders = useCallback(
+  //   async (selector: DatasourceSelector): Promise<DatasourceSpec> => {
+  //     const { spec } = await findDatasource(selector);
+  //     return spec;
+  //   },
+  //   [findDatasource]
+  // );
+  // const setTimeRange: TimeRange['setTimeRange'] = useCallback(
+  //   (value: TimeRangeValue) => {
+  //     if (isRelativeTimeRange(value)) {
+  //       setQuery({ start: value.pastDuration, end: undefined });
+  //     } else {
+  //       setQuery(value);
+  //     }
+  //   },
+  //   [setQuery]
+  // );
 
   const listDatasourceMetadata = useEvent(async (datasourcePluginKind: string): Promise<DatasourceMetadata[]> => {
     const [pluginMetadata, datasources, globalDatasources] = await Promise.all([
@@ -145,9 +179,10 @@ export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
     () => ({
       getDatasource,
       getDatasourceClient,
+      setDatasourceHeaders,
       listDatasourceMetadata,
     }),
-    [getDatasource, getDatasourceClient, listDatasourceMetadata]
+    [getDatasource, getDatasourceClient, listDatasourceMetadata, setDatasourceHeaders]
   );
 
   return <DatasourceStoreContext.Provider value={ctxValue}>{children}</DatasourceStoreContext.Provider>;

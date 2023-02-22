@@ -24,6 +24,7 @@ export interface PrometheusDatasourceSpec {
  * Creates a PrometheusClient for a specific datasource spec.
  */
 const createClient: DatasourcePlugin<PrometheusDatasourceSpec, PrometheusClient>['createClient'] = (spec, options) => {
+  console.log(`createClient -> (${options.proxyUrl}) spec: ${JSON.stringify(spec)}`);
   const { direct_url, headers } = spec;
   const { proxyUrl } = options;
 

@@ -23,6 +23,7 @@ import {
   DiscardChangesConfirmationDialog,
   DashboardToolbar,
   DeletePanelDialog,
+  TruncateResultsBanner,
 } from '../../components';
 import { useDashboard, useDiscardChangesConfirmationDialog, useEditMode } from '../../context';
 
@@ -87,6 +88,7 @@ export const DashboardApp = (props: DashboardAppProps) => {
         flexDirection: 'column',
       }}
     >
+      <TruncateResultsBanner />
       <DashboardToolbar
         dashboardName={dashboardResource.metadata.name}
         dashboardTitleComponent={dashboardTitleComponent}

@@ -14,7 +14,7 @@
 import { Select, SelectProps, MenuItem } from '@mui/material';
 import { DatasourceSelector } from '@perses-dev/core';
 import { useMemo } from 'react';
-import { useListDatasources } from '../runtime';
+import { useListDatasources, useDatasourceHeaders } from '../runtime';
 
 // Props on MUI Select that we don't want people to pass because we're either redefining them or providing them in
 // this component
@@ -31,8 +31,16 @@ export interface DatasourceSelectProps extends Omit<SelectProps<string>, Omitted
  * the input deal with a `DatasourceSelector`.
  */
 export function DatasourceSelect(props: DatasourceSelectProps) {
+  console.log('DatasourceSelect -> props: ', props);
   const { datasourcePluginKind, value, onChange, ...others } = props;
+  console.log('DatasourceSelect -> datasourcePluginKind: ', datasourcePluginKind);
+  console.log('DatasourceSelect -> value: ', value);
   const { data, isLoading } = useListDatasources(datasourcePluginKind);
+
+  // TODO: add field to override default spec.header values
+  useDatasourceHeaders(value.name);
+  // const { setDatasourceHeaders } = useDatasourceHeaders(datasourcePluginKind);
+  // console.log('DatasourceSelect -> setDatasourceHeaders: ', setDatasourceHeaders);
 
   // Convert the datasource list into menu items with name/value strings that the Select input can work with
   const menuItems = useMemo(() => {

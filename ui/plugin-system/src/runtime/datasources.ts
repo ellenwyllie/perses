@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DatasourceSelector, DatasourceSpec } from '@perses-dev/core';
+import { DatasourceSelector, DatasourceSpec, RequestHeaders } from '@perses-dev/core';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, useContext } from 'react';
 
@@ -28,10 +28,20 @@ export interface DatasourceStore {
    * Gets a list of datasource metadata for a plugin kind.
    */
   listDatasourceMetadata(datasourcePluginKind: string): Promise<DatasourceMetadata[]>;
+
+  /**
+   * Override custom HTTP Headers
+   */
+  setDatasourceHeaders: (value: RequestHeaders) => void;
 }
 
 export interface DatasourceMetadata {
   name: string;
+  selector: DatasourceSelector;
+}
+
+export interface ActiveDatasourceClient {
+  client: unknown;
   selector: DatasourceSelector;
 }
 
@@ -61,3 +71,27 @@ export function useDatasourceClient<Client>(selector: DatasourceSelector) {
   const store = useDatasourceStore();
   return useQuery<Client>(['getDatasourceClient', selector], () => store.getDatasourceClient<Client>(selector));
 }
+
+/**
+ * Add ability to get and set custom headers on a given Datasource
+ */
+export function useDatasourceHeaders(datasourceName?: string) {
+  console.log('useDatasourceHeaders -> datasourceName: ', datasourceName);
+  // // const { getDatasource, getDatasourceClient, setDatasourceHeaders } = useDatasourceStore();
+  // // // const { getDatasource, setDatasourceHeaders } = useDatasourceStore();
+  // const { getDatasourceHeaders, setDatasourceHeaders } = useDatasourceStore();
+  const { setDatasourceHeaders } = useDatasourceStore();
+
+  const tempHeaders = { 'm3-limit-max-returned-datapoints': '299', 'm3-limit-max-returned-series': '1' };
+  setDatasourceHeaders(tempHeaders);
+
+  return { headers: tempHeaders, setDatasourceHeaders };
+
+  // const client: PrometheusClient = await getDatasourceClient(datasourceName);
+  // console.log('useDatasourceHeaders -> datasourceName: ', datasourceName);
+  // return useQuery(['listDatasourceMetadata', datasourcePluginKind], () => listDatasourceMetadata(datasourcePluginKind));
+}
+// export function useTimeRange(): TimeRange {
+//   const { timeRange, absoluteTimeRange, setTimeRange, refresh, refreshKey } = useTimeRangeContext();
+//   return { timeRange, absoluteTimeRange, setTimeRange, refresh, refreshKey };
+// }
