@@ -12,7 +12,7 @@
 // limitations under the License.
 
 import { useState } from 'react';
-import { Alert, AlertTitle, FormGroup, FormControlLabel, Switch } from '@mui/material';
+import { Alert, AlertTitle, Box, FormGroup, FormControlLabel, Switch, switchClasses } from '@mui/material';
 // import { useDatasourceHeaders, useDatasourceStore } from '@perses-dev/plugin-system';
 import { useDatasourceHeaders } from '@perses-dev/plugin-system';
 
@@ -30,6 +30,7 @@ const DEFAULT_QUERY_LIMITS_HEADERS = {
   'm3-limit-max-returned-series': '1',
 };
 
+// TODO: TruncateResultsBanner will move to internal repo and show above DashboardsToolbar
 // export function TruncateResultsBanner({ showBanner }: TruncateResultsBannerProps) {
 export function TruncateResultsBanner() {
   const [limitsEnabled, setLimitsEnabled] = useState<boolean>(true);
@@ -39,28 +40,30 @@ export function TruncateResultsBanner() {
   const { setDatasourceHeaders } = useDatasourceHeaders();
 
   return (
-    <Alert
-      variant="filled"
-      severity="info"
-      action={
-        <FormGroup>
-          {/* <FormControlLabel control={<Switch defaultChecked />} label="Truncate expensive query results" /> */}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={limitsEnabled}
-                onChange={(e) => {
-                  setLimitsEnabled(e.target.checked);
-                  setDatasourceHeaders(e.target.checked ? DEFAULT_QUERY_LIMITS_HEADERS : {});
-                }}
-              />
-            }
-            label="Truncate expensive query results"
-          />
-        </FormGroup>
-      }
-    >
-      <AlertTitle>Queries were truncated on this dashboard.</AlertTitle>
-    </Alert>
+    <Box margin={2}>
+      <Alert
+        variant="filled"
+        severity="info"
+        action={
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={limitsEnabled}
+                  color="default"
+                  onChange={(e) => {
+                    setLimitsEnabled(e.target.checked);
+                    setDatasourceHeaders(e.target.checked ? DEFAULT_QUERY_LIMITS_HEADERS : {});
+                  }}
+                />
+              }
+              label="Truncate expensive query results"
+            />
+          </FormGroup>
+        }
+      >
+        <AlertTitle sx={{ paddingTop: 0.25 }}>Queries were truncated on this dashboard.</AlertTitle>
+      </Alert>
+    </Box>
   );
 }
