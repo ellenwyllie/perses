@@ -62,9 +62,10 @@ export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
   const { project } = dashboardResource.metadata;
 
   const [activeDatasourceClient, setActiveDatasourceClient] = useState<ActiveDatasourceClient>();
-  // const [activeDatasourceClient, setActiveDatasourceClient] = useState<ActiveDatasourceClient>();
-  // const [currentHeaders, setCurrentHeaders] = useState<RequestHeaders>();
   console.log('DatasourceStoreProvider -> activeDatasourceClient: ', activeDatasourceClient);
+
+  const [currentHeaders, setCurrentHeaders] = useState<RequestHeaders>();
+  console.log('DatasourceStoreProvider -> currentHeaders: ', currentHeaders);
 
   const { getPlugin, listPluginMetadata } = usePluginRegistry();
 
@@ -115,25 +116,8 @@ export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
   // Override default HTTP Headers
   const setDatasourceHeaders = useCallback((value: RequestHeaders) => {
     console.log('(DatasourceStoreProvider) setDatasourceHeaders -> value: ', value);
-    // setHeaders({ start: value.pastDuration, end: undefined });
+    setCurrentHeaders(value);
   }, []);
-  // const setDatasourceHeaders = useCallback(
-  //   async (selector: DatasourceSelector): Promise<DatasourceSpec> => {
-  //     const { spec } = await findDatasource(selector);
-  //     return spec;
-  //   },
-  //   [findDatasource]
-  // );
-  // const setTimeRange: TimeRange['setTimeRange'] = useCallback(
-  //   (value: TimeRangeValue) => {
-  //     if (isRelativeTimeRange(value)) {
-  //       setQuery({ start: value.pastDuration, end: undefined });
-  //     } else {
-  //       setQuery(value);
-  //     }
-  //   },
-  //   [setQuery]
-  // );
 
   const listDatasourceMetadata = useEvent(async (datasourcePluginKind: string): Promise<DatasourceMetadata[]> => {
     const [pluginMetadata, datasources, globalDatasources] = await Promise.all([

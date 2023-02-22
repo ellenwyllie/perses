@@ -31,16 +31,12 @@ export interface DatasourceSelectProps extends Omit<SelectProps<string>, Omitted
  * the input deal with a `DatasourceSelector`.
  */
 export function DatasourceSelect(props: DatasourceSelectProps) {
-  console.log('DatasourceSelect -> props: ', props);
   const { datasourcePluginKind, value, onChange, ...others } = props;
-  console.log('DatasourceSelect -> datasourcePluginKind: ', datasourcePluginKind);
-  console.log('DatasourceSelect -> value: ', value);
   const { data, isLoading } = useListDatasources(datasourcePluginKind);
 
   // TODO: add field to override default spec.header values
   useDatasourceHeaders(value.name);
   // const { setDatasourceHeaders } = useDatasourceHeaders(datasourcePluginKind);
-  // console.log('DatasourceSelect -> setDatasourceHeaders: ', setDatasourceHeaders);
 
   // Convert the datasource list into menu items with name/value strings that the Select input can work with
   const menuItems = useMemo(() => {

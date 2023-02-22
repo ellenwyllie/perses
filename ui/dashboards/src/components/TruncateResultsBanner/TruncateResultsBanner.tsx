@@ -13,19 +13,23 @@
 
 import { useState } from 'react';
 import { Alert, AlertTitle, FormGroup, FormControlLabel, Switch } from '@mui/material';
-import { useDatasourceHeaders, useDatasourceStore } from '@perses-dev/plugin-system';
+// import { useDatasourceHeaders, useDatasourceStore } from '@perses-dev/plugin-system';
+import { useDatasourceHeaders } from '@perses-dev/plugin-system';
 
-interface TruncateResultsBannerProps {
-  showBanner?: boolean;
-}
+// interface TruncateResultsBannerProps {
+//   showBanner?: boolean;
+// }
 
-export function TruncateResultsBanner({ showBanner }: TruncateResultsBannerProps) {
-  console.log('TruncateResultsBanner -> showBanner: ', showBanner);
+const DEFAULT_QUERY_LIMITS_HEADERS = {
+  'm3-limit-max-returned-datapoints': '400000',
+  'm3-limit-max-returned-series': '4000',
+};
 
+// export function TruncateResultsBanner({ showBanner }: TruncateResultsBannerProps) {
+export function TruncateResultsBanner() {
   const [limitsEnabled, setLimitsEnabled] = useState<boolean>(false);
 
-  const datasourceStore = useDatasourceStore();
-  console.log('TruncateResultsBanner -> datasourceStore: ', datasourceStore);
+  // const datasourceStore = useDatasourceStore();
 
   const { setDatasourceHeaders } = useDatasourceHeaders();
 
@@ -42,8 +46,7 @@ export function TruncateResultsBanner({ showBanner }: TruncateResultsBannerProps
                 checked={limitsEnabled}
                 onChange={(e) => {
                   setLimitsEnabled(e.target.checked);
-                  console.log('TruncateResultsBanner -> setDatasourceHeaders: ', setDatasourceHeaders);
-                  setDatasourceHeaders({});
+                  setDatasourceHeaders(e.target.checked ? DEFAULT_QUERY_LIMITS_HEADERS : {});
                 }}
               />
             }

@@ -77,21 +77,6 @@ export function useDatasourceClient<Client>(selector: DatasourceSelector) {
  */
 export function useDatasourceHeaders(datasourceName?: string) {
   console.log('useDatasourceHeaders -> datasourceName: ', datasourceName);
-  // // const { getDatasource, getDatasourceClient, setDatasourceHeaders } = useDatasourceStore();
-  // // // const { getDatasource, setDatasourceHeaders } = useDatasourceStore();
-  // const { getDatasourceHeaders, setDatasourceHeaders } = useDatasourceStore();
   const { setDatasourceHeaders } = useDatasourceStore();
-
-  const tempHeaders = { 'm3-limit-max-returned-datapoints': '299', 'm3-limit-max-returned-series': '1' };
-  setDatasourceHeaders(tempHeaders);
-
-  return { headers: tempHeaders, setDatasourceHeaders };
-
-  // const client: PrometheusClient = await getDatasourceClient(datasourceName);
-  // console.log('useDatasourceHeaders -> datasourceName: ', datasourceName);
-  // return useQuery(['listDatasourceMetadata', datasourcePluginKind], () => listDatasourceMetadata(datasourcePluginKind));
+  return { setDatasourceHeaders };
 }
-// export function useTimeRange(): TimeRange {
-//   const { timeRange, absoluteTimeRange, setTimeRange, refresh, refreshKey } = useTimeRangeContext();
-//   return { timeRange, absoluteTimeRange, setTimeRange, refresh, refreshKey };
-// }
