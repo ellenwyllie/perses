@@ -20,14 +20,19 @@ import { useDatasourceHeaders } from '@perses-dev/plugin-system';
 //   showBanner?: boolean;
 // }
 
+// const DEFAULT_QUERY_LIMITS_HEADERS = {
+//   'm3-limit-max-returned-datapoints': '400000',
+//   'm3-limit-max-returned-series': '4000',
+// };
+
 const DEFAULT_QUERY_LIMITS_HEADERS = {
-  'm3-limit-max-returned-datapoints': '400000',
-  'm3-limit-max-returned-series': '4000',
+  'm3-limit-max-returned-datapoints': '150',
+  'm3-limit-max-returned-series': '1',
 };
 
 // export function TruncateResultsBanner({ showBanner }: TruncateResultsBannerProps) {
 export function TruncateResultsBanner() {
-  const [limitsEnabled, setLimitsEnabled] = useState<boolean>(false);
+  const [limitsEnabled, setLimitsEnabled] = useState<boolean>(true);
 
   // const datasourceStore = useDatasourceStore();
 

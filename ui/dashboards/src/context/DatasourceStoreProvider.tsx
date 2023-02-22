@@ -64,6 +64,7 @@ export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
   const [activeDatasourceClient, setActiveDatasourceClient] = useState<ActiveDatasourceClient>();
   console.log('DatasourceStoreProvider -> activeDatasourceClient: ', activeDatasourceClient);
 
+  // TODO: how to get currentHeaders into PrometheusDatasource plugin createClient function???
   const [currentHeaders, setCurrentHeaders] = useState<RequestHeaders>();
   console.log('DatasourceStoreProvider -> currentHeaders: ', currentHeaders);
 
@@ -106,11 +107,19 @@ export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
     async function getClient<Client>(selector: DatasourceSelector): Promise<Client> {
       const { kind } = selector;
       const [{ spec, proxyUrl }, plugin] = await Promise.all([findDatasource(selector), getPlugin('Datasource', kind)]);
-      const client = plugin.createClient(spec.plugin.spec, { proxyUrl }) as Client;
+
+      console.log('getDatasourceClient -> currentHeaders: ', currentHeaders);
+      const datasourceSpec = { ...spec.plugin.spec };
+      if (currentHeaders !== undefined) {
+        datasourceSpec.headers = currentHeaders;
+      }
+      console.log('getDatasourceClient -> (updated) datasourceSpec: ', datasourceSpec);
+
+      const client = plugin.createClient(datasourceSpec, { proxyUrl }) as Client;
       setActiveDatasourceClient({ selector, client });
       return client;
     },
-    [findDatasource, getPlugin]
+    [findDatasource, getPlugin, currentHeaders]
   );
 
   // Override default HTTP Headers
