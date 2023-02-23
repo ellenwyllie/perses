@@ -11,45 +11,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { FunctionComponent } from 'react';
-import { DocsContainer as BaseContainer, DocsContainerProps as BaseDocsContainerProps } from '@storybook/addon-docs';
-import { ReactFramework } from '@storybook/react';
+import { DocsContainer as BaseContainer, DocsContainerProps } from '@storybook/addon-docs';
 import { useDarkMode } from 'storybook-dark-mode';
 import { themes } from '@storybook/theming';
 
-export interface DocsContainerProps extends BaseDocsContainerProps<ReactFramework> {
-  children: React.ReactNode;
-}
-// Force the container to know what framework it is working with. The types
-// for this look better in the main branch in storybook, so hopefully we can
-// do something more elegant here in the future.
-const BaseContainerReact = BaseContainer as FunctionComponent<DocsContainerProps>;
-
-// Solution for having dark mode on docs page
+// Solution for having dark mode on docs page combo of the following:
 // https://github.com/hipstersmoothie/storybook-dark-mode/issues/127#issuecomment-1070524402
+// https://github.com/hipstersmoothie/storybook-dark-mode/issues/205
 export const DocsContainer = ({ children, context }: DocsContainerProps) => {
-  const dark = useDarkMode();
+  const isDarkMode = useDarkMode();
 
   return (
-    <BaseContainerReact
-      context={{
-        ...context,
-        storyById: (id) => {
-          const storyContext = context.storyById(id);
-          return {
-            ...storyContext,
-            parameters: {
-              ...storyContext?.parameters,
-              docs: {
-                ...storyContext?.parameters?.docs,
-                theme: dark ? themes.dark : themes.light,
-              },
-            },
-          };
-        },
-      }}
-    >
+    <BaseContainer context={context} theme={isDarkMode ? themes.dark : themes.light}>
       {children}
-    </BaseContainerReact>
+    </BaseContainer>
   );
 };
