@@ -6,7 +6,14 @@ This package is used to generate documentation for Perses UI components using [S
 
 ## Getting started
 
+### Running storybook
+
 - Run storybook in development mode: `npm run storybook`
+
+### Building storybook
+
+- Build only: `npm run storybook:build`
+- Build & serve static assets from build: `npm run storybook:serve`
 
 ## Creating stories
 
