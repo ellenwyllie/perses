@@ -65,6 +65,8 @@ jobs:
         run: cd ./ui && npm install
       - name: Build the storybook
         run: cd ./ui && npm run storybook:build
+      - name: Generate storybook visual diffs with happo
+        run: cd ./ui/storybook && npm run happo run
       - name: store storybook build
         uses: actions/upload-artifact@v3
         with:
