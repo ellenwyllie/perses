@@ -13,6 +13,7 @@
 
 import { DocsContainer } from './DocsContainer';
 import { WithThemes, WithBackground } from './decorators';
+import 'happo-plugin-storybook/register';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
