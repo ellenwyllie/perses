@@ -13,7 +13,7 @@
 
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { OptionsEditorTabs } from '@perses-dev/plugin-system';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -31,9 +31,9 @@ export default {
       },
     ],
   },
-} as ComponentMeta<typeof OptionsEditorTabs>;
+} as Meta<typeof OptionsEditorTabs>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof OptionsEditorTabs> = (args) => <OptionsEditorTabs {...args} />;
+const Template: StoryFn<typeof OptionsEditorTabs> = (args) => <OptionsEditorTabs {...args} />;
 
 export const Primary = Template.bind({});

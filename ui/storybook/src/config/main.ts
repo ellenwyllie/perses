@@ -12,7 +12,7 @@
 // limitations under the License.
 
 import path from 'path';
-import { Configuration } from 'webpack';
+import { StorybookConfig } from '@storybook/react-webpack5';
 
 // UI project root.
 const uiRoot = path.resolve(__dirname, '../../..');
@@ -74,12 +74,11 @@ const pkgConfig: PkgConfig[] = [
 
 // File selector for stories.
 const BASE_STORY_SELECTOR = '*.stories.@(ts|tsx|mdx)';
-
-module.exports = {
-  core: {
-    builder: 'webpack5',
+const config: StorybookConfig = {
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
   },
-  framework: '@storybook/react',
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -98,11 +97,10 @@ module.exports = {
         files: `**/${BASE_STORY_SELECTOR}`,
       };
     }),
-    // Higher level stories that live alongside the storybook setup.
-    `../stories/**/${BASE_STORY_SELECTOR}`,
+    '../stories/**/*.@(mdx|stories.@(ts|tsx))',
   ],
   typescript: {
-    reactDocgen: 'react-docgen',
+    reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
       compilerOptions: {
         // TODO: play around with these settings
@@ -111,12 +109,10 @@ module.exports = {
       },
     },
   },
-  webpackFinal: async (config: Configuration) => {
+  webpackFinal: async (config) => {
     // Ensure resolve is defined to appease typescript
     config.resolve = config.resolve || {};
-
     const defaultAlias = config.resolve.alias;
-
     config.resolve.alias = {
       ...defaultAlias,
       // We alias internal cross-package imports to the src (instead of dist)
@@ -134,4 +130,29 @@ module.exports = {
     };
     return config;
   },
+  docs: {
+    autodocs: true,
+  },
+  babel: async () => {
+    // Babel config needed for Storybook 7. Using a babelrc doesn't seem to work
+    // right with our monorepo setup. Keep an eye on this as the beta improves.
+    return {
+      sourceType: 'unambiguous',
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              chrome: 100,
+            },
+          },
+        ],
+        '@babel/preset-typescript',
+        '@babel/preset-react',
+      ],
+      plugins: ['react-require'],
+    };
+  },
 };
+
+export default config;

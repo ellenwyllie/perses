@@ -34,9 +34,9 @@ export const parameters = {
   darkMode: {
     stylePreview: true,
   },
-  docs: {
-    container: DocsContainer,
-  },
+  // docs: {
+  //   container: DocsContainer,
+  // },
   options: {
     storySort: {
       method: 'alphabetical',

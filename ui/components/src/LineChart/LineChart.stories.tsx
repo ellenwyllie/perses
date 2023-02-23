@@ -13,7 +13,7 @@
 
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 import { LineChart } from '@perses-dev/components';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -54,10 +54,10 @@ export default {
       bottom: 0,
     },
   },
-} as ComponentMeta<typeof LineChart>;
+} as Meta<typeof LineChart>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof LineChart> = (args) => {
+const Template: StoryFn<typeof LineChart> = (args) => {
   return <LineChart {...args} />;
 };
 
