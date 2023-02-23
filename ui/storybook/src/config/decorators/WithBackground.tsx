@@ -51,7 +51,7 @@ export const addBackgroundStyle = (selector: string, css: string, storyId: strin
 export const WithBackground: DecoratorFn = (Story, context) => {
   const theme = useTheme();
 
-  const maybeGlobalBg = context.globals.backgrounds;
+  const maybeGlobalBg = context.globals.bgColor;
   const globalBg = typeof maybeGlobalBg === 'string' ? maybeGlobalBg : '';
 
   const themeBg = theme.palette.background[globalBg as keyof typeof theme.palette.background];

@@ -13,7 +13,8 @@
 
 import { DocsContainer } from './DocsContainer';
 import { WithThemes, WithBackground } from './decorators';
-import 'happo-plugin-storybook/register';
+// import 'happo-plugin-storybook/register';
+import './addons/happo/register';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -46,7 +47,7 @@ export const parameters = {
 };
 
 export const globalTypes = {
-  backgrounds: {
+  bgColor: {
     name: 'Background',
     description: 'Background color',
     defaultValue: 'paper',

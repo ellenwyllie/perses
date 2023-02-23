@@ -2,7 +2,7 @@
 
 This package is used to generate documentation for Perses UI components using [Storybook](https://storybook.js.org/).
 
-> This project currently uses the [v7 beta](https://storybook.js.org/docs/7.0/react/get-started/introduction) of Storybook, so be sure to reference the associated [beta documentation](https://storybook.js.org/docs/7.0/react/get-started/introduction).
+> This project currently uses the [v7 beta](https://storybook.js.org/docs/7.0/react/get-started/introduction) of Storybook. Be sure to reference the associated [v7 beta documentation](https://storybook.js.org/docs/7.0/react/get-started/introduction).
 
 ## Getting started
 
@@ -112,5 +112,4 @@ These issues are related to our specific use of Storybook.
 These issues are related to generic Storybook issues that do not appear to be specific to our setup.
 
 - `Warning: ReactDOM.render is no longer supported in React 18` error in console. It seems like a known issue based on discussion [in this issue](https://github.com/storybookjs/storybook/issues/17831) and some other issues on the Storybook repository. Hoping this will get resolved eventually in a future update, but can be ignored for now.
-- `You are loading @emotion/react when it is already loaded. Running multiple instances may cause problems.` warning in console. This might be a combination of our setup (MUI docs use emotion) and some storybook issues. It's not causing any immediate issues, but we should keep an eye on it. It looks like this might be fixed in Storybook 7.
-- Some documentation in the storybook dark mode theme is hard to read (e.g. links look bad). The theme is customizable, so we can fix this when we have time.
+- `Warning: Attempted to synchronously unmount a root while React was already rendering.` - [see issue](https://github.com/storybookjs/storybook/issues/20731)
