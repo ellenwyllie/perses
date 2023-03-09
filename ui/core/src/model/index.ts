@@ -11,8 +11,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export * from './actions';
 export * from './dashboard';
 export * from './datasource';
+export * from './display';
 export * from './definitions';
 export * from './display';
 export * from './http';
@@ -23,4 +25,3 @@ export * from './thresholds';
 export * from './time';
 export * from './time-series-queries';
 export * from './variables';
-export * from './display';

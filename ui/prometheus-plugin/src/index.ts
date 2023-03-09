@@ -30,3 +30,7 @@ export {
   PrometheusPromQLVariable,
   PrometheusDatasource,
 };
+
+// export type { PrometheusClient, RangeQueryResponse } from './model';
+export * from './model/prometheus-client';
+export * from './model/api-types';

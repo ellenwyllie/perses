@@ -21,6 +21,7 @@ import {
   DatasourceStoreProviderProps,
   DatasourceStoreProvider,
 } from '../../context';
+import { createM3Client } from '../../utils/m3';
 import { DashboardApp } from './DashboardApp';
 
 export interface ViewDashboardProps extends Omit<BoxProps, 'children'> {
@@ -55,7 +56,11 @@ export function ViewDashboard(props: ViewDashboardProps) {
   const initialTimeRange = useInitialTimeRange(dashboardDuration);
 
   return (
-    <DatasourceStoreProvider dashboardResource={dashboardResource} datasourceApi={datasourceApi}>
+    <DatasourceStoreProvider
+      dashboardResource={dashboardResource}
+      datasourceApi={datasourceApi}
+      onCreate={createM3Client}
+    >
       <DashboardProvider initialState={{ dashboardResource, isEditMode: !!isEditing }}>
         <TimeRangeProvider initialTimeRange={initialTimeRange} enabledURLParams={true}>
           <TemplateVariableProvider initialVariableDefinitions={spec.variables}>
