@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export interface Action {
+export interface Notice {
   type: 'error' | 'info' | 'warning';
   message: string;
   display?: 'tag'; // TODO: define other action types and alternate display options

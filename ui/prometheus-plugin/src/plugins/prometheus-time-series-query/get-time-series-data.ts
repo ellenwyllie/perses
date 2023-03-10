@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Action } from '@perses-dev/core';
+import { Notice } from '@perses-dev/core';
 import { TimeSeriesData, TimeSeriesQueryPlugin } from '@perses-dev/plugin-system';
 import { fromUnixTime } from 'date-fns';
 import {
@@ -65,11 +65,11 @@ export const getTimeSeriesData: TimeSeriesQueryPlugin<PrometheusTimeSeriesQueryS
   const result = response.data?.result ?? [];
 
   // Custom display for response header warnings, configurable error responses display coming next
-  const actions: Action[] = [];
+  const notices: Notice[] = [];
   const warnings = response.status === 'success' ? response.warnings : [];
   const warningMessage = warnings && warnings[0] ? warnings[0] : '';
   if (warningMessage !== '') {
-    actions.push({
+    notices.push({
       type: 'warning',
       message: warningMessage,
     });
@@ -100,7 +100,7 @@ export const getTimeSeriesData: TimeSeriesQueryPlugin<PrometheusTimeSeriesQueryS
         formattedName,
       };
     }),
-    actions,
+    notices,
   };
 
   return chartData;
