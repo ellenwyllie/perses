@@ -29,21 +29,12 @@ export interface DatasourceClientOptions {
  * Common properties for all clients
  */
 export interface DatasourceClient {
+  // TODO: define common client properties
   options: {
     datasourceUrl: string;
     headers?: RequestHeaders;
-    // timeout?: number; // maximum time allowed before fail
-    // retry?: number; // failed request retries
-    // cache?: boolean; // whether to cache responses
   };
   [key: string]: unknown;
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // [key: string]: any;
-  // onRequest?: (config: any) => any;
-  // onResponse?: (response: any) => any;
-  // onError?: (error: any) => any;
-  // transformRequest?: (data: any) => any;
-  // transformResponse?: (data: any) => any;
 }
 
 /**
