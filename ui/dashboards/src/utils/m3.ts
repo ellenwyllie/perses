@@ -25,15 +25,14 @@ import {
 } from '@perses-dev/prometheus-plugin';
 import { DatasourceClient } from '@perses-dev/plugin-system';
 
-// export function createM3Client(realClient: PrometheusClient): PrometheusClient {
 export function createM3Client(client: DatasourceClient): DatasourceClient {
-  const promClient = client as PrometheusClient;
-  const transformedPromClient = transformPrometheusClient(promClient);
+  const transformedPromClient = transformPrometheusClient(client);
   return transformedPromClient;
-  // return transformPrometheusClient(promClient) as DatasourceClient;
 }
 
-function transformPrometheusClient(promClient: PrometheusClient): PrometheusClient {
+function transformPrometheusClient(client: DatasourceClient): PrometheusClient {
+  const promClient = client as PrometheusClient;
+
   // custom query limit HTTP headers
   const headers: RequestHeaders = {
     'm3-limit-max-returned-datapoints': '56',
