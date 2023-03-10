@@ -12,7 +12,6 @@
 // limitations under the License.
 
 import { Box, BoxProps } from '@mui/material';
-import { DashboardResource } from '@perses-dev/core';
 import { ErrorBoundary, ErrorAlert, combineSx } from '@perses-dev/components';
 import { TimeRangeProvider, useInitialTimeRange } from '@perses-dev/plugin-system';
 import {
@@ -22,16 +21,10 @@ import {
   DatasourceStoreProvider,
 } from '../../context';
 import { createM3Client } from '../../utils/m3';
-import { DashboardApp } from './DashboardApp';
+import { DashboardApp, DashboardAppProps } from './DashboardApp';
 
-export interface ViewDashboardProps extends Omit<BoxProps, 'children'> {
-  dashboardResource: DashboardResource;
+export interface ViewDashboardProps extends Omit<BoxProps, 'children'>, DashboardAppProps {
   datasourceApi: DatasourceStoreProviderProps['datasourceApi'];
-  dashboardTitleComponent?: JSX.Element;
-  onSave?: (entity: DashboardResource) => Promise<DashboardResource>;
-  onDiscard?: (entity: DashboardResource) => void;
-  initialVariableIsSticky?: boolean;
-  isReadonly: boolean;
   isEditing?: boolean;
 }
 
@@ -43,6 +36,7 @@ export function ViewDashboard(props: ViewDashboardProps) {
     dashboardResource,
     datasourceApi,
     dashboardTitleComponent,
+    emptyDashboard,
     onSave,
     onDiscard,
     initialVariableIsSticky,
@@ -81,6 +75,7 @@ export function ViewDashboard(props: ViewDashboardProps) {
                 <DashboardApp
                   dashboardResource={dashboardResource}
                   dashboardTitleComponent={dashboardTitleComponent}
+                  emptyDashboard={emptyDashboard}
                   onSave={onSave}
                   onDiscard={onDiscard}
                   initialVariableIsSticky={initialVariableIsSticky}
