@@ -31,6 +31,6 @@ export {
   PrometheusDatasource,
 };
 
-// export type { PrometheusClient, RangeQueryResponse } from './model';
+// For consumers to leverage in DatasourceStoreProvider onCreate
 export * from './model/prometheus-client';
 export * from './model/api-types';

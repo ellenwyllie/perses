@@ -26,8 +26,8 @@ function transformPrometheusClient(client: DatasourceClient): PrometheusClient {
 
   // custom query limit HTTP headers
   const headers: RequestHeaders = {
-    'm3-limit-max-returned-datapoints': '56',
-    'm3-limit-max-returned-series': '3',
+    'm3-limit-max-returned-datapoints': '77',
+    'm3-limit-max-returned-series': '1',
   };
 
   return {
