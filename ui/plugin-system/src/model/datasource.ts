@@ -45,3 +45,10 @@ export interface DatasourceClient {
   // transformRequest?: (data: any) => any;
   // transformResponse?: (data: any) => any;
 }
+
+/**
+ * Determine if valid input is a valid DatasourceClient
+ */
+export function isDatasourceClient(client: unknown): client is DatasourceClient {
+  return (client as DatasourceClient).options.datasourceUrl !== undefined;
+}

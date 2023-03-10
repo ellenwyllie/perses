@@ -23,19 +23,24 @@ import {
   LabelValuesRequestParameters,
   RangeQueryRequestParameters,
 } from '@perses-dev/prometheus-plugin';
-// import { DatasourceClient } from '@perses-dev/plugin-system';
+import { DatasourceClient } from '@perses-dev/plugin-system';
 
 // export function createM3Client(realClient: PrometheusClient): PrometheusClient {
-export function createM3Client(realClient: unknown): PrometheusClient {
+export function createM3Client(client: DatasourceClient): DatasourceClient {
+  const promClient = client as PrometheusClient;
+  const transformedPromClient = transformPrometheusClient(promClient);
+  return transformedPromClient;
+  // return transformPrometheusClient(promClient) as DatasourceClient;
+}
+
+function transformPrometheusClient(promClient: PrometheusClient): PrometheusClient {
   // custom query limit HTTP headers
   const headers: RequestHeaders = {
     'm3-limit-max-returned-datapoints': '56',
-    'm3-limit-max-returned-series': '2',
+    'm3-limit-max-returned-series': '3',
   };
 
-  const promClient = realClient as PrometheusClient;
-
-  const client: PrometheusClient = {
+  return {
     options: {
       datasourceUrl: promClient.options.datasourceUrl,
     },
@@ -54,8 +59,37 @@ export function createM3Client(realClient: unknown): PrometheusClient {
       return result;
     },
   };
-  return client;
 }
+
+// export function createOldM3Client(realClient: PrometheusClient): PrometheusClient {
+//   // custom query limit HTTP headers
+//   const headers: RequestHeaders = {
+//     'm3-limit-max-returned-datapoints': '56',
+//     'm3-limit-max-returned-series': '2',
+//   };
+
+//   const client: PrometheusClient = {
+//     options: {
+//       datasourceUrl: realClient.options.datasourceUrl,
+//     },
+//     instantQuery: (params) => {
+//       return realClient.instantQuery(params, headers).then(addInstantQueryWarnings);
+//     },
+//     rangeQuery: (params) => {
+//       // return realClient.rangeQuery(params, headers).then(addRangeQueryWarnings);
+//       return realClient.rangeQuery(params, headers).then(processRangeQueryResponse);
+//     },
+//     labelNames: (params) => {
+//       const result = realClient.labelNames(params);
+//       return result;
+//     },
+//     labelValues: (params) => {
+//       const result = realClient.labelValues(params);
+//       return result;
+//     },
+//   };
+//   return client;
+// }
 
 function processRangeQueryResponse(results: RangeQueryResponse): Promise<RangeQueryResponse> {
   if (results.status !== 'success') {
