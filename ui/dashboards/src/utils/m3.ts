@@ -13,32 +13,44 @@
 
 import { RequestHeaders } from '@perses-dev/core';
 // import { ApiResponse, PrometheusClient, RangeQueryResponse, SuccessResponse } from '@perses-dev/prometheus-plugin';
-import { InstantQueryResponse, RangeQueryResponse, PrometheusClient } from '@perses-dev/prometheus-plugin';
+import {
+  InstantQueryResponse,
+  RangeQueryResponse,
+  PrometheusClient,
+  // PrometheusDatasourceSpec,
+  InstantQueryRequestParameters,
+  LabelNamesRequestParameters,
+  LabelValuesRequestParameters,
+  RangeQueryRequestParameters,
+} from '@perses-dev/prometheus-plugin';
+// import { DatasourceClient } from '@perses-dev/plugin-system';
 
-export function createM3Client(realClient: PrometheusClient): PrometheusClient {
+// export function createM3Client(realClient: PrometheusClient): PrometheusClient {
+export function createM3Client(realClient: unknown): PrometheusClient {
   // custom query limit HTTP headers
   const headers: RequestHeaders = {
     'm3-limit-max-returned-datapoints': '56',
     'm3-limit-max-returned-series': '2',
   };
 
+  const promClient = realClient as PrometheusClient;
+
   const client: PrometheusClient = {
     options: {
-      datasourceUrl: realClient.options.datasourceUrl,
+      datasourceUrl: promClient.options.datasourceUrl,
     },
-    instantQuery: (params) => {
-      return realClient.instantQuery(params, headers).then(addInstantQueryWarnings);
+    instantQuery: (params: InstantQueryRequestParameters) => {
+      return promClient.instantQuery(params, headers).then(addInstantQueryWarnings);
     },
-    rangeQuery: (params) => {
-      // return realClient.rangeQuery(params, headers).then(addRangeQueryWarnings);
-      return realClient.rangeQuery(params, headers).then(processRangeQueryResponse);
+    rangeQuery: (params: RangeQueryRequestParameters) => {
+      return promClient.rangeQuery(params, headers).then(processRangeQueryResponse);
     },
-    labelNames: (params) => {
-      const result = realClient.labelNames(params);
+    labelNames: (params: LabelNamesRequestParameters) => {
+      const result = promClient.labelNames(params);
       return result;
     },
-    labelValues: (params) => {
-      const result = realClient.labelValues(params);
+    labelValues: (params: LabelValuesRequestParameters) => {
+      const result = promClient.labelValues(params);
       return result;
     },
   };

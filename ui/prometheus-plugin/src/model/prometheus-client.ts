@@ -12,6 +12,7 @@
 // limitations under the License.
 
 import { fetch, fetchJson, RequestHeaders } from '@perses-dev/core';
+import { DatasourceClient } from '@perses-dev/plugin-system';
 import {
   InstantQueryRequestParameters,
   InstantQueryResponse,
@@ -28,7 +29,7 @@ interface PrometheusClientOptions {
   headers?: RequestHeaders;
 }
 
-export interface PrometheusClient {
+export interface PrometheusClient extends DatasourceClient {
   options: PrometheusClientOptions;
   instantQuery(params: InstantQueryRequestParameters, headers?: RequestHeaders): Promise<InstantQueryResponse>;
   rangeQuery(params: RangeQueryRequestParameters, headers?: RequestHeaders): Promise<RangeQueryResponse>;

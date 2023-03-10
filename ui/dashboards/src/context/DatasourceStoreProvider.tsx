@@ -23,6 +23,7 @@ import {
   useEvent,
 } from '@perses-dev/core';
 import {
+  DatasourceClient,
   DatasourceStoreContext,
   DatasourceStore,
   usePluginRegistry,
@@ -33,7 +34,7 @@ export interface DatasourceStoreProviderProps {
   dashboardResource: DashboardResource;
   datasourceApi: DatasourceApi;
   children?: React.ReactNode;
-  onCreate?: <Client>(client: Client) => Client;
+  onCreate?: (client: unknown) => DatasourceClient;
 }
 
 // The external API for fetching datasource resources
@@ -108,11 +109,11 @@ export function DatasourceStoreProvider(props: DatasourceStoreProviderProps) {
       }
 
       // allows extending client
-      const client = plugin.createClient(datasourceSpec, { proxyUrl }) as Client;
+      const client = plugin.createClient(datasourceSpec, { proxyUrl });
       if (onCreate !== undefined) {
-        return onCreate(client);
+        return onCreate(client) as unknown as Client;
       }
-      return client;
+      return client as Client;
     },
     [findDatasource, getPlugin, headerOverrides, onCreate]
   );

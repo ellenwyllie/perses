@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { UnknownSpec } from '@perses-dev/core';
+import { RequestHeaders, UnknownSpec } from '@perses-dev/core';
 import { Plugin } from './plugin-base';
 
 /**
@@ -23,4 +23,25 @@ export interface DatasourcePlugin<Spec = UnknownSpec, Client = unknown> extends 
 
 export interface DatasourceClientOptions {
   proxyUrl?: string;
+}
+
+/**
+ * Common properties for all clients
+ */
+export interface DatasourceClient {
+  options: {
+    datasourceUrl: string;
+    headers?: RequestHeaders;
+    // timeout?: number; // maximum time allowed before fail
+    // retry?: number; // failed request retries
+    // cache?: boolean; // whether to cache responses
+  };
+  [key: string]: unknown;
+  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // [key: string]: any;
+  // onRequest?: (config: any) => any;
+  // onResponse?: (response: any) => any;
+  // onError?: (error: any) => any;
+  // transformRequest?: (data: any) => any;
+  // transformResponse?: (data: any) => any;
 }
