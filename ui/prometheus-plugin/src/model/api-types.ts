@@ -19,7 +19,7 @@ export type { DurationString };
 export interface SuccessResponse<T> {
   status: 'success';
   data: T;
-  headers?: Headers;
+  rawResponse?: Response;
   warnings?: string[];
 }
 

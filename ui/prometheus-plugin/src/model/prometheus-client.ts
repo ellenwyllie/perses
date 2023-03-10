@@ -139,5 +139,5 @@ function createSearchParams<T extends RequestParams<T>>(params: T) {
 export async function fetchResults<T>(...args: Parameters<typeof global.fetch>) {
   const response = await fetch(...args);
   const json: T = await response.json();
-  return { ...json, headers: response.headers };
+  return { ...json, rawResponse: response };
 }

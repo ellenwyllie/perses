@@ -55,7 +55,7 @@ function processRangeQueryResponse(results: RangeQueryResponse): Promise<RangeQu
   if (results.status !== 'success') {
     return Promise.resolve(results);
   }
-  const warning = results.headers?.get('m3-returned-data-limited') ?? undefined;
+  const warning = results.rawResponse?.headers?.get('m3-returned-data-limited') ?? undefined;
   if (warning !== undefined) {
     results.warnings = [warning];
   }
@@ -66,7 +66,7 @@ function processInstantQueryResponse(results: InstantQueryResponse): Promise<Ins
   if (results.status !== 'success') {
     return Promise.resolve(results);
   }
-  const warning = results.headers?.get('m3-returned-data-limited') ?? undefined;
+  const warning = results.rawResponse?.headers?.get('m3-returned-data-limited') ?? undefined;
   if (warning !== undefined) {
     results.warnings = [warning];
   }
