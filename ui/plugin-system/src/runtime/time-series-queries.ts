@@ -122,10 +122,6 @@ export function useTimeSeriesQueries(definitions: TimeSeriesQueryDefinition[], o
           const ctx: TimeSeriesQueryContext = { ...context, suggestedStepMs: options?.suggestedStepMs };
           const plugin = await getPlugin(TIME_SERIES_QUERY_KEY, definition.spec.plugin.kind);
           const data = await plugin.getTimeSeriesData(definition.spec.plugin.spec, ctx);
-          // if (data.warnings && data.warnings.length > 0) {
-          //   // TODO: call setQueriesData
-          //   // https://tanstack.com/query/v4/docs/react/reference/QueryClient#queryclientsetquerydata
-          // }
           return data;
         },
       };

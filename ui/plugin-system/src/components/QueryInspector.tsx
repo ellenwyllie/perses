@@ -39,9 +39,9 @@ export function QueryInspector(props: QueryInspectorProps) {
   const warnings: WarningDisplay[] = [];
   querySummary.forEach((query) => {
     const queryData = query.state.data;
-    if (queryData && queryData.actions) {
+    if (queryData && queryData.metadata?.notices) {
       const queryKey = query.queryKey as [TimeSeriesQueryDefinition<UnknownSpec>];
-      const warningMessage = queryData.actions[0]?.message;
+      const warningMessage = queryData.metadata.notices[0]?.message;
       if (warningMessage) {
         warnings.push({
           query: String(queryKey[0].spec.plugin.spec.query),
@@ -122,6 +122,7 @@ export function QueryInspector(props: QueryInspectorProps) {
             </Table>
           </TableContainer>
           <Button
+            disabled
             variant="outlined"
             onClick={() => {
               // TODO: clear query limit HTTP headers

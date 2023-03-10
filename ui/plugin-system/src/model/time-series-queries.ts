@@ -49,11 +49,15 @@ export interface TimeSeriesData {
   timeRange?: AbsoluteTimeRange;
   stepMs?: number;
   series: TimeSeries[];
-  notices?: Notice[];
+  metadata?: TimeSeriesMetadata;
 }
 
 export interface TimeSeries {
   name: string;
   values: TimeSeriesValueTuple[];
   formattedName?: string;
+}
+
+export interface TimeSeriesMetadata {
+  notices?: Notice[];
 }

@@ -62,17 +62,20 @@ export const getTimeSeriesData: TimeSeriesQueryPlugin<PrometheusTimeSeriesQueryS
     step,
   });
 
+  // TODO: What about error responses from Prom that have a response body?
   const result = response.data?.result ?? [];
 
   // Custom display for response header warnings, configurable error responses display coming next
   const notices: Notice[] = [];
-  const warnings = response.status === 'success' ? response.warnings : [];
-  const warningMessage = warnings && warnings[0] ? warnings[0] : '';
-  if (warningMessage !== '') {
-    notices.push({
-      type: 'warning',
-      message: warningMessage,
-    });
+  if (response.status === 'success') {
+    const warnings = response.warnings ?? [];
+    const warningMessage = warnings[0] ?? '';
+    if (warningMessage !== '') {
+      notices.push({
+        type: 'warning',
+        message: warningMessage,
+      });
+    }
   }
 
   // Transform response
@@ -100,7 +103,9 @@ export const getTimeSeriesData: TimeSeriesQueryPlugin<PrometheusTimeSeriesQueryS
         formattedName,
       };
     }),
-    notices,
+    metadata: {
+      notices,
+    },
   };
 
   return chartData;
