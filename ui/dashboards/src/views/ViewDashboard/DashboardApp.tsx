@@ -24,6 +24,7 @@ import {
   DashboardToolbar,
   DeletePanelDialog,
   DashboardProps,
+  QueryInspector,
 } from '../../components';
 import { useDashboard, useDiscardChangesConfirmationDialog, useEditMode } from '../../context';
 
@@ -106,6 +107,7 @@ export const DashboardApp = (props: DashboardAppProps) => {
         onEditButtonClick={onEditButtonClick}
         onCancelButtonClick={onCancelButtonClick}
       />
+      <QueryInspector />
       <Box sx={{ padding: (theme) => theme.spacing(2), height: '100%' }}>
         <ErrorBoundary FallbackComponent={ErrorAlert}>
           <Dashboard emptyDashboard={emptyDashboard} />

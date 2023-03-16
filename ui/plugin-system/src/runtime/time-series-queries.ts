@@ -83,6 +83,7 @@ export const useTimeSeriesQuery = (definition: TimeSeriesQueryDefinition, option
   const context = useTimeSeriesQueryContext();
 
   const { queryEnabled, queryKey } = getQueryOptions({ plugin, definition, context });
+
   return useQuery({
     enabled: queryEnabled,
     queryKey: queryKey,

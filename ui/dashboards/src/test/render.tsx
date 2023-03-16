@@ -18,7 +18,7 @@ import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ChartsThemeProvider, testChartsTheme } from '@perses-dev/components';
-import { mockPluginRegistry, PluginRegistry } from '@perses-dev/plugin-system';
+import { mockPluginRegistry, PluginRegistry, TimeRangeProvider } from '@perses-dev/plugin-system';
 import { MOCK_PLUGINS } from './plugin-registry';
 
 /**
@@ -40,7 +40,9 @@ export function renderWithContext(
         <QueryClientProvider client={queryClient}>
           <QueryParamProvider adapter={ReactRouter6Adapter}>
             <ChartsThemeProvider chartsTheme={testChartsTheme}>
-              <PluginRegistry {...mockPluginRegistry(...MOCK_PLUGINS)}>{ui}</PluginRegistry>
+              <PluginRegistry {...mockPluginRegistry(...MOCK_PLUGINS)}>
+                <TimeRangeProvider initialTimeRange={{ pastDuration: '1h' }}>{ui}</TimeRangeProvider>
+              </PluginRegistry>
             </ChartsThemeProvider>
           </QueryParamProvider>
         </QueryClientProvider>
