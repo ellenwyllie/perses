@@ -16,6 +16,7 @@ import { ErrorBoundary, ErrorAlert } from '@perses-dev/components';
 import { usePanelGroupIds } from '../../context';
 import { GridLayout } from '../GridLayout';
 import { EmptyDashboard } from '../EmptyDashboard';
+import { QuerySummaryTable } from '../QuerySummaryTable';
 
 export type DashboardProps = BoxProps & {
   /**
@@ -36,6 +37,7 @@ export function Dashboard({ emptyDashboard = <EmptyDashboard />, ...boxProps }: 
 
   return (
     <Box {...boxProps} sx={{ height: '100%' }}>
+      <QuerySummaryTable />
       <ErrorBoundary FallbackComponent={ErrorAlert}>
         {isEmpty && <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{emptyDashboard}</Box>}
         {!isEmpty && panelGroupIds.map((panelGroupId) => <GridLayout key={panelGroupId} panelGroupId={panelGroupId} />)}
