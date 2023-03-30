@@ -96,7 +96,7 @@ export function Panel(props: PanelProps) {
         component="figure"
         sx={{
           position: 'relative',
-          overflow: 'hidden',
+          // overflow: 'hidden',
           flexGrow: 1,
           margin: 0,
           padding: 0,

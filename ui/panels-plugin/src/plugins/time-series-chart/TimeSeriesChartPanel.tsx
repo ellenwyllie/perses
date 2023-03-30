@@ -11,6 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { EChartsCoreOption, TooltipComponentOption } from 'echarts';
 import { useState } from 'react';
 import { merge } from 'lodash-es';
 import { useDeepMemo, StepOptions } from '@perses-dev/core';
@@ -260,6 +261,14 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
     setTimeRange({ start: new Date(event.start), end: new Date(event.end) });
   };
 
+  const transformConfig = (option: EChartsCoreOption) => {
+    const tooltipOption = option.tooltip as TooltipComponentOption;
+    tooltipOption.showContent = true;
+    tooltipOption.appendToBody = true;
+    option.tooltip = tooltipOption;
+    return option;
+  };
+
   return (
     <Box sx={{ padding: `${contentPadding}px`, position: 'relative' }}>
       {y_axis && y_axis.show && y_axis.label && (
@@ -272,6 +281,7 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
         unit={unit}
         grid={gridOverrides}
         onDataZoom={handleDataZoom}
+        __experimentalEChartsOptionsOverride={transformConfig}
       />
       {legend && graphData.legendItems && (
         <Legend width={legendWidth} height={legendHeight} options={legend} data={graphData.legendItems} />
