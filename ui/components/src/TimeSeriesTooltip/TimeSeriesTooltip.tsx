@@ -38,10 +38,10 @@ export const TimeSeriesTooltip = React.memo(function TimeSeriesTooltip({
   const [pinnedPos, setPinnedPos] = useState<CursorCoordinates | null>(null);
   const mousePos = useMousePosition();
 
-  if (mousePos === null || mousePos.target === null) return null;
+  // if (mousePos === null || mousePos.target === null) return null;
 
-  // ensure user is hovering over a chart before checking for nearby series
-  if (pinnedPos === null && (mousePos.target as HTMLElement).tagName !== 'CANVAS') return null;
+  // // ensure user is hovering over a chart before checking for nearby series
+  // if (pinnedPos === null && (mousePos.target as HTMLElement).tagName !== 'CANVAS') return null;
 
   const chart = chartRef.current;
   const focusedSeries = getFocusedSeriesData(mousePos, chartData, pinnedPos, chart, unit);

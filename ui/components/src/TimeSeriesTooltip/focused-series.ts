@@ -97,29 +97,29 @@ export function getFocusedSeriesData(
 ) {
   if (chart === undefined || mousePos === null) return [];
 
-  // prevents multiple tooltips showing from adjacent charts
-  let cursorTargetMatchesChart = false;
-  if (mousePos.target !== null) {
-    const currentParent = (<HTMLElement>mousePos.target).parentElement;
-    if (currentParent !== null) {
-      const currentGrandparent = currentParent.parentElement;
-      if (currentGrandparent !== null) {
-        const chartDom = chart.getDom();
-        if (chartDom === currentGrandparent) {
-          cursorTargetMatchesChart = true;
-        }
-      }
-    }
-  }
+  // // prevents multiple tooltips showing from adjacent charts
+  // let cursorTargetMatchesChart = false;
+  // if (mousePos.target !== null) {
+  //   debugger;
+  //   const currentParent = (<HTMLElement>mousePos.target).parentElement;
+  //   if (currentParent !== null) {
+  //     const currentGrandparent = currentParent.parentElement;
+  //     if (currentGrandparent !== null) {
+  //       const chartDom = chart.getDom();
+  //       if (chartDom === currentGrandparent) {
+  //         cursorTargetMatchesChart = true;
+  //       }
+  //     }
+  //   }
+  // }
 
-  // allows moving cursor inside tooltip
-  if (pinnedPos !== null) {
-    mousePos = pinnedPos;
-    cursorTargetMatchesChart = true;
-  }
+  // // allows moving cursor inside tooltip
+  // if (pinnedPos !== null) {
+  //   mousePos = pinnedPos;
+  //   cursorTargetMatchesChart = true;
+  // }
 
-  if (cursorTargetMatchesChart === false) return [];
-
+  // if (cursorTargetMatchesChart === false) return [];
   if (chart['_model'] === undefined) return [];
   const chartModel = chart['_model'];
   const yAxisInterval = chartModel.getComponent('yAxis').axis.scale._interval;
@@ -129,6 +129,7 @@ export function getFocusedSeriesData(
   const yBuffer = seriesNum > TOOLTIP_MAX_ITEMS ? yAxisInterval * 0.5 : yAxisInterval * 5;
 
   const pointInPixel = [mousePos.plotCanvas.x ?? 0, mousePos.plotCanvas.y ?? 0];
+  // const pointInPixel = [mousePos.viewport.x ?? 0, mousePos.viewport.y ?? 0];
   if (chart.containPixel('grid', pointInPixel)) {
     const pointInGrid = chart.convertFromPixel('grid', pointInPixel);
     if (pointInGrid[0] !== undefined && pointInGrid[1] !== undefined) {

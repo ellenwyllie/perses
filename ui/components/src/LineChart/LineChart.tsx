@@ -187,8 +187,8 @@ export function LineChart({ height, data, yAxis, unit, grid, legend, onDataZoom,
         setShowTooltip(true);
       }}
       onMouseLeave={() => {
-        setShowTooltip(false);
-        setPinTooltip(false);
+        // setShowTooltip(false);
+        // setPinTooltip(false);
       }}
       onMouseEnter={() => {
         setShowTooltip(true);

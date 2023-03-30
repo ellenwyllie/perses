@@ -33,7 +33,8 @@ export function assembleTransform(
 
   const cursorPaddingX = 32;
   const cursorPaddingY = 16;
-  const x = mousePos.page.x;
+  const randomX = Math.floor(Math.random() * 10) + 1;
+  const x = mousePos.plotCanvas.x + randomX;
   let y = mousePos.page.y + cursorPaddingY;
 
   const isCloseToBottom = mousePos.page.y > window.innerHeight * 0.8;
