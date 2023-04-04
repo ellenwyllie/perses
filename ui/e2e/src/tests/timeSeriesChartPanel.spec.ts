@@ -11,6 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { expect } from '@playwright/test';
 import happoPlaywright from 'happo-playwright';
 import { test } from '../fixtures/dashboardTest';
 import {
@@ -153,5 +154,51 @@ test.describe('Dashboard: Time Series Chart Panel', () => {
       component: 'Time Series Chart Panel',
       variant: `Single Line with Percent Threshold`,
     });
+  });
+
+  test('should show query in tooltiop', async ({ page, dashboardPage, mockNow }) => {
+    // Mock data response, so we can make assertions on consistent response data.
+    await dashboardPage.mockQueryRangeRequests({
+      queries: [
+        {
+          query: 'up{job="grafana",instance="demo.do.prometheus.io:3000"}',
+          response: {
+            status: 200,
+            body: JSON.stringify(
+              mockTimeSeriesResponseWithStableValue({
+                metrics: [
+                  {
+                    metric: {
+                      __name__: 'up',
+                      instance: 'demo.do.prometheus.io:3000',
+                      job: 'grafana',
+                    },
+                    value: '1',
+                  },
+                ],
+                startTimeMs: mockNow - 6 * 60 * 60 * 1000,
+                endTimeMs: mockNow,
+              })
+            ),
+          },
+        },
+      ],
+    });
+
+    await dashboardPage.startEditing();
+    // await dashboardPage.editPanel('Single Line', async (panelEditor) => {});
+    const panel = dashboardPage.getPanelByName('Single Line');
+    await panel.isLoaded();
+    await panel.canvas.hover();
+    const tooltipContent = page.getByText('up: 1.00');
+    // await tooltipContent.isVisible();
+    expect(await tooltipContent.isVisible());
+    // await page.waitForSelector('canvas');
+    // await expect(page.getByText('up: 1.00'));
+    // await expect(page.getByRole('main')).toContainText('up: 1.00');
+    // await happoPlaywright.screenshot(page, panel.parent, {
+    //   component: 'Time Series Chart Panel',
+    //   variant: `Single Line with tooltip visible`,
+    // });
   });
 });
