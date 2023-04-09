@@ -44,7 +44,7 @@ import {
   EMPTY_GRAPH_DATA,
   convertPercentThreshold,
 } from './utils/data-transform';
-import { getSeriesColor } from './utils/palette-gen';
+import { getAutoPaletteColor, getCategoricalPaletteColor } from './utils/palette-gen';
 
 export type TimeSeriesChartProps = PanelProps<TimeSeriesChartOptions>;
 
@@ -58,6 +58,7 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
   const echartsPalette = chartsTheme.echartsTheme.color;
   const fallbackColor =
     Array.isArray(echartsPalette) && echartsPalette.length > 0 ? echartsPalette[0] : muiTheme.palette.primary;
+  const fallbackColorStr = fallbackColor as string;
 
   // TODO: consider refactoring how the layout/spacing/alignment are calculated
   // the next time significant changes are made to the time series panel (e.g.
@@ -172,14 +173,14 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
         // Format is determined by series_name_format in query spec
         const formattedSeriesName = timeSeries.formattedName ?? timeSeries.name;
 
-        const seriesColor = getSeriesColor(
-          formattedSeriesName,
-          seriesCount,
-          echartsPalette as string[],
-          fallbackColor as string,
-          visual.palette?.kind
-        );
-        seriesCount++; // used for repeating colors in Categorical palette
+        // Check which color palette was chosen and get appropriate color
+        const seriesColor =
+          visual.palette?.kind === 'Categorical'
+            ? getCategoricalPaletteColor(seriesCount, echartsPalette as string[], fallbackColorStr)
+            : getAutoPaletteColor(formattedSeriesName, fallbackColorStr);
+
+        // Used for repeating colors in Categorical palette
+        seriesCount++;
 
         const yValues = getYValues(timeSeries, timeScale);
         const lineSeries = getLineSeries(formattedSeriesName, yValues, visual, seriesColor);

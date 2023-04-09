@@ -12,31 +12,25 @@
 // limitations under the License.
 
 import ColorHash from 'color-hash';
-import { PaletteOptions } from '../time-series-chart-model';
+
+/**
+ * Get color from generative color palette
+ */
+export function getAutoPaletteColor(name: string, fallbackColor: string): string {
+  // corresponds to 'Auto' in palette.kind for generative color palette
+  const generatedColor = getConsistentSeriesNameColor(name);
+  return generatedColor ?? fallbackColor;
+}
 
 /**
  * Get line color as well as color for tooltip and legend, account for whether palette is 'Cateogrical' or 'Auto' (generative)
  */
-export function getSeriesColor(
-  name: string,
-  seriesCount: number,
-  palette: string[],
-  fallbackColor: string,
-  paletteKind: PaletteOptions['kind'] = 'Auto'
-): string {
+export function getCategoricalPaletteColor(seriesCount: number, palette: string[], fallbackColor: string): string {
   // Loop through predefined static color palette
-  if (paletteKind === 'Categorical' && Array.isArray(palette)) {
-    const colorIndex = seriesCount % palette.length;
-    // fallback color comes from echarts theme
-    const seriesColor = palette[colorIndex];
-    if (seriesColor !== undefined) {
-      return seriesColor;
-    }
-  }
-
-  // corresponds to 'Auto' in palette.kind for generative color palette
-  const generatedColor = getConsistentSeriesNameColor(name);
-  return generatedColor ?? fallbackColor;
+  const colorIndex = seriesCount % palette.length;
+  // fallback color comes from echarts theme
+  const seriesColor = palette[colorIndex] ?? fallbackColor;
+  return seriesColor;
 }
 
 // Valid hue values are 0 to 360 and can be adjusted to control the generated colors.
