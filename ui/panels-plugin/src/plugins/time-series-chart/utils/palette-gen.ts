@@ -15,19 +15,6 @@ import ColorHash from 'color-hash';
 import { PaletteOptions } from '../time-series-chart-model';
 
 /**
- * Helper function to generate a random color for a chart series based on its name
- */
-export function generateColorFromString(identifier: string): string {
-  let hash = 0;
-  for (let index = 0; index < identifier.length; index++) {
-    hash = identifier.charCodeAt(index) + ((hash << 5) - hash);
-  }
-  // Use HSLA to only get random "bright" colors from this
-  const color = `hsla(${~~(180 * hash)},50%,50%,0.8)`;
-  return color;
-}
-
-/**
  * Get line color as well as color for tooltip and legend, account for whether palette is 'Cateogrical' or 'Auto' (generative)
  */
 export function getSeriesColor(
@@ -37,6 +24,7 @@ export function getSeriesColor(
   fallbackColor: string,
   paletteKind: PaletteOptions['kind'] = 'Auto'
 ): string {
+  // Loop through predefined static color palette
   if (paletteKind === 'Categorical' && Array.isArray(palette)) {
     const colorIndex = seriesCount % palette.length;
     // fallback color comes from echarts theme
@@ -46,24 +34,26 @@ export function getSeriesColor(
     }
   }
 
-  // corresponds to 'Auto' in palette.kind
-  const generatedColor = getSeriesNameColor(name);
+  // corresponds to 'Auto' in palette.kind for generative color palette
+  const generatedColor = getConsistentSeriesNameColor(name);
   return generatedColor ?? fallbackColor;
 }
 
 /*
- * Color conversion from string using predefined palette for contrast
- * String to color approach from: https://stackoverflow.com/a/31037383/17575201
- * Contrast colors started from: https://stackoverflow.com/a/12224359/17575201
+ * Check whether a color was already generated for a given series name
+ * https://github.com/zenozeng/color-hash#custom-hue
  */
-export const getSeriesNameColor = (() => {
-  const colorHash = new ColorHash();
+export const getConsistentSeriesNameColor = (() => {
+  // Valid hue values are 0 to 360 and can be adjusted to control the generated colors.
+  // Picked min of 80 and max of 340 to exclude common threshold colors (orange / reddish)
+  const colorHash = new ColorHash({ hue: { min: 90, max: 340 } });
   const stringToColorHash: Record<string, string> = {};
   return (inputString: string) => {
-    // check whether color has already been generated for a given series name
+    // Check whether color has already been generated for a given series name.
+    // Ensures colors are consistent across panels
     if (!stringToColorHash[inputString]) {
       const hslColor = colorHash.hsl(inputString);
-      const hue = hslColor[0]; // TODO: make hue configurable using slider panel option
+      const hue = hslColor[0];
       const saturation = `${(hslColor[1] * 100).toFixed(0)}%`;
       const lightness = `${(hslColor[2] * 100).toFixed(0)}%`;
       const colorString = `hsla(${hue},${saturation},${lightness},0.8)`;
@@ -72,21 +62,3 @@ export const getSeriesNameColor = (() => {
     return stringToColorHash[inputString];
   };
 })();
-
-// Prime number shuffles the string more evenly, changing this multiplier adjusts the overall colors that are generated
-// For example, a multiplier of 17 results in more purple colors, 11 looks nice but series names that start with 'n'
-// looked too similar, 7 seems to provide just enough randomness while still having colors with enough contrast
-const INDEX_MULTIPLIER = 7;
-
-/*
- * Deterministic way to slightly modify the string that is used to generate colors.
- * This allows series names that are very similar to produce distinct colors.
- */
-export function modifyString(str: string): string {
-  const modifiedArr = new Array(str.length);
-  for (let i = 0; i < str.length; i++) {
-    const newIndex = (i * INDEX_MULTIPLIER) % str.length;
-    modifiedArr[newIndex] = str[i];
-  }
-  return modifiedArr.join('');
-}
