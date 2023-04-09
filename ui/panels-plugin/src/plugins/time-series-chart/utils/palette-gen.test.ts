@@ -11,25 +11,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getSeriesColor, modifyString } from './palette-gen';
+import { getSeriesColor, getConsistentSeriesNameColor } from './palette-gen';
 
 describe('getSeriesColor', () => {
   const fallbackColor = '#ff0000';
 
   it('should return generated color from series name', () => {
     const value = getSeriesColor(
-      'p90 test api subdomain',
+      'Datapoint Processing Limit',
       2,
       ['#fff', '000', '#111', '#222', '#333'],
       '#ff0000',
       'Auto'
     );
-    expect(value).toEqual('hsla(1642107604,50%,50%,0.8)');
+    expect(value).toEqual('hsla(149.73865199449796,65%,35%,0.8)');
   });
 
   it('should return an alternate color based on series name', () => {
     const value = getSeriesColor('test series name', 3, ['#fff', '000', '#111', '#222', '#333'], '#ff0000', 'Auto');
-    expect(value).toEqual('hsla(1569429816,50%,50%,0.8)');
+    expect(value).toEqual('hsla(335.70839064649243,35%,35%,0.8)');
   });
 
   it('should return 1st color in Categorical palette', () => {
@@ -66,16 +66,16 @@ describe('getSeriesColor', () => {
   });
 });
 
-describe('modifyString', () => {
-  it('should adjust string characters', () => {
-    const value = modifyString('test');
-    expect(value).toEqual('ttse');
+describe('getConsistentSeriesNameColor', () => {
+  it('should generate a custom hsla color', () => {
+    const value = getConsistentSeriesNameColor('test');
+    expect(value).toEqual('hsla(285.9972489683631,35%,50%,0.8)');
   });
 
-  it('should change order of characters in series name', () => {
-    const value = modifyString(
+  it('should generate a color from the given series name', () => {
+    const value = getConsistentSeriesNameColor(
       'node_memory_Buffers_bytes{env="demo",instance="demo.do.prometheus.io:9100",job="node"}'
     );
-    expect(value).toEqual('ni,{euoonjeuf.dsonsfdetbv.eo_a==ir.mn""ospecnd:_rmeoe9boo=dm1ymr"eo0teyd""0et_e},"shBm');
+    expect(value).toEqual('hsla(163.32874828060523,50%,35%,0.8)');
   });
 });

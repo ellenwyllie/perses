@@ -39,26 +39,26 @@ export function getSeriesColor(
   return generatedColor ?? fallbackColor;
 }
 
+// Valid hue values are 0 to 360 and can be adjusted to control the generated colors.
+// Picked min of 80 and max of 340 to exclude common threshold colors (orange / reddish).
+// See: https://github.com/zenozeng/color-hash#custom-hue
+const colorHash = new ColorHash({ hue: { min: 80, max: 340 } });
+const seriesNameToColorLookup: Record<string, string> = {};
+
 /*
  * Check whether a color was already generated for a given series name
- * https://github.com/zenozeng/color-hash#custom-hue
  */
 export const getConsistentSeriesNameColor = (() => {
-  // Valid hue values are 0 to 360 and can be adjusted to control the generated colors.
-  // Picked min of 80 and max of 340 to exclude common threshold colors (orange / reddish)
-  const colorHash = new ColorHash({ hue: { min: 90, max: 340 } });
-  const stringToColorHash: Record<string, string> = {};
   return (inputString: string) => {
     // Check whether color has already been generated for a given series name.
     // Ensures colors are consistent across panels
-    if (!stringToColorHash[inputString]) {
-      const hslColor = colorHash.hsl(inputString);
-      const hue = hslColor[0];
-      const saturation = `${(hslColor[1] * 100).toFixed(0)}%`;
-      const lightness = `${(hslColor[2] * 100).toFixed(0)}%`;
-      const colorString = `hsla(${hue},${saturation},${lightness},0.8)`;
-      stringToColorHash[inputString] = colorString;
+    if (!seriesNameToColorLookup[inputString]) {
+      const [hue, saturation, lightness] = colorHash.hsl(inputString);
+      const saturationPercent = `${(saturation * 100).toFixed(0)}%`;
+      const lightnessPercent = `${(lightness * 100).toFixed(0)}%`;
+      const colorString = `hsla(${hue},${saturationPercent},${lightnessPercent},0.8)`;
+      seriesNameToColorLookup[inputString] = colorString;
     }
-    return stringToColorHash[inputString];
+    return seriesNameToColorLookup[inputString];
   };
 })();
