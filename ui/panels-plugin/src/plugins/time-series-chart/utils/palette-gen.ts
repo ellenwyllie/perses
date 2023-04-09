@@ -35,7 +35,8 @@ export function getSeriesColor(
   seriesCount: number,
   palette: string[],
   fallbackColor: string,
-  paletteKind: PaletteOptions['kind'] = 'Auto'
+  paletteKind: PaletteOptions['kind'] = 'Auto',
+  hue = 90
 ): string {
   if (paletteKind === 'Categorical' && Array.isArray(palette)) {
     const colorIndex = seriesCount % palette.length;
@@ -47,7 +48,7 @@ export function getSeriesColor(
   }
 
   // corresponds to 'Auto' in palette.kind
-  const generatedColor = getSeriesNameColor(name);
+  const generatedColor = getSeriesNameColor(name, hue);
   return generatedColor ?? fallbackColor;
 }
 
@@ -57,18 +58,20 @@ export function getSeriesColor(
  * Contrast colors started from: https://stackoverflow.com/a/12224359/17575201
  */
 export const getSeriesNameColor = (() => {
-  const colorHash = new ColorHash();
+  // const colorHash = new ColorHash();
   const stringToColorHash: Record<string, string> = {};
-  return (inputString: string) => {
+  return (inputString: string, inputHue: number) => {
     // check whether color has already been generated for a given series name
-    if (!stringToColorHash[inputString]) {
-      const hslColor = colorHash.hsl(inputString);
-      const hue = hslColor[0]; // TODO: make hue configurable using slider panel option
-      const saturation = `${(hslColor[1] * 100).toFixed(0)}%`;
-      const lightness = `${(hslColor[2] * 100).toFixed(0)}%`;
-      const colorString = `hsla(${hue},${saturation},${lightness},0.8)`;
-      stringToColorHash[inputString] = colorString;
-    }
+    // if (!stringToColorHash[inputString]) {
+    const colorHash = new ColorHash({ hue: inputHue });
+    // const colorHash = new ColorHash({ hue: { min: 90, max: 270 } });
+    const hslColor = colorHash.hsl(inputString);
+    const hue = hslColor[0];
+    const saturation = `${(hslColor[1] * 100).toFixed(0)}%`;
+    const lightness = `${(hslColor[2] * 100).toFixed(0)}%`;
+    const colorString = `hsla(${hue},${saturation},${lightness},0.8)`;
+    stringToColorHash[inputString] = colorString;
+    // }
     return stringToColorHash[inputString];
   };
 })();

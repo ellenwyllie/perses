@@ -67,10 +67,14 @@ export function VisualOptionsEditor({ value, onChange }: VisualOptionsEditorProp
             data-testid={VISUAL_CONFIG.point_radius.testId}
             value={value.point_radius ?? DEFAULT_POINT_RADIUS}
             valueLabelDisplay="auto"
-            step={VISUAL_CONFIG.point_radius.step}
+            // step={VISUAL_CONFIG.point_radius.step}
+            step={1}
             marks
-            min={VISUAL_CONFIG.point_radius.min}
-            max={VISUAL_CONFIG.point_radius.max}
+            // min={VISUAL_CONFIG.point_radius.min}
+            // max={VISUAL_CONFIG.point_radius.max}
+            // TODO: change to hue slider - https://github.com/zenozeng/color-hash#custom-hue
+            min={0}
+            max={360}
             onChange={handlePointRadiusChange}
           />
         }

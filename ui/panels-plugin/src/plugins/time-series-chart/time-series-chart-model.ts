@@ -87,7 +87,7 @@ export const VISUAL_CONFIG = {
     step: 0.25,
   },
   point_radius: {
-    label: 'Point Radius',
+    label: 'Hue',
     testId: 'slider-point-radius',
     min: 0,
     max: 6,
