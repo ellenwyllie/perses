@@ -63,7 +63,11 @@ export const getSeriesNameColor = (() => {
     // check whether color has already been generated for a given series name
     if (!stringToColorHash[inputString]) {
       const hslColor = colorHash.hsl(inputString);
-      stringToColorHash[inputString] = `hsla(${hslColor[0]},50%,50%,0.8)`;
+      const hue = hslColor[0]; // TODO: make hue configurable using slider panel option
+      const saturation = `${(hslColor[1] * 100).toFixed(0)}%`;
+      const lightness = `${(hslColor[2] * 100).toFixed(0)}%`;
+      const colorString = `hsla(${hue},${saturation},${lightness},0.8)`;
+      stringToColorHash[inputString] = colorString;
     }
     return stringToColorHash[inputString];
   };
