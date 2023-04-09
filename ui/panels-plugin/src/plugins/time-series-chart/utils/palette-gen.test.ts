@@ -11,65 +11,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getSeriesColor, getConsistentSeriesNameColor } from './palette-gen';
+import { getCategoricalPaletteColor, getConsistentSeriesNameColor } from './palette-gen';
 
-describe('getSeriesColor', () => {
+describe('getCategoricalPaletteColor', () => {
   const fallbackColor = '#ff0000';
 
-  it('should return generated color from series name', () => {
-    const value = getSeriesColor(
-      'Datapoint Processing Limit',
-      2,
-      ['#fff', '000', '#111', '#222', '#333'],
-      '#ff0000',
-      'Auto'
-    );
-    expect(value).toEqual('hsla(149.73865199449796,65%,35%,0.8)');
-  });
-
-  it('should return an alternate color based on series name', () => {
-    const value = getSeriesColor('test series name', 3, ['#fff', '000', '#111', '#222', '#333'], '#ff0000', 'Auto');
-    expect(value).toEqual('hsla(335.70839064649243,35%,35%,0.8)');
-  });
-
   it('should return 1st color in Categorical palette', () => {
-    const value = getSeriesColor(
-      'p90 test api subdomain',
-      0,
-      ['#fff', '000', '#111', '#222', '#333'],
-      fallbackColor,
-      'Categorical'
-    );
+    const value = getCategoricalPaletteColor(0, ['#fff', '000', '#111', '#222', '#333'], fallbackColor);
     expect(value).toEqual('#fff');
   });
 
   it('should return 3rd color in Categorical palette', () => {
-    const value = getSeriesColor(
-      'p90 test api subdomain',
-      2,
-      ['#fff', '000', '#111', '#222', '#333'],
-      fallbackColor,
-      'Categorical'
-    );
+    const value = getCategoricalPaletteColor(2, ['#fff', '000', '#111', '#222', '#333'], fallbackColor);
     expect(value).toEqual('#111');
   });
 
-  it('should return repeated 1st color in Categorical palette', () => {
-    const value = getSeriesColor(
-      'p90 test api subdomain',
-      5,
-      ['#fff', '000', '#111', '#222', '#333'],
-      fallbackColor,
-      'Categorical'
-    );
+  it('should repeat color after looping through entire palette', () => {
+    const value = getCategoricalPaletteColor(5, ['#fff', '000', '#111', '#222', '#333'], fallbackColor);
     expect(value).toEqual('#fff');
   });
 });
 
 describe('getConsistentSeriesNameColor', () => {
-  it('should generate a custom hsla color', () => {
-    const value = getConsistentSeriesNameColor('test');
-    expect(value).toEqual('hsla(285.9972489683631,35%,50%,0.8)');
+  it('should generate a consistent custom hsla color', () => {
+    const color = getConsistentSeriesNameColor('test');
+    const colorAlt = getConsistentSeriesNameColor('test');
+    expect(color).toEqual('hsla(285.9972489683631,35%,50%,0.8)');
+    expect(colorAlt).toEqual('hsla(285.9972489683631,35%,50%,0.8)');
   });
 
   it('should generate a color from the given series name', () => {
