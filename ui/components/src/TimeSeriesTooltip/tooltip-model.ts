@@ -30,32 +30,16 @@ export const TOOLTIP_DATE_FORMAT = new Intl.DateTimeFormat(undefined, {
   hour12: true,
 });
 
-export const defaultCursorData = {
-  coords: {
-    plotCanvas: {
-      x: 0,
-      y: 0,
-    },
-    zrender: {
-      x: 0,
-      y: 0,
-    },
-    target: null,
-  },
-  chartWidth: 0,
-};
-
-export const emptyTooltipData = {
-  cursor: defaultCursorData,
-  focusedSeries: null,
-};
-
 export interface CursorCoordinates {
   page: {
     x: number;
     y: number;
   };
   plotCanvas: {
+    x: number;
+    y: number;
+  };
+  viewport: {
     x: number;
     y: number;
   };
@@ -99,6 +83,10 @@ export const useMousePosition = (): CursorData['coords'] => {
         plotCanvas: {
           x: e.offsetX,
           y: e.offsetY,
+        },
+        viewport: {
+          x: e.clientX,
+          y: e.clientY,
         },
         zrender: {
           // echarts canvas coordinates added automatically by zrender
