@@ -45,7 +45,11 @@ export function assembleTransform(
 
   // adjust so tooltip does not get cut off at bottom of chart
   if (isCloseToBottom === true) {
-    y -= 120;
+    if (seriesNum > 4) {
+      y -= 160;
+    } else {
+      y -= 120;
+    }
   } else if (mousePos.plotCanvas.y > yPosAdjustThreshold) {
     y -= 100;
   }
