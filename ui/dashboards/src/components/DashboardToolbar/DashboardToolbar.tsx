@@ -14,7 +14,8 @@
 import { useState } from 'react';
 import { Typography, Stack, Button, Box, useTheme, useMediaQuery, Alert } from '@mui/material';
 import { ErrorBoundary, ErrorAlert } from '@perses-dev/components';
-import { DashboardResource } from '@perses-dev/core';
+import { DashboardResource, isRelativeTimeRange } from '@perses-dev/core';
+import { useTimeRange } from '@perses-dev/plugin-system';
 import { useDashboard, useEditMode } from '../../context';
 import { AddPanelButton } from '../AddPanelButton';
 import { AddGroupButton } from '../AddGroupButton';
@@ -45,6 +46,8 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
     onSave,
   } = props;
 
+  const { timeRange } = useTimeRange();
+
   const dashboard = useDashboard();
   const { isEditMode, setEditMode } = useEditMode();
 
@@ -61,6 +64,13 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
 
   const onSaveButtonClick = () => {
     if (onSave !== undefined) {
+      // TODO: if active timeRange from plugin-system is relative and is different than saved in dashboard update!
+      if (isRelativeTimeRange(timeRange)) {
+        if (dashboard.dashboard.spec.duration !== timeRange.pastDuration) {
+          console.log('New relative time range saved... TODO: show SaveChangesConfirmationDialog');
+          dashboard.dashboard.spec.duration = timeRange.pastDuration;
+        }
+      }
       setSavingDashboard(true);
       onSave(dashboard.dashboard)
         .then(() => {

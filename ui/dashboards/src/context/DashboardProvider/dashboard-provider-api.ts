@@ -229,6 +229,7 @@ export function useDefaultTimeRange() {
   return useDashboardStore(selectDefaultTimeRange);
 }
 
+// TODO: add save changes dialog for default template variables and time range
 const selectDiscardChangesConfirmationDialog = ({
   discardChangesConfirmationDialog,
   openDiscardChangesConfirmationDialog,
