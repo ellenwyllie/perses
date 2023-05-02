@@ -51,6 +51,9 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
   const dashboard = useDashboard();
   const { isEditMode, setEditMode } = useEditMode();
 
+  // TODO: implement useSaveChangesConfirmationDialog and confirm time range default and template variable default checkboxes
+  // const { openSaveChangesConfirmationDialog, closeSaveChangesConfirmationDialog } = useSaveChangesConfirmationDialog();
+
   const isBiggerThanMd = useMediaQuery(useTheme().breakpoints.up('md'));
   const isBiggerThanSm = useMediaQuery(useTheme().breakpoints.up('sm'));
 
