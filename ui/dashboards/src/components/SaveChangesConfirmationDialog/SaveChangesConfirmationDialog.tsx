@@ -11,19 +11,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import {
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Typography,
+} from '@mui/material';
 import CloseIcon from 'mdi-material-ui/Close';
-import { useDiscardChangesConfirmationDialog } from '../../context';
+import { useSaveChangesConfirmationDialog } from '../../context';
 
 export const SaveChangesConfirmationDialog = () => {
-  const { discardChangesConfirmationDialog: dialog } = useDiscardChangesConfirmationDialog();
+  // const { discardChangesConfirmationDialog: dialog } = useDiscardChangesConfirmationDialog();
+
+  const { saveChangesConfirmationDialog: dialog } = useSaveChangesConfirmationDialog();
   const isOpen = dialog !== undefined;
+
+  // closeSaveChangesConfirmationDialog () { set((state)=> {…}
+  // openSaveChangesConfirmationDialog (dialog) { set((state)=> {…}
+  // saveChangesConfirmationDialog
 
   return (
     <Dialog open={isOpen}>
       {dialog !== undefined && (
         <>
-          <DialogTitle>Discard Changes</DialogTitle>
+          <DialogTitle>Save Changes</DialogTitle>
           <IconButton
             aria-label="Close"
             onClick={dialog.onCancel}
@@ -36,12 +53,25 @@ export const SaveChangesConfirmationDialog = () => {
             <CloseIcon />
           </IconButton>
           <DialogContent dividers sx={{ width: '500px' }}>
-            {dialog.description ||
-              'It seems like you have made some changes to the dashboard, including the time period or variable values. Would you like to save these?'}
+            <Typography marginBottom={2}>
+              {dialog.description ||
+                'It seems like you have made some changes to the dashboard, including the time period or variable values. Would you like to save these?'}
+            </Typography>
+
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label="Save current time period as new default (Absolute time ranges can not be saved)"
+              />
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label="Save current variables values as new default"
+              />
+            </FormGroup>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" onClick={dialog.onDiscardChanges}>
-              Discard Changes
+            <Button variant="contained" onClick={dialog.onSaveChanges}>
+              Save Changes
             </Button>
             <Button variant="outlined" color="secondary" onClick={dialog.onCancel}>
               Cancel

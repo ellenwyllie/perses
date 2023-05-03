@@ -16,7 +16,7 @@ import { Typography, Stack, Button, Box, useTheme, useMediaQuery, Alert } from '
 import { ErrorBoundary, ErrorAlert } from '@perses-dev/components';
 import { DashboardResource, isRelativeTimeRange } from '@perses-dev/core';
 import { useTimeRange } from '@perses-dev/plugin-system';
-import { useDashboard, useEditMode } from '../../context';
+import { useDashboard, useEditMode, useSaveChangesConfirmationDialog } from '../../context';
 import { AddPanelButton } from '../AddPanelButton';
 import { AddGroupButton } from '../AddGroupButton';
 import { DownloadButton } from '../DownloadButton';
@@ -46,13 +46,13 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
     onSave,
   } = props;
 
-  const { timeRange } = useTimeRange();
+  const { timeRange, refresh } = useTimeRange();
 
   const dashboard = useDashboard();
   const { isEditMode, setEditMode } = useEditMode();
 
-  // TODO: implement useSaveChangesConfirmationDialog and confirm time range default and template variable default checkboxes
-  // const { openSaveChangesConfirmationDialog, closeSaveChangesConfirmationDialog } = useSaveChangesConfirmationDialog();
+  // Confirm whether to save new default time range and template variable selected values
+  const { openSaveChangesConfirmationDialog, closeSaveChangesConfirmationDialog } = useSaveChangesConfirmationDialog();
 
   const isBiggerThanMd = useMediaQuery(useTheme().breakpoints.up('md'));
   const isBiggerThanSm = useMediaQuery(useTheme().breakpoints.up('sm'));
@@ -66,18 +66,30 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
   );
 
   const onSaveButtonClick = () => {
-    if (onSave !== undefined) {
-      // TODO: if active timeRange from plugin-system is relative and is different than saved in dashboard update!
-      if (isRelativeTimeRange(timeRange)) {
-        if (dashboard.dashboard.spec.duration !== timeRange.pastDuration) {
-          console.log('New relative time range saved... TODO: show SaveChangesConfirmationDialog');
+    // Save dashboard if active timeRange from plugin-system is relative and different than currently saved
+    if (isRelativeTimeRange(timeRange) && dashboard.dashboard.spec.duration !== timeRange.pastDuration) {
+      openSaveChangesConfirmationDialog({
+        onSaveChanges: () => {
           dashboard.dashboard.spec.duration = timeRange.pastDuration;
-        }
-      }
+          saveDashboard();
+          refresh();
+        },
+        onCancel: () => {
+          closeSaveChangesConfirmationDialog();
+        },
+      });
+    } else {
+      saveDashboard();
+    }
+  };
+
+  const saveDashboard = () => {
+    if (onSave !== undefined) {
       setSavingDashboard(true);
       onSave(dashboard.dashboard)
         .then(() => {
           setSavingDashboard(false);
+          closeSaveChangesConfirmationDialog();
           setEditMode(false);
         })
         .catch(() => {
