@@ -31,6 +31,7 @@ export const EditJsonDialog = () => {
 const EditJsonDialogForm = () => {
   const { closeEditJsonDialog } = useEditJsonDialog();
   const { dashboard, setDashboard } = useDashboard();
+  console.log('EditJsonDialogForm -> dashboard.spec.duration: ', dashboard.spec.duration);
   const [draftDashboard, setDraftDashboard] = useState(dashboard);
 
   const handleApply = (e: FormEvent) => {

@@ -40,7 +40,7 @@ export const SaveChangesConfirmationDialog = () => {
     <Dialog open={isOpen}>
       {dialog !== undefined && (
         <>
-          <DialogTitle>Save Changes</DialogTitle>
+          <DialogTitle>Save Dashboard</DialogTitle>
           <IconButton
             aria-label="Close"
             onClick={dialog.onCancel}
@@ -63,15 +63,15 @@ export const SaveChangesConfirmationDialog = () => {
                 control={<Checkbox defaultChecked />}
                 label="Save current time period as new default (Absolute time ranges can not be saved)"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox defaultChecked />}
                 label="Save current variables values as new default"
-              />
+              /> */}
             </FormGroup>
           </DialogContent>
           <DialogActions>
             <Button variant="contained" onClick={dialog.onSaveChanges}>
-              Save Changes
+              Save
             </Button>
             <Button variant="outlined" color="secondary" onClick={dialog.onCancel}>
               Cancel

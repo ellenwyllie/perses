@@ -11,12 +11,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { isEqual } from 'lodash-es';
 import { useState } from 'react';
 import { Typography, Stack, Button, Box, useTheme, useMediaQuery, Alert } from '@mui/material';
 import { ErrorBoundary, ErrorAlert } from '@perses-dev/components';
 import { DashboardResource, isRelativeTimeRange } from '@perses-dev/core';
 import { useTimeRange } from '@perses-dev/plugin-system';
-import { useDashboard, useEditMode, useSaveChangesConfirmationDialog } from '../../context';
+import {
+  useDashboard,
+  useEditMode,
+  useSaveChangesConfirmationDialog,
+  useTemplateVariableDefinitions,
+} from '../../context';
 import { AddPanelButton } from '../AddPanelButton';
 import { AddGroupButton } from '../AddGroupButton';
 import { DownloadButton } from '../DownloadButton';
@@ -46,9 +52,16 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
     onSave,
   } = props;
 
-  const { timeRange, refresh } = useTimeRange();
+  const { timeRange } = useTimeRange();
 
-  const dashboard = useDashboard();
+  // const { timeRange, refresh } = useTimeRange();
+
+  const { dashboard } = useDashboard();
+  // const { dashboard, setDashboard } = useDashboard();
+
+  // const variables = useTemplateVariableValues();
+  const variables = useTemplateVariableDefinitions();
+
   const { isEditMode, setEditMode } = useEditMode();
 
   // Confirm whether to save new default time range and template variable selected values
@@ -66,13 +79,18 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
   );
 
   const onSaveButtonClick = () => {
+    const isSelectedVariablesUpdated = isEqual(dashboard.spec.variables, variables);
+    console.log('Old dashboard.spec.variables -> ', dashboard.spec.variables);
+    console.log('New variables -> ', variables);
+    console.log('isSelectedVariablesUpdated -> ', isSelectedVariablesUpdated);
+
+    const isTimeRangeUpdated = isRelativeTimeRange(timeRange) && dashboard.spec.duration !== timeRange.pastDuration;
     // Save dashboard if active timeRange from plugin-system is relative and different than currently saved
-    if (isRelativeTimeRange(timeRange) && dashboard.dashboard.spec.duration !== timeRange.pastDuration) {
+    if (isTimeRangeUpdated) {
       openSaveChangesConfirmationDialog({
         onSaveChanges: () => {
-          dashboard.dashboard.spec.duration = timeRange.pastDuration;
+          dashboard.spec.duration = timeRange.pastDuration;
           saveDashboard();
-          refresh();
         },
         onCancel: () => {
           closeSaveChangesConfirmationDialog();
@@ -86,11 +104,14 @@ export const DashboardToolbar = (props: DashboardToolbarProps) => {
   const saveDashboard = () => {
     if (onSave !== undefined) {
       setSavingDashboard(true);
-      onSave(dashboard.dashboard)
+      onSave(dashboard)
         .then(() => {
           setSavingDashboard(false);
           closeSaveChangesConfirmationDialog();
           setEditMode(false);
+          // Ensure JSON code editor is up to date without refreshing page
+          // setDashboard(dashboard); // TODO: fix out of date dashboard after clicking EditJsonButton
+          // refresh();
         })
         .catch(() => {
           setSavingDashboard(false);
