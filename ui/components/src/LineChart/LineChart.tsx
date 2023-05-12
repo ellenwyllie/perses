@@ -14,14 +14,13 @@
 import React, { MouseEvent, useMemo, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import type {
-  EChartsCoreOption,
   GridComponentOption,
   LineSeriesOption,
   LegendComponentOption,
   YAXisComponentOption,
   TooltipComponentOption,
 } from 'echarts';
-import { ECharts as EChartsInstance, use } from 'echarts/core';
+import { ECharts as EChartsInstance, use, ComposeOption } from 'echarts/core';
 import { LineChart as EChartsLineChart } from 'echarts/charts';
 import {
   GridComponent,
@@ -57,6 +56,17 @@ use([
   CanvasRenderer,
 ]);
 
+// https://apache.github.io/echarts-handbook/en/basics/import/#creating-an-option-type-in-typescript
+type LineChartOption = ComposeOption<TooltipComponentOption>;
+// type ECOption = ComposeOption<
+//   | BarSeriesOption
+//   | LineSeriesOption
+//   | TitleComponentOption
+//   | TooltipComponentOption
+//   | GridComponentOption
+//   | DatasetComponentOption
+// >;
+
 export type TooltipConfig = {
   wrapLabels: boolean;
   hidden?: boolean;
@@ -75,7 +85,7 @@ export interface LineChartProps {
   tooltipConfig?: TooltipConfig;
   onDataZoom?: (e: ZoomEventData) => void;
   onDoubleClick?: (e: MouseEvent) => void;
-  __experimentalEChartsOptionsOverride?: (options: EChartsCoreOption) => EChartsCoreOption;
+  __experimentalEChartsOptionsOverride?: (options: LineChartOption) => LineChartOption;
 }
 
 export function LineChart({
@@ -143,7 +153,7 @@ export function LineChart({
 
   const { noDataOption } = chartsTheme;
 
-  const option: EChartsCoreOption = useMemo(() => {
+  const option: LineChartOption = useMemo(() => {
     if (data.timeSeries === undefined) return {};
     if (data.timeSeries === null || data.timeSeries.length === 0) return noDataOption;
 
@@ -152,7 +162,7 @@ export function LineChart({
 
     const rangeMs = data.rangeMs ?? getDateRange(data.xAxis);
 
-    const option: EChartsCoreOption = {
+    const option: LineChartOption = {
       series: data.timeSeries,
       xAxis: {
         type: 'category',
@@ -193,6 +203,8 @@ export function LineChart({
     return option;
   }, [data, yAxis, unit, grid, legend, noDataOption, timeZone, __experimentalEChartsOptionsOverride]);
 
+  // TODO: fix type error
+  // - Property 'showContent' does not exist on type 'Arrayable<TooltipOption>'
   return (
     <Box
       sx={{ height }}
@@ -221,17 +233,15 @@ export function LineChart({
       onDoubleClick={handleOnDoubleClick}
     >
       {/* Allows overrides prop to hide custom tooltip and use the ECharts option.tooltip instead */}
-      {showTooltip === true &&
-        (option.tooltip as TooltipComponentOption)?.showContent === false &&
-        tooltipConfig.hidden !== true && (
-          <TimeSeriesTooltip
-            chartRef={chartRef}
-            chartData={data}
-            wrapLabels={tooltipConfig.wrapLabels}
-            pinTooltip={pinTooltip}
-            unit={unit}
-          />
-        )}
+      {showTooltip === true && option.tooltip?.showContent === false && tooltipConfig.hidden !== true && (
+        <TimeSeriesTooltip
+          chartRef={chartRef}
+          chartData={data}
+          wrapLabels={tooltipConfig.wrapLabels}
+          pinTooltip={pinTooltip}
+          unit={unit}
+        />
+      )}
       <EChart
         sx={{
           width: '100%',
