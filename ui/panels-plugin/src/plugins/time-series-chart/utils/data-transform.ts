@@ -87,10 +87,28 @@ export function getLineSeries(
     },
     // https://echarts.apache.org/en/option.html#series-line.emphasis
     emphasis: {
+      focus: 'series', // none, self, series
+      blurScope: 'coordinateSystem', // coordinateSystem, global, series
       disabled: visual.area_opacity !== undefined && visual.area_opacity > 0, // prevents flicker when moving cursor between shaded regions
+      // lineStyle: {
+      //   width: lineWidth + 1,
+      //   opacity: 1,
+      // },
+    },
+    blur: {
+      // lineStyle: {
+      //   width: 0,
+      //   opacity: 0.3,
+      // },
+    },
+    triggerLineEvent: true,
+    selectedMode: 'multiple',
+    // https://echarts.apache.org/en/option.html#series-line.select
+    select: {
+      disabled: false,
       lineStyle: {
-        width: lineWidth + 1,
-        opacity: 1,
+        width: 10,
+        opacity: 0.3,
       },
     },
   };

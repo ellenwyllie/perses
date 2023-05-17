@@ -98,6 +98,22 @@ export function LineChart({
 
   const handleEvents: OnEventsType<LineSeriesOption['data'] | unknown> = useMemo(() => {
     return {
+      click: (params) => {
+        console.log('LineChart -> click params: ', params);
+        if (chartRef.current !== undefined) {
+          // TODO: why not working?
+          // chartRef.current.dispatchAction({
+          //   type: 'select',
+          //   seriesIndex: params.seriesIndex,
+          // });
+          //
+          // https://echarts.apache.org/en/api.html#action.toggleSelect
+          chartRef.current.dispatchAction({
+            type: 'toggleSelect',
+            seriesIndex: params.seriesIndex,
+          });
+        }
+      },
       datazoom: (params) => {
         if (onDataZoom === undefined) {
           setTimeout(() => {
@@ -175,8 +191,8 @@ export function LineChart({
       axisPointer: {
         type: isOptimizedMode ? 'none' : 'line',
         z: 0, // ensure point symbol shows on top of dashed line
-        triggerEmphasis: false, // https://github.com/apache/echarts/issues/18495
-        triggerTooltip: false,
+        // triggerEmphasis: false, // https://github.com/apache/echarts/issues/18495
+        // triggerTooltip: false,
         snap: true,
       },
       toolbox: {
