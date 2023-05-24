@@ -11,10 +11,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import PinOutline from 'mdi-material-ui/PinOutline';
 import Pin from 'mdi-material-ui/Pin';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Switch, Typography } from '@mui/material';
 import { useTimeZone } from '../context/TimeZoneProvider';
 import { FocusedSeriesArray } from './focused-series';
 import { SeriesInfo } from './SeriesInfo';
@@ -23,11 +23,14 @@ export interface TooltipContentProps {
   series: FocusedSeriesArray | null;
   tooltipPinned: boolean;
   wrapLabels?: boolean;
+  showAllSeries: boolean;
+  onShowAllClick: (showAll: boolean) => void;
   onUnpinClick: () => void;
 }
 
 export function TooltipContent(props: TooltipContentProps) {
-  const { series, wrapLabels, tooltipPinned, onUnpinClick } = props;
+  const { series, wrapLabels, tooltipPinned, showAllSeries, onShowAllClick, onUnpinClick } = props;
+  // const [showAllSeries, setShowAllSeries] = useState(false);
   const { formatWithUserTimeZone } = useTimeZone();
 
   const seriesTime = series && series[0] && series[0].date ? series[0].date : null;
@@ -62,6 +65,8 @@ export function TooltipContent(props: TooltipContentProps) {
     return null;
   }
 
+  const showAllSeriesToggle = true;
+
   // TODO: use react-virtuoso to improve performance
   return (
     <Stack py={1} spacing={0.5}>
@@ -74,6 +79,20 @@ export function TooltipContent(props: TooltipContentProps) {
       >
         {formatTimeSeriesHeader(seriesTime)}
         <Stack direction="row" gap={1} sx={{ marginLeft: 'auto' }}>
+          {showAllSeriesToggle && (
+            <Stack direction="row" gap={1} alignItems="center" sx={{ textAlign: 'right' }}>
+              <Typography>Show All?</Typography>
+              <Switch
+                checked={showAllSeries}
+                onChange={(_, checked) => onShowAllClick(checked)}
+                sx={(theme) => ({
+                  '& .MuiSwitch-switchBase': {
+                    color: theme.palette.common.white,
+                  },
+                })}
+              />
+            </Stack>
+          )}
           <Typography sx={{ fontSize: 11 }}>Click to {tooltipPinned ? 'Unpin' : 'Pin'}</Typography>
           {tooltipPinned ? (
             <Pin onClick={onUnpinClick} sx={{ fontSize: 16, cursor: 'pointer' }} />

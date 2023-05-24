@@ -78,11 +78,12 @@ export const TimeSeriesTooltip = React.memo(function TimeSeriesTooltip({
 
   // Option for user to see all series instead of only the nearby focused series.
   // Only relevant when there are more total series than are visible.
-  const showAllSeriesToggle =
-    tooltipPinned === true &&
-    showAllSeries === false &&
-    chartData.timeSeries.length > 1 &&
-    focusedSeries.length !== chartData.timeSeries.length;
+  // const showAllSeriesToggle =
+  //   tooltipPinned === true &&
+  //   showAllSeries === false &&
+  //   chartData.timeSeries.length > 1 &&
+  //   focusedSeries.length !== chartData.timeSeries.length;
+  // const showAllSeriesToggle = tooltipPinned === true;
 
   return (
     <Portal>
@@ -117,6 +118,11 @@ export const TimeSeriesTooltip = React.memo(function TimeSeriesTooltip({
           series={focusedSeries}
           wrapLabels={wrapLabels}
           tooltipPinned={tooltipPinned}
+          showAllSeries={showAllSeries}
+          onShowAllClick={(showAll) => {
+            console.log(showAll);
+            setShowAllSeries(showAll);
+          }}
           onUnpinClick={() => {
             setPinnedPos(null);
             if (onUnpinClick !== undefined) {
@@ -124,20 +130,6 @@ export const TimeSeriesTooltip = React.memo(function TimeSeriesTooltip({
             }
           }}
         />
-        {showAllSeriesToggle && (
-          <Stack direction="row" gap={1} alignItems="center" sx={{ textAlign: 'right' }}>
-            <Typography>Show All?</Typography>
-            <Switch
-              checked={showAllSeries}
-              onChange={(_, checked) => setShowAllSeries(checked)}
-              sx={(theme) => ({
-                '& .MuiSwitch-switchBase': {
-                  color: theme.palette.common.white,
-                },
-              })}
-            />
-          </Stack>
-        )}
       </Box>
     </Portal>
   );
