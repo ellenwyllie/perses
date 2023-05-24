@@ -11,50 +11,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useMemo, useState } from 'react';
-import PinOutline from 'mdi-material-ui/PinOutline';
-import Pin from 'mdi-material-ui/Pin';
-import { Box, Divider, Stack, Switch, Typography } from '@mui/material';
-import { useTimeZone } from '../context/TimeZoneProvider';
+import { useMemo } from 'react';
+import { Box } from '@mui/material';
 import { FocusedSeriesArray } from './focused-series';
 import { SeriesInfo } from './SeriesInfo';
 
 export interface TooltipContentProps {
   series: FocusedSeriesArray | null;
-  tooltipPinned: boolean;
   wrapLabels?: boolean;
-  showAllSeries: boolean;
-  onShowAllClick: (showAll: boolean) => void;
-  onUnpinClick: () => void;
+  // tooltipPinned: boolean;
+  // showAllSeries: boolean;
+  // onShowAllClick: (showAll: boolean) => void;
+  // onUnpinClick: () => void;
 }
 
 export function TooltipContent(props: TooltipContentProps) {
-  const { series, wrapLabels, tooltipPinned, showAllSeries, onShowAllClick, onUnpinClick } = props;
-  // const [showAllSeries, setShowAllSeries] = useState(false);
-  const { formatWithUserTimeZone } = useTimeZone();
+  const { series, wrapLabels } = props;
 
   const seriesTime = series && series[0] && series[0].date ? series[0].date : null;
-
-  const formatTimeSeriesHeader = (timeMs: number) => {
-    const date = new Date(timeMs);
-    const formattedDate = formatWithUserTimeZone(date, 'MMM dd, yyyy - ');
-    const formattedTime = formatWithUserTimeZone(date, 'HH:mm:ss');
-    return (
-      <Box>
-        <Typography
-          variant="caption"
-          sx={(theme) => ({
-            color: theme.palette.common.white,
-          })}
-        >
-          {formattedDate}
-        </Typography>
-        <Typography variant="caption">
-          <strong>{formattedTime}</strong>
-        </Typography>
-      </Box>
-    );
-  };
 
   const sortedFocusedSeries = useMemo(() => {
     if (series === null) return null;
@@ -65,73 +39,30 @@ export function TooltipContent(props: TooltipContentProps) {
     return null;
   }
 
-  const showAllSeriesToggle = true;
-
   // TODO: use react-virtuoso to improve performance
   return (
-    <Stack py={1} spacing={0.5}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'start',
-          alignItems: 'center',
-        }}
-      >
-        {formatTimeSeriesHeader(seriesTime)}
-        <Stack direction="row" gap={1} sx={{ marginLeft: 'auto' }}>
-          {showAllSeriesToggle && (
-            <Stack direction="row" gap={1} alignItems="center" sx={{ textAlign: 'right' }}>
-              <Typography>Show All?</Typography>
-              <Switch
-                checked={showAllSeries}
-                onChange={(_, checked) => onShowAllClick(checked)}
-                sx={(theme) => ({
-                  '& .MuiSwitch-switchBase': {
-                    color: theme.palette.common.white,
-                  },
-                })}
-              />
-            </Stack>
-          )}
-          <Typography sx={{ fontSize: 11 }}>Click to {tooltipPinned ? 'Unpin' : 'Pin'}</Typography>
-          {tooltipPinned ? (
-            <Pin onClick={onUnpinClick} sx={{ fontSize: 16, cursor: 'pointer' }} />
-          ) : (
-            <PinOutline sx={{ fontSize: 16 }} />
-          )}
-        </Stack>
-      </Box>
+    <Box
+      sx={{
+        display: 'table',
+      }}
+    >
+      {sortedFocusedSeries.map(({ datumIdx, seriesIdx, seriesName, y, formattedY, markerColor, isClosestToCursor }) => {
+        if (datumIdx === null || seriesIdx === null) return null;
+        const key = seriesIdx.toString() + datumIdx.toString();
 
-      <Divider
-        sx={(theme) => ({
-          borderColor: theme.palette.grey['500'],
-        })}
-      />
-      <Box
-        sx={{
-          display: 'table',
-        }}
-      >
-        {sortedFocusedSeries.map(
-          ({ datumIdx, seriesIdx, seriesName, y, formattedY, markerColor, isClosestToCursor }) => {
-            if (datumIdx === null || seriesIdx === null) return null;
-            const key = seriesIdx.toString() + datumIdx.toString();
-
-            return (
-              <SeriesInfo
-                key={key}
-                seriesName={seriesName}
-                y={y}
-                formattedY={formattedY}
-                markerColor={markerColor}
-                totalSeries={sortedFocusedSeries.length}
-                wrapLabels={wrapLabels}
-                emphasizeText={isClosestToCursor}
-              />
-            );
-          }
-        )}
-      </Box>
-    </Stack>
+        return (
+          <SeriesInfo
+            key={key}
+            seriesName={seriesName}
+            y={y}
+            formattedY={formattedY}
+            markerColor={markerColor}
+            totalSeries={sortedFocusedSeries.length}
+            wrapLabels={wrapLabels}
+            emphasizeText={isClosestToCursor}
+          />
+        );
+      })}
+    </Box>
   );
 }
