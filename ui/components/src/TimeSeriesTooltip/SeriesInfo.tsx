@@ -56,19 +56,40 @@ export function SeriesInfo(props: SeriesInfoProps) {
   const formattedSeriesInfo = seriesName.replace(/[,]/g, ', ');
 
   return (
-    <Stack direction="row" pb={0.5}>
+    // <Stack direction="row" pb={0.5}>
+    <Box
+      sx={{
+        // display: 'flex'
+        display: 'inline-block',
+        float: 'left',
+      }}
+    >
       <SeriesMarker
         markerColor={markerColor}
         sx={{
+          display: 'inline-block',
+          float: 'left',
           marginTop: 0.6,
         }}
       />
       <Box
+        // component="span"
         sx={{
-          flex: 1,
-          width: 'calc(100% - 20px)',
+          display: 'inline-block',
+          float: 'left',
           minWidth: 150,
           maxWidth: TOOLTIP_LABELS_MAX_WIDTH,
+          // flex: 1,
+          // flexGrow: 1,
+          // // width: 'calc(100% - 20px)',
+          // // // flexGrow: 1,
+          // // // minWidth: 150,
+          // // // maxWidth: TOOLTIP_LABELS_MAX_WIDTH,
+          // // flexGrow: 1,
+          // // overflowX: 'hidden',
+          // // overflowY: 'auto',
+          // // display: 'flex',
+          // // flexDirection: 'column',
         }}
       >
         <Typography
@@ -96,6 +117,8 @@ export function SeriesInfo(props: SeriesInfoProps) {
 
       <Box
         sx={{
+          display: 'inline-block',
+          float: 'right',
           marginLeft: 'auto',
         }}
       >
@@ -109,6 +132,6 @@ export function SeriesInfo(props: SeriesInfoProps) {
           {formattedY}
         </Typography>
       </Box>
-    </Stack>
+    </Box>
   );
 }

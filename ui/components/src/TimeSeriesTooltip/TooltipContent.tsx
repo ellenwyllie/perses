@@ -16,7 +16,13 @@ import { Virtuoso } from 'react-virtuoso';
 import { Box, useTheme } from '@mui/material';
 import { NearbySeriesArray } from './nearby-series';
 import { SeriesInfo } from './SeriesInfo';
-import { APPROX_SERIES_HEIGHT, TOOLTIP_MAX_HEIGHT, TOOLTIP_MULTI_SERIES_MIN_WIDTH } from './tooltip-model';
+import {
+  APPROX_SERIES_HEIGHT,
+  TOOLTIP_MAX_HEIGHT,
+  TOOLTIP_MAX_WIDTH,
+  TOOLTIP_SINGLE_SERIES_MIN_WIDTH,
+  TOOLTIP_MULTI_SERIES_MIN_WIDTH,
+} from './tooltip-model';
 
 export interface TooltipContentProps {
   series: NearbySeriesArray | null;
@@ -69,7 +75,15 @@ export function TooltipContent(props: TooltipContentProps) {
 
   return (
     <Virtuoso
-      style={{ height: contentHeight, width: TOOLTIP_MULTI_SERIES_MIN_WIDTH }}
+      // style={{ height: contentHeight, width: TOOLTIP_MULTI_SERIES_MIN_WIDTH }}
+      style={{
+        // minWidth: TOOLTIP_MULTI_SERIES_MIN_WIDTH,
+        // minWidth: TOOLTIP_SINGLE_SERIES_MIN_WIDTH,
+        // width: '100%',
+        maxWidth: TOOLTIP_MAX_WIDTH,
+        minHeight: contentHeight,
+        maxHeight: TOOLTIP_MAX_HEIGHT,
+      }}
       data={sortedFocusedSeries}
       totalCount={totalSeries}
       overscan={50}

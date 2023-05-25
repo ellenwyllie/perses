@@ -14,7 +14,8 @@
 import { useEffect, useState } from 'react';
 import { NearbySeriesArray } from './nearby-series';
 
-export const TOOLTIP_SINGLE_SERIES_MIN_WIDTH = 375;
+// export const TOOLTIP_SINGLE_SERIES_MIN_WIDTH = 375;
+export const TOOLTIP_SINGLE_SERIES_MIN_WIDTH = 300;
 export const TOOLTIP_MULTI_SERIES_MIN_WIDTH = 500; // TODO: add check for number of characters in series name in case this should be narrower
 export const TOOLTIP_MAX_WIDTH = 650;
 export const TOOLTIP_MAX_HEIGHT = 650;

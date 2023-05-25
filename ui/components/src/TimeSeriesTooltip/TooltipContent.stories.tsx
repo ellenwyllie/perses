@@ -56,28 +56,28 @@ export const SingleSeries: Story = {
 export const MultiSeries: Story = {
   args: {
     series: [
-      {
-        seriesIdx: 1,
-        datumIdx: 48,
-        seriesName: 'node_memory_MemFree_bytes{env="demo",instance="demo.do.prometheus.io:9100",job="node"}',
-        date: 1671803040000,
-        x: 1671821040000,
-        y: 84635648,
-        formattedY: '84.64M',
-        markerColor: 'hsla(1887856572,50%,50%,0.8)',
-        isClosestToCursor: false,
-      },
-      {
-        seriesIdx: 2,
-        datumIdx: 48,
-        seriesName: 'node_memory_Buffers_bytes{env="demo",instance="demo.do.prometheus.io:9100",job="node"}',
-        date: 1671803040000,
-        x: 1671821040000,
-        y: 123499933771520,
-        formattedY: '123499933.77M',
-        markerColor: 'hsla(158479636,50%,50%,0.8)',
-        isClosestToCursor: false,
-      },
+      // {
+      //   seriesIdx: 1,
+      //   datumIdx: 48,
+      //   seriesName: 'node_memory_MemFree_bytes{env="demo",instance="demo.do.prometheus.io:9100",job="node"}',
+      //   date: 1671803040000,
+      //   x: 1671821040000,
+      //   y: 84635648,
+      //   formattedY: '84.64M',
+      //   markerColor: 'hsla(1887856572,50%,50%,0.8)',
+      //   isClosestToCursor: false,
+      // },
+      // {
+      //   seriesIdx: 2,
+      //   datumIdx: 48,
+      //   seriesName: 'node_memory_Buffers_bytes{env="demo",instance="demo.do.prometheus.io:9100",job="node"}',
+      //   date: 1671803040000,
+      //   x: 1671821040000,
+      //   y: 123499933771520,
+      //   formattedY: '123499933.77M',
+      //   markerColor: 'hsla(158479636,50%,50%,0.8)',
+      //   isClosestToCursor: false,
+      // },
       {
         seriesIdx: 3,
         datumIdx: 48,
@@ -89,49 +89,45 @@ export const MultiSeries: Story = {
         markerColor: '#87C59D',
         isClosestToCursor: false,
       },
-      {
-        seriesIdx: 4,
-        datumIdx: 48,
-        seriesName: 'node_memory_Total_bytes{env="demo",instance="demo.do.prometheus.io:9100",job="node"}',
-        date: 1671803040000,
-        x: 1671821040000,
-        y: 99635655,
-        formattedY: '99.63M',
-        markerColor: '#9179D2',
-        isClosestToCursor: true,
-      },
-      {
-        seriesIdx: 5,
-        datumIdx: 48,
-        seriesName:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure dolor in reprehenderit in voluptate',
-        date: 1671803040000,
-        x: 1671821040000,
-        y: 99999912345,
-        formattedY: '99.9999M',
-        markerColor: '#FFF',
-        isClosestToCursor: false,
-      },
-      {
-        seriesIdx: 6,
-        datumIdx: 48,
-        seriesName:
-          'node_network_receive_bytes_total{device="eth0", instance="demo.do.prometheus.io:9100", job="node-exporter", mountpoint="/", fs_type="ext4", mode="ro", fstype="/dev/sda1", device_type="physical"}',
-        date: 1671803040000,
-        x: 1671821040000,
-        y: 8888812345,
-        formattedY: '88.8888M',
-        markerColor: '#0047AB',
-        isClosestToCursor: true,
-      },
+      // {
+      //   seriesIdx: 4,
+      //   datumIdx: 48,
+      //   seriesName: 'node_memory_Total_bytes{env="demo",instance="demo.do.prometheus.io:9100",job="node"}',
+      //   date: 1671803040000,
+      //   x: 1671821040000,
+      //   y: 99635655,
+      //   formattedY: '99.63M',
+      //   markerColor: '#9179D2',
+      //   isClosestToCursor: true,
+      // },
+      // {
+      //   seriesIdx: 5,
+      //   datumIdx: 48,
+      //   seriesName:
+      //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat aute irure dolor in reprehenderit in voluptate',
+      //   date: 1671803040000,
+      //   x: 1671821040000,
+      //   y: 99999912345,
+      //   formattedY: '99.9999M',
+      //   markerColor: '#FFF',
+      //   isClosestToCursor: false,
+      // },
+      // {
+      //   seriesIdx: 6,
+      //   datumIdx: 48,
+      //   seriesName:
+      //     'node_network_receive_bytes_total{device="eth0", instance="demo.do.prometheus.io:9100", job="node-exporter", mountpoint="/", fs_type="ext4", mode="ro", fstype="/dev/sda1", device_type="physical"}',
+      //   date: 1671803040000,
+      //   x: 1671821040000,
+      //   y: 8888812345,
+      //   formattedY: '88.8888M',
+      //   markerColor: '#0047AB',
+      //   isClosestToCursor: true,
+      // },
     ],
     wrapLabels: true,
   },
   render: (args) => {
-    return (
-      <div style={{ width: '100px' }}>
-        <TooltipContent {...args} />
-      </div>
-    );
+    return <TooltipContent {...args} />;
   },
 };
