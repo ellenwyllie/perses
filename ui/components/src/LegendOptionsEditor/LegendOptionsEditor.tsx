@@ -24,6 +24,7 @@ import {
   LEGEND_VALUE_CONFIG,
   getLegendMode,
   LegendValueConfig,
+  LegendValue,
 } from '../model';
 import { OptionsEditorControl } from '../OptionsEditorLayout';
 
@@ -48,7 +49,7 @@ const MODE_OPTIONS: LegendModeOption[] = Object.entries(LEGEND_MODE_CONFIG).map(
 type LegendValueOption = LegendSingleSelectConfig & { id: string };
 const VALUE_OPTIONS: LegendValueOption[] = Object.entries(LEGEND_VALUE_CONFIG).map(([id, config]) => {
   return {
-    id: id as LegendOptions['mode'],
+    id: id as LegendValue,
     ...config,
   };
 });
