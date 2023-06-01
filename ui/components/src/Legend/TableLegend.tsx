@@ -13,7 +13,7 @@
 
 import { useMemo } from 'react';
 import { Table, TableProps, TableColumnConfig } from '../Table';
-import { LegendItem, LegendOptions } from '../model';
+import { LegendItem, LegendOptions, formatValue } from '../model';
 
 export interface TableLegendProps {
   items: LegendItem[];
@@ -64,7 +64,8 @@ export function TableLegend({
         }, {} as Record<string, boolean>);
   }, [initRowSelection, items]);
 
-  const columns =
+  // TODO: fix typing and how this runs
+  const columns: Array<TableColumnConfig<LegendItem>> =
     values && values.length
       ? [
           ...COLUMNS,
@@ -74,6 +75,14 @@ export function TableLegend({
               header: value.label,
               width: value.width,
               align: 'right' as const,
+              cell: ({ getValue }) => {
+                const cellValue = getValue();
+
+                if (typeof cellValue === 'number' && value.unit) {
+                  return formatValue(cellValue, value.unit);
+                }
+                return getValue();
+              },
             };
           }),
         ]

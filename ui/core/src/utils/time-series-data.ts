@@ -143,7 +143,7 @@ export function getLegendValues(yValues: Array<number | null>): Record<string, n
       if (typeof max === 'undefined') {
         max = value;
       } else {
-        max = Math.max(min, value);
+        max = Math.max(max, value);
       }
     }
   });

@@ -13,6 +13,7 @@
 
 import { MouseEventHandler } from 'react';
 import { TableColumnConfig } from '../Table';
+import { UnitOptions } from './units';
 
 export const legendPositions = ['Bottom', 'Right'] as const;
 export type LegendPositions = (typeof legendPositions)[number];
@@ -24,6 +25,7 @@ export type LegendValueConfig = {
   id: string;
   label: string;
   width?: TableColumnConfig<unknown>['width'];
+  unit?: UnitOptions;
 };
 
 export interface LegendOptions {
@@ -37,7 +39,7 @@ export interface LegendItem {
   label: string;
   color: string;
   onClick?: MouseEventHandler<HTMLElement>;
-  values?: Record<string, number>;
+  values?: Record<string, number | string | undefined>;
 }
 
 export type LegendSingleSelectConfig = {

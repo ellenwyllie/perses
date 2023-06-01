@@ -88,41 +88,47 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
       ? merge({}, DEFAULT_LEGEND, props.spec.legend)
       : undefined;
 
+  // TODO: add support for y_axis_alt.unit
+  const unit = props.spec.y_axis?.unit ?? DEFAULT_UNIT;
+
   const legendValues: LegendValueConfig[] = [
     {
       id: 'averageNonNull',
       label: 'Average',
       width: 100,
+      unit,
     },
     {
       id: 'firstNonNull',
       label: 'First',
       width: 100,
+      unit,
     },
     {
       id: 'lastNonNull',
       label: 'Last',
       width: 100,
+      unit,
     },
     {
       id: 'min',
       label: 'Min',
       width: 100,
+      unit,
     },
     {
       id: 'max',
       label: 'Max',
       width: 100,
+      unit,
     },
     {
       id: 'total',
       label: 'Total',
       width: 100,
+      unit,
     },
   ];
-
-  // TODO: add support for y_axis_alt.unit
-  const unit = props.spec.y_axis?.unit ?? DEFAULT_UNIT;
 
   // ensures there are fallbacks for unset properties since most
   // users should not need to customize visual display
