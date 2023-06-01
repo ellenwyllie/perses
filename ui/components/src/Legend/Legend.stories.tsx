@@ -30,14 +30,25 @@ const MOCK_COLORS = COLOR_SHADES.reduce((results, colorShade) => {
   return results;
 }, [] as string[]);
 
-function generateMockLegendData(count: number, labelPrefix = 'legend item'): LegendProps['data'] {
+type GenerateMockLegendDataOpts = {
+  labelPrefix?: string;
+  includeValues?: boolean;
+};
+
+function generateMockLegendData(
+  count: number,
+  { labelPrefix = 'legend item', includeValues = false }: GenerateMockLegendDataOpts = {}
+): LegendProps['data'] {
   const data: LegendProps['data'] = [];
   for (let i = 0; i < count; i++) {
+    const mockValues = { total: i };
+
     data.push({
       id: `${i}`,
       label: `${labelPrefix} ${i}`,
       color: MOCK_COLORS[i % MOCK_COLORS.length] as string,
       onClick: action(`onClick legendItem ${i}`),
+      values: includeValues ? mockValues : undefined,
     });
   }
   return data;
@@ -290,6 +301,28 @@ export const SelectedItems: StoryObj<LegendProps> = {
   },
 };
 
+export const TableValues: StoryObj<LegendProps> = {
+  args: {
+    width: 600,
+    height: 200,
+    data: generateMockLegendData(10, {
+      includeValues: true,
+    }),
+    options: {
+      position: 'Right',
+      mode: 'Table',
+      values: [
+        {
+          id: 'total',
+          label: 'Total',
+          width: 100,
+        },
+      ],
+    },
+    selectedItems: 'ALL',
+  },
+};
+
 /**
  * When the legend is positioned on the right, items with long labels will be
  * displayed in full when there are a small number of items.
@@ -327,7 +360,7 @@ export const RightWithLongLabels: Story = {
                   <UncontrolledLegendWrapper
                     {...args}
                     options={{ position: 'Right', mode }}
-                    data={generateMockLegendData(4, labelPrefix)}
+                    data={generateMockLegendData(4, { labelPrefix })}
                   />
                 </StorySection>
               );
@@ -342,7 +375,7 @@ export const RightWithLongLabels: Story = {
                   <UncontrolledLegendWrapper
                     {...args}
                     options={{ position: 'Right', mode }}
-                    data={generateMockLegendData(1000, labelPrefix)}
+                    data={generateMockLegendData(1000, { labelPrefix })}
                   />
                 </StorySection>
               );

@@ -84,6 +84,7 @@ export function Legend({ width, height, options, data, selectedItems, onSelected
   };
 
   const mode = getLegendMode(options.mode);
+  const values = options.values;
 
   // The bottom legend is displayed as a list when the number of items is too
   // large and requires virtualization. Otherwise, it is rendered more compactly.
@@ -100,7 +101,9 @@ export function Legend({ width, height, options, data, selectedItems, onSelected
 
   let legendContent: ReactNode;
   if (mode === 'Table') {
-    legendContent = <TableLegend {...commonLegendProps} onSelectedItemsChange={onSelectedItemsChange} width={width} />;
+    legendContent = (
+      <TableLegend {...commonLegendProps} values={values} onSelectedItemsChange={onSelectedItemsChange} width={width} />
+    );
   } else if (options.position === 'Right' || needsVirtualization) {
     legendContent = <ListLegend {...commonLegendProps} width={width} onLegendItemClick={onLegendItemClick} />;
   } else {

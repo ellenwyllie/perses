@@ -12,6 +12,7 @@
 // limitations under the License.
 
 import { MouseEventHandler } from 'react';
+import { TableColumnConfig } from '../Table';
 
 export const legendPositions = ['Bottom', 'Right'] as const;
 export type LegendPositions = (typeof legendPositions)[number];
@@ -19,9 +20,16 @@ export type LegendPositions = (typeof legendPositions)[number];
 export const legendModes = ['List', 'Table'] as const;
 export type LegendMode = (typeof legendModes)[number];
 
+export type LegendValueConfig = {
+  id: string;
+  label: string;
+  width?: TableColumnConfig<unknown>['width'];
+};
+
 export interface LegendOptions {
   position: LegendPositions;
   mode?: LegendMode;
+  values?: LegendValueConfig[];
 }
 
 export interface LegendItem {
@@ -29,6 +37,7 @@ export interface LegendItem {
   label: string;
   color: string;
   onClick?: MouseEventHandler<HTMLElement>;
+  values?: Record<string, number>;
 }
 
 export type LegendSingleSelectConfig = {
@@ -57,6 +66,7 @@ export const LEGEND_MODE_CONFIG: Readonly<Record<LegendMode, LegendSingleSelectC
 export const DEFAULT_LEGEND: Required<LegendOptions> = {
   position: 'Bottom',
   mode: 'List',
+  values: [],
 };
 
 export function getLegendPosition(position?: LegendPositions) {

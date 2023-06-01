@@ -13,10 +13,11 @@
 
 import { useMemo } from 'react';
 import { Table, TableProps, TableColumnConfig } from '../Table';
-import { LegendItem } from '../model';
+import { LegendItem, LegendOptions } from '../model';
 
 export interface TableLegendProps {
   items: LegendItem[];
+  values: LegendOptions['values'];
   height: number;
   width: number;
   selectedItems: TableProps<LegendItem>['rowSelection'] | 'ALL';
@@ -49,6 +50,7 @@ export function TableLegend({
   onSelectedItemsChange,
   height,
   width,
+  values,
 }: TableLegendProps) {
   const rowSelection = useMemo(() => {
     return typeof initRowSelection !== 'string'
@@ -62,6 +64,20 @@ export function TableLegend({
         }, {} as Record<string, boolean>);
   }, [initRowSelection, items]);
 
+  const columns =
+    values && values.length
+      ? [
+          ...COLUMNS,
+          ...values.map((value) => {
+            return {
+              accessorKey: `values.${value.id}`,
+              header: value.label,
+              width: value.width,
+            };
+          }),
+        ]
+      : COLUMNS;
+
   return (
     <Table
       height={height}
@@ -69,7 +85,7 @@ export function TableLegend({
       rowSelection={rowSelection}
       onRowSelectionChange={onSelectedItemsChange}
       data={items}
-      columns={COLUMNS}
+      columns={columns}
       density="compact"
       getRowId={getRowId}
       getCheckboxColor={getCheckboxColor}
