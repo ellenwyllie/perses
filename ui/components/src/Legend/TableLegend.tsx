@@ -70,7 +70,7 @@ export function TableLegend({
       ? [
           ...COLUMNS,
           ...values.map((value) => {
-            return {
+            const cellValue: TableColumnConfig<LegendItem> = {
               accessorKey: `values.${value.id}`,
               header: value.label,
               width: value.width,
@@ -84,6 +84,7 @@ export function TableLegend({
                 return getValue();
               },
             };
+            return cellValue;
           }),
         ]
       : COLUMNS;

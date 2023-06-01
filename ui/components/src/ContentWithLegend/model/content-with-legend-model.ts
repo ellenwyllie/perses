@@ -130,6 +130,16 @@ export function getContentWithLegendLayout({
   const { position } = legendOptions;
   const mode = getLegendMode(legendOptions.mode);
 
+  // Account for widths from legend values, when possible.
+  const legendValuesWidth = legendOptions.values
+    ? Object.values(legendOptions.values).reduce((totalWidth, item) => {
+        if (typeof item.width === 'number') {
+          return totalWidth + item.width;
+        }
+        return totalWidth;
+      }, 0)
+    : 0;
+
   let legendWidth;
   let legendHeight;
 
@@ -150,7 +160,7 @@ export function getContentWithLegendLayout({
 
     const tableLayout = getTableCellLayout(theme, 'compact');
 
-    legendWidth = position === 'Right' ? TABLE_LEGEND_SIZE['Right'] : width;
+    legendWidth = position === 'Right' ? TABLE_LEGEND_SIZE['Right'] + legendValuesWidth : width;
     legendHeight = position === 'Bottom' ? TABLE_LEGEND_SIZE['Bottom'] * tableLayout.height : height;
   }
 
