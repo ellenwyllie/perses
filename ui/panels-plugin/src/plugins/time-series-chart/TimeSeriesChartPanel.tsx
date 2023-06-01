@@ -91,7 +91,7 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
   // TODO: add support for y_axis_alt.unit
   const unit = props.spec.y_axis?.unit ?? DEFAULT_UNIT;
 
-  const VALUE_WIDTH = 110;
+  const VALUE_WIDTH = 80;
   const legendValues: LegendValueConfig[] = [
     {
       id: 'averageNonNull',
