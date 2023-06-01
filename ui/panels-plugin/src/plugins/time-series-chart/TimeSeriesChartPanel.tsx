@@ -91,41 +91,42 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
   // TODO: add support for y_axis_alt.unit
   const unit = props.spec.y_axis?.unit ?? DEFAULT_UNIT;
 
+  const VALUE_WIDTH = 110;
   const legendValues: LegendValueConfig[] = [
     {
       id: 'averageNonNull',
       label: 'Average',
-      width: 100,
+      width: VALUE_WIDTH,
       unit,
     },
     {
       id: 'firstNonNull',
       label: 'First',
-      width: 100,
+      width: VALUE_WIDTH,
       unit,
     },
     {
       id: 'lastNonNull',
       label: 'Last',
-      width: 100,
+      width: VALUE_WIDTH,
       unit,
     },
     {
       id: 'min',
       label: 'Min',
-      width: 100,
+      width: VALUE_WIDTH,
       unit,
     },
     {
       id: 'max',
       label: 'Max',
-      width: 100,
+      width: VALUE_WIDTH,
       unit,
     },
     {
       id: 'total',
       label: 'Total',
-      width: 100,
+      width: VALUE_WIDTH,
       unit,
     },
   ];
