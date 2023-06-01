@@ -17,7 +17,7 @@ import { LegendItem, LegendOptions } from '../model';
 
 export interface TableLegendProps {
   items: LegendItem[];
-  values: LegendOptions['values'];
+  values?: LegendOptions['values'];
   height: number;
   width: number;
   selectedItems: TableProps<LegendItem>['rowSelection'] | 'ALL';
@@ -73,6 +73,7 @@ export function TableLegend({
               accessorKey: `values.${value.id}`,
               header: value.label,
               width: value.width,
+              align: 'right' as const,
             };
           }),
         ]

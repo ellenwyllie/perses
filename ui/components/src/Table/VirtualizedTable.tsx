@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Column, HeaderGroup, Row, flexRender } from '@tanstack/react-table';
+import { Column, HeaderGroup, Row, flexRender, ColumnMeta } from '@tanstack/react-table';
 import { Box } from '@mui/material';
 import { TableVirtuoso, TableComponents, TableVirtuosoHandle, TableVirtuosoProps } from 'react-virtuoso';
 import { useRef, useMemo } from 'react';
@@ -159,7 +159,8 @@ export function VirtualizedTable<TableData>({
                 return (
                   <TableCell
                     key={cell.id}
-                    sx={{ width: cell.column.getSize() || 'auto' }}
+                    width={cell.column.getSize() || 'auto'}
+                    align={cell.column.columnDef.meta?.align}
                     density={density}
                     focusState={getFocusState(position)}
                     onFocusTrigger={() => keyboardNav.onCellFocus(position)}

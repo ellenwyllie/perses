@@ -147,7 +147,6 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
         if (timeSeries === undefined) {
           return { graphData };
         }
-        console.log(timeSeries);
 
         // Format is determined by series_name_format in query spec
         const formattedSeriesName = timeSeries.formattedName ?? timeSeries.name;

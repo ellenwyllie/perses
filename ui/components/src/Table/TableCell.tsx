@@ -13,7 +13,7 @@
 
 import { TableCell as MuiTableCell, styled, TableCellProps as MuiTableCellProps, Box, useTheme } from '@mui/material';
 import { useEffect, useRef } from 'react';
-import { TableDensity, getTableCellLayout } from './model/table-model';
+import { TableCellAlignment, TableDensity, getTableCellLayout } from './model/table-model';
 
 const StyledMuiTableCell = styled(MuiTableCell)(({ theme }) => ({
   padding: 0,
@@ -32,8 +32,9 @@ const StyledMuiTableCell = styled(MuiTableCell)(({ theme }) => ({
   },
 }));
 
-export interface TableCellProps extends Omit<MuiTableCellProps, 'tabIndex'> {
+export interface TableCellProps extends Omit<MuiTableCellProps, 'tabIndex' | 'align'> {
   density: TableDensity;
+  align?: TableCellAlignment;
 
   /**
    * How the cell should behave related to focus.

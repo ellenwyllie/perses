@@ -305,7 +305,7 @@ export const TableValues: StoryObj<LegendProps> = {
   args: {
     width: 600,
     height: 200,
-    data: generateMockLegendData(10, {
+    data: generateMockLegendData(100, {
       includeValues: true,
     }),
     options: {

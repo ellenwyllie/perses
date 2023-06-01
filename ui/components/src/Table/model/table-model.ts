@@ -13,9 +13,18 @@
 
 import { Theme } from '@mui/material';
 import { AccessorKeyColumnDef, ColumnDef, CoreOptions, RowSelectionState } from '@tanstack/react-table';
+import { RowData } from '@tanstack/table-core';
 import { CSSProperties } from 'react';
 
 export type TableDensity = 'compact' | 'standard';
+
+// TODO: figure out if there's a way to make this work in a separate file.
+declare module '@tanstack/table-core' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue> {
+    align?: TableCellAlignment;
+  }
+}
 
 export interface TableProps<TableData> {
   /**
@@ -123,6 +132,8 @@ export function getTableCellLayout(theme: Theme, density: TableDensity): TableCe
   };
 }
 
+export type TableCellAlignment = 'left' | 'right' | 'center';
+
 // Only exposing a very simplified version of the very extensive column definitions
 // possible with tanstack table to make it easier for us to control rendering
 // and functionality.
@@ -145,13 +156,15 @@ export interface TableColumnConfig<TableData>
    * @default 'auto'
    */
   width?: number | 'auto';
+
+  align?: TableCellAlignment;
 }
 
 /**
  * Takes in a perses table column and transforms it into a tanstack column.
  */
 export function persesColumnsToTanstackColumns<TableData>(columns: Array<TableColumnConfig<TableData>>) {
-  const tableCols: Array<ColumnDef<TableData>> = columns.map(({ width, ...otherProps }) => {
+  const tableCols: Array<ColumnDef<TableData>> = columns.map(({ width, align, ...otherProps }) => {
     // Tanstack Table does not support an "auto" value to naturally size to fit
     // the space in a table. We translate our custom "auto" setting to 0 size
     // for these columns, so it is easy to fall back to auto when rendering.
@@ -173,6 +186,9 @@ export function persesColumnsToTanstackColumns<TableData>(columns: Array<TableCo
     const result = {
       ...otherProps,
       ...sizeProps,
+      meta: {
+        align,
+      },
     };
 
     return result;
