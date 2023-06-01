@@ -21,6 +21,9 @@ export type LegendPositions = (typeof legendPositions)[number];
 export const legendModes = ['List', 'Table'] as const;
 export type LegendMode = (typeof legendModes)[number];
 
+export const legendValues = ['averageNonNull', 'firstNonNull', 'lastNonNull', 'min', 'max', 'total'] as const;
+export type LegendValue = (typeof legendValues)[number];
+
 export type LegendValueConfig = {
   id: string;
   label: string;
@@ -63,6 +66,27 @@ export const LEGEND_POSITIONS_CONFIG: Readonly<Record<LegendPositions, LegendSin
 export const LEGEND_MODE_CONFIG: Readonly<Record<LegendMode, LegendSingleSelectConfig>> = {
   List: { label: 'List' },
   Table: { label: 'Table' },
+};
+
+export const LEGEND_VALUE_CONFIG: Readonly<Record<LegendValue, LegendSingleSelectConfig>> = {
+  averageNonNull: {
+    label: 'Average',
+  },
+  firstNonNull: {
+    label: 'First',
+  },
+  lastNonNull: {
+    label: 'Last',
+  },
+  min: {
+    label: 'Min',
+  },
+  max: {
+    label: 'Max',
+  },
+  total: {
+    label: 'Total',
+  },
 };
 
 export const DEFAULT_LEGEND: Required<LegendOptions> = {

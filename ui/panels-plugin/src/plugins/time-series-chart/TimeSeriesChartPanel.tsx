@@ -129,7 +129,10 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
       width: VALUE_WIDTH,
       unit,
     },
-  ];
+  ].filter((value) => {
+    // TODO: fix types
+    return legend?.values && legend.values.includes(value.id as unknown as LegendValueConfig);
+  });
 
   // ensures there are fallbacks for unset properties since most
   // users should not need to customize visual display

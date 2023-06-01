@@ -21,7 +21,9 @@ import {
   LegendOptions,
   LegendSingleSelectConfig,
   LEGEND_MODE_CONFIG,
+  LEGEND_VALUE_CONFIG,
   getLegendMode,
+  LegendValueConfig,
 } from '../model';
 import { OptionsEditorControl } from '../OptionsEditorLayout';
 
@@ -37,6 +39,14 @@ const POSITION_OPTIONS: LegendPositionOption[] = Object.entries(LEGEND_POSITIONS
 type LegendModeOption = LegendSingleSelectConfig & { id: LegendOptions['mode'] };
 
 const MODE_OPTIONS: LegendModeOption[] = Object.entries(LEGEND_MODE_CONFIG).map(([id, config]) => {
+  return {
+    id: id as LegendOptions['mode'],
+    ...config,
+  };
+});
+
+type LegendValueOption = LegendSingleSelectConfig & { id: string };
+const VALUE_OPTIONS: LegendValueOption[] = Object.entries(LEGEND_VALUE_CONFIG).map(([id, config]) => {
   return {
     id: id as LegendOptions['mode'],
     ...config,
@@ -67,6 +77,18 @@ export function LegendOptionsEditor({ value, onChange }: LegendOptionsEditorProp
       ...value,
       position: currentPosition,
       mode: newValue.id,
+    });
+  };
+
+  const handleLegendValueChange = (_: unknown, newValue: LegendValueOption[]) => {
+    console.log(newValue);
+    onChange({
+      ...value,
+      position: currentPosition,
+      values: newValue.map((value) => {
+        // TODO: figure out better typing
+        return value.id as unknown as LegendValueConfig;
+      }),
     });
   };
 
@@ -116,6 +138,23 @@ export function LegendOptionsEditor({ value, onChange }: LegendOptionsEditorProp
             disabled={value === undefined}
             disableClearable
           ></Autocomplete>
+        }
+      />
+      <OptionsEditorControl
+        label="Values"
+        control={
+          <Autocomplete
+            multiple
+            disableCloseOnSelect
+            options={VALUE_OPTIONS}
+            onChange={handleLegendValueChange}
+            renderInput={(params) => <TextField {...params} />}
+            disabled={value === undefined}
+            limitTags={1}
+            ChipProps={{
+              size: 'small',
+            }}
+          />
         }
       />
     </>
