@@ -18,14 +18,6 @@ import { CSSProperties } from 'react';
 
 export type TableDensity = 'compact' | 'standard';
 
-// TODO: figure out if there's a way to make this work in a separate file.
-declare module '@tanstack/table-core' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ColumnMeta<TData extends RowData, TValue> {
-    align?: TableCellAlignment;
-  }
-}
-
 export interface TableProps<TableData> {
   /**
    * Height of the table.
@@ -133,6 +125,16 @@ export function getTableCellLayout(theme: Theme, density: TableDensity): TableCe
 }
 
 export type TableCellAlignment = 'left' | 'right' | 'center';
+
+// Overrides of meta value, so it can have a meaningful type in our code instead
+// of `any`.
+// TODO: figure out if there's a way to make this work in a separate file.
+declare module '@tanstack/table-core' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue> {
+    align?: TableCellAlignment;
+  }
+}
 
 // Only exposing a very simplified version of the very extensive column definitions
 // possible with tanstack table to make it easier for us to control rendering
