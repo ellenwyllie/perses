@@ -107,3 +107,55 @@ export function getCommonTimeScale(seriesData: Array<TimeSeriesData | undefined>
 
   return { startMs, endMs, stepMs };
 }
+
+export function getLegendValues(yValues: Array<number | null>): Record<string, number | undefined> {
+  let total = 0;
+  let min: undefined | number = undefined;
+  let max: undefined | number = undefined;
+  let firstNonNull: undefined | number = undefined;
+  let lastNonNull: undefined | number = undefined;
+  let nonNullCount = 0;
+
+  yValues.forEach((value) => {
+    if (typeof value === 'number') {
+      nonNullCount += 1;
+      total += value;
+
+      if (typeof firstNonNull === 'undefined') {
+        // Set first value at the first non-null value we see.
+        firstNonNull = value;
+      }
+
+      // Set last non-null every time we see a non-null value to ensure it's
+      // eventually set the last value.
+      lastNonNull = value;
+
+      // Init at the first non-null value we see and then adjust based on the
+      // larger value.
+      if (typeof min === 'undefined') {
+        min = value;
+      } else {
+        min = Math.min(min, value);
+      }
+
+      // Init at the first non-null value we see and then adjust based on the
+      // larger value.
+      if (typeof max === 'undefined') {
+        max = value;
+      } else {
+        max = Math.max(min, value);
+      }
+    }
+  });
+
+  const averageNonNull = total > 0 && nonNullCount > 0 ? total / nonNullCount : 0;
+
+  return {
+    averageNonNull,
+    total,
+    min,
+    max,
+    firstNonNull,
+    lastNonNull,
+  };
+}

@@ -13,7 +13,7 @@
 
 import { useState } from 'react';
 import { merge } from 'lodash-es';
-import { useDeepMemo, StepOptions, getXValues, getYValues, TimeSeries } from '@perses-dev/core';
+import { useDeepMemo, StepOptions, getXValues, getYValues, TimeSeries, getLegendValues } from '@perses-dev/core';
 import { PanelProps, useDataQueries, useTimeRange } from '@perses-dev/plugin-system';
 import type { GridComponentOption } from 'echarts';
 import { Box, Skeleton, useTheme } from '@mui/material';
@@ -27,6 +27,7 @@ import {
   useChartsTheme,
   SelectedLegendItemState,
   ContentWithLegend,
+  LegendValueConfig,
 } from '@perses-dev/components';
 import { TimeSeriesChartOptions, DEFAULT_UNIT, DEFAULT_VISUAL } from './time-series-chart-model';
 import {
@@ -86,6 +87,39 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
     props.spec.legend && validateLegendSpec(props.spec.legend)
       ? merge({}, DEFAULT_LEGEND, props.spec.legend)
       : undefined;
+
+  const legendValues: LegendValueConfig[] = [
+    {
+      id: 'averageNonNull',
+      label: 'Average',
+      width: 100,
+    },
+    {
+      id: 'firstNonNull',
+      label: 'First',
+      width: 100,
+    },
+    {
+      id: 'lastNonNull',
+      label: 'Last',
+      width: 100,
+    },
+    {
+      id: 'min',
+      label: 'Min',
+      width: 100,
+    },
+    {
+      id: 'max',
+      label: 'Max',
+      width: 100,
+    },
+    {
+      id: 'total',
+      label: 'Total',
+      width: 100,
+    },
+  ];
 
   // TODO: add support for y_axis_alt.unit
   const unit = props.spec.y_axis?.unit ?? DEFAULT_UNIT;
@@ -169,6 +203,7 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
 
         const yValues = getYValues(timeSeries, timeScale);
         const lineSeries = getLineSeries(formattedSeriesName, yValues, visual, seriesColor);
+        const legendValues = getLegendValues(yValues);
 
         // When we initially load the chart, we want to show all series, but
         // DO NOT want to visualy highlight all the items in the legend.
@@ -184,6 +219,7 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
             id: seriesId, // Avoids duplicate key console errors when there are duplicate series names
             label: formattedSeriesName,
             color: seriesColor,
+            values: legendValues,
           });
         }
       }
@@ -274,7 +310,10 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
         minChildrenHeight={50}
         legendProps={
           legend && {
-            options: legend,
+            options: {
+              ...legend,
+              values: legendValues,
+            },
             data: graphData.legendItems || [],
             selectedItems: selectedLegendItems,
             onSelectedItemsChange: setSelectedLegendItems,

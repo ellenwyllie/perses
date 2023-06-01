@@ -126,6 +126,7 @@ export function VirtualizedTable<TableData>({
                         <TableCell
                           key={header.id}
                           width={column.getSize() || 'auto'}
+                          align={column.columnDef.meta?.align}
                           variant="head"
                           density={density}
                           focusState={getFocusState(position)}
