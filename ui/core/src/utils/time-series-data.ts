@@ -151,11 +151,11 @@ export function getLegendValues(yValues: Array<number | null>): Record<string, n
   const averageNonNull = total > 0 && nonNullCount > 0 ? total / nonNullCount : 0;
 
   return {
-    averageNonNull,
-    total,
-    min,
-    max,
-    firstNonNull,
-    lastNonNull,
+    AverageNonNull: averageNonNull,
+    Total: total,
+    Min: min,
+    Max: max,
+    FirstNonNull: firstNonNull,
+    LastNonNull: lastNonNull,
   };
 }

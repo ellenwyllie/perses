@@ -14,7 +14,7 @@
 import { Box } from '@mui/material';
 import { produce } from 'immer';
 import { ReactNode } from 'react';
-import { LegendOptions, LegendItem, SelectedLegendItemState, getLegendMode } from '../model';
+import { LegendComponentOptions, LegendItem, SelectedLegendItemState, getLegendMode } from '../model';
 import { ListLegend } from './ListLegend';
 import { CompactLegend } from './CompactLegend';
 import { TableLegend } from './TableLegend';
@@ -23,7 +23,7 @@ export interface LegendProps {
   width: number;
   height: number;
   data: LegendItem[];
-  options: LegendOptions;
+  options: LegendComponentOptions;
 
   /**
    * State of selected items in the legend.

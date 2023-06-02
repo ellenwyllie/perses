@@ -88,7 +88,7 @@ export function LegendOptionsEditor({ value, onChange }: LegendOptionsEditorProp
       position: currentPosition,
       values: newValue.map((value) => {
         // TODO: figure out better typing
-        return value.id as unknown as LegendValueConfig;
+        return value.id as unknown as LegendValue;
       }),
     });
   };
@@ -99,6 +99,8 @@ export function LegendOptionsEditor({ value, onChange }: LegendOptionsEditorProp
 
   const currentMode = getLegendMode(value?.mode);
   const legendModeConfig = LEGEND_MODE_CONFIG[currentMode];
+
+  // const currentValues = value?.values || [];
 
   return (
     <>

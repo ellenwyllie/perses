@@ -28,6 +28,7 @@ import {
   SelectedLegendItemState,
   ContentWithLegend,
   LegendValueConfig,
+  LegendValue,
 } from '@perses-dev/components';
 import { TimeSeriesChartOptions, DEFAULT_UNIT, DEFAULT_VISUAL } from './time-series-chart-model';
 import {
@@ -94,44 +95,44 @@ export function TimeSeriesChartPanel(props: TimeSeriesChartProps) {
   const VALUE_WIDTH = 80;
   const legendValues: LegendValueConfig[] = [
     {
-      id: 'averageNonNull',
+      id: 'AverageNonNull',
       label: 'Average',
       width: VALUE_WIDTH,
       unit,
     },
     {
-      id: 'firstNonNull',
+      id: 'FirstNonNull',
       label: 'First',
       width: VALUE_WIDTH,
       unit,
     },
     {
-      id: 'lastNonNull',
+      id: 'LastNonNull',
       label: 'Last',
       width: VALUE_WIDTH,
       unit,
     },
     {
-      id: 'min',
+      id: 'Min',
       label: 'Min',
       width: VALUE_WIDTH,
       unit,
     },
     {
-      id: 'max',
+      id: 'Max',
       label: 'Max',
       width: VALUE_WIDTH,
       unit,
     },
     {
-      id: 'total',
+      id: 'Total',
       label: 'Total',
       width: VALUE_WIDTH,
       unit,
     },
   ].filter((value) => {
     // TODO: fix types
-    return legend?.values && legend.values.includes(value.id as unknown as LegendValueConfig);
+    return legend?.values && legend.values.includes(value.id as unknown as LegendValue);
   });
 
   // ensures there are fallbacks for unset properties since most

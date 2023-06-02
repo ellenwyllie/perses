@@ -13,11 +13,11 @@
 
 import { useMemo } from 'react';
 import { Table, TableProps, TableColumnConfig } from '../Table';
-import { LegendItem, LegendOptions, formatValue } from '../model';
+import { LegendItem, LegendComponentOptions, formatValue } from '../model';
 
 export interface TableLegendProps {
   items: LegendItem[];
-  values?: LegendOptions['values'];
+  values?: LegendComponentOptions['values'];
   height: number;
   width: number;
   selectedItems: TableProps<LegendItem>['rowSelection'] | 'ALL';

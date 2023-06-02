@@ -21,7 +21,7 @@ export type LegendPositions = (typeof legendPositions)[number];
 export const legendModes = ['List', 'Table'] as const;
 export type LegendMode = (typeof legendModes)[number];
 
-export const legendValues = ['averageNonNull', 'firstNonNull', 'lastNonNull', 'min', 'max', 'total'] as const;
+export const legendValues = ['AverageNonNull', 'FirstNonNull', 'LastNonNull', 'Min', 'Max', 'Total'] as const;
 export type LegendValue = (typeof legendValues)[number];
 
 export type LegendValueConfig = {
@@ -31,7 +31,14 @@ export type LegendValueConfig = {
   unit?: UnitOptions;
 };
 
+// TODO: moar cleanup of separating legend component from time series legend config
 export interface LegendOptions {
+  position: LegendPositions;
+  mode?: LegendMode;
+  values?: LegendValue[];
+}
+
+export interface LegendComponentOptions {
   position: LegendPositions;
   mode?: LegendMode;
   values?: LegendValueConfig[];
@@ -69,22 +76,22 @@ export const LEGEND_MODE_CONFIG: Readonly<Record<LegendMode, LegendSingleSelectC
 };
 
 export const LEGEND_VALUE_CONFIG: Readonly<Record<LegendValue, LegendSingleSelectConfig>> = {
-  averageNonNull: {
+  AverageNonNull: {
     label: 'Average',
   },
-  firstNonNull: {
+  FirstNonNull: {
     label: 'First',
   },
-  lastNonNull: {
+  LastNonNull: {
     label: 'Last',
   },
-  min: {
+  Min: {
     label: 'Min',
   },
-  max: {
+  Max: {
     label: 'Max',
   },
-  total: {
+  Total: {
     label: 'Total',
   },
 };
