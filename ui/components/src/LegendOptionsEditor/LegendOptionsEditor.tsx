@@ -100,7 +100,10 @@ export function LegendOptionsEditor({ value, onChange }: LegendOptionsEditorProp
   const currentMode = getLegendMode(value?.mode);
   const legendModeConfig = LEGEND_MODE_CONFIG[currentMode];
 
-  // const currentValues = value?.values || [];
+  const currentValues = value?.values || [];
+  const legendValuesConfig = currentValues.map((item) => {
+    return { ...LEGEND_VALUE_CONFIG[item], id: item };
+  });
 
   return (
     <>
@@ -149,6 +152,8 @@ export function LegendOptionsEditor({ value, onChange }: LegendOptionsEditorProp
           <Autocomplete
             multiple
             disableCloseOnSelect
+            value={legendValuesConfig}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             options={VALUE_OPTIONS}
             onChange={handleLegendValueChange}
             renderInput={(params) => <TextField {...params} />}
