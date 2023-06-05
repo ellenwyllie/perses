@@ -22,8 +22,14 @@ const DEFAULT_GET_ROW_ID = (data: unknown, index: number) => {
   return `${index}`;
 };
 
+// Column used on the far righ to provide some spacing.
+// TODO: figure out the a11y for this or do it with cells instead. Cells are
+// probably the right solution.
 const RIGHT_SPACER_COLUMN = {
   id: 'rightSpacer',
+  // Setting all three size values because just setting `size` to a small value
+  // wasn't working. Guessing I was running into some tanstack table defaults.
+  size: 8,
   minSize: 8,
   maxSize: 8,
 };
