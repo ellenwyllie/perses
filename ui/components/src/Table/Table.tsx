@@ -22,6 +22,12 @@ const DEFAULT_GET_ROW_ID = (data: unknown, index: number) => {
   return `${index}`;
 };
 
+const RIGHT_SPACER_COLUMN = {
+  id: 'rightSpacer',
+  minSize: 8,
+  maxSize: 8,
+};
+
 /**
  * Component used to render tabular data in Perses use cases. This component is
  * **not** intended to be a general use data table for use cases unrelated to Perses.
@@ -50,7 +56,7 @@ export function Table<TableData>({
   const checkboxColumn: ColumnDef<TableData> = useMemo(() => {
     return {
       id: 'checkboxRowSelect',
-      size: 32,
+      size: 28,
       header: ({ table }) => {
         return (
           <TableCheckbox
@@ -84,6 +90,11 @@ export function Table<TableData>({
     if (checkboxSelection) {
       initTableColumns.unshift(checkboxColumn);
     }
+
+    // Add right spacer to help provide a little space on the right. Adding a
+    // column for this is much simpler than conditionally modifying the right
+    // padding conditionally in the rightmost cells.
+    initTableColumns.push(RIGHT_SPACER_COLUMN);
 
     return initTableColumns;
   }, [checkboxColumn, checkboxSelection, columns]);

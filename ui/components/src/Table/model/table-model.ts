@@ -100,7 +100,7 @@ type TableCellLayout = NonNullable<Pick<React.CSSProperties, 'padding' | 'fontSi
 export function getTableCellLayout(theme: Theme, density: TableDensity): TableCellLayout {
   if (density === 'compact') {
     const paddingY = theme.spacing(0.5);
-    const paddingX = theme.spacing(0.25);
+    const paddingX = theme.spacing(0.5);
     const lineHeight = theme.typography.body2.lineHeight;
 
     return {
