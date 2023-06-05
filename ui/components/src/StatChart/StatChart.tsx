@@ -87,6 +87,13 @@ export function StatChart(props: StatChartProps) {
       yAxis: {
         type: 'value',
         show: false,
+        min: (value: { min: number; max: number }) => {
+          if (value.min >= 0 && value.min <= 1) {
+            // helps with PercentDecimal units, or datasets that return 0 or 1 booleans
+            return 0;
+          }
+          return value.min;
+        },
       },
       tooltip: {
         show: false,
@@ -119,7 +126,9 @@ export function StatChart(props: StatChartProps) {
         sx={(theme) => ({
           color: color ?? theme.palette.text.primary,
           fontSize: `clamp(${MIN_VALUE_SIZE}px, ${valueSize}px, ${MAX_VALUE_SIZE}px)`,
-          padding: `${containerPadding} ${containerPadding} 0 ${containerPadding}`,
+          padding: sparkline
+            ? `${containerPadding} ${containerPadding} 0 ${containerPadding}`
+            : ` 0 ${containerPadding}`,
         })}
       >
         {formattedValue}

@@ -12,6 +12,7 @@
 // limitations under the License.
 
 export * from './ColorPicker';
+export * from './ContentWithLegend';
 export * from './DateTimeRangePicker';
 export * from './Dialog';
 export * from './Drawer';
@@ -26,6 +27,7 @@ export * from './LegendOptionsEditor';
 export * from './LineChart';
 export * from './OptionsEditorLayout';
 export * from './StatChart';
+export * from './Table';
 export * from './ThresholdsEditor';
 export * from './TimeChart';
 export * from './TimeSeriesTooltip';
@@ -33,6 +35,7 @@ export * from './UnitSelector';
 export * from './YAxisLabel';
 export * from './context/ChartsThemeProvider';
 export * from './context/TimeZoneProvider';
+export * from './context/SnackbarProvider';
 export * from './utils';
 export * from './model';
 export * from './test-utils';
